@@ -11,7 +11,7 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Chart.js for Caregiver & Doctor Portals -->
+  <!-- Chart.js for Caregiver & Doctor Telemetry -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -27,6 +27,7 @@
               100: '#DCEDC8',
               200: '#C5E1A5',
               500: '#7CB342',
+              600: '#558B2F',
               700: '#33691E',
               800: '#1B5E20'
             },
@@ -35,7 +36,8 @@
               100: '#FFE0B2',
               200: '#FFCC80',
               500: '#FB8C00',
-              600: '#F57C00'
+              600: '#F57C00',
+              700: '#E65100'
             },
             blush: {
               50: '#FCE4EC',
@@ -47,8 +49,10 @@
             mocha: {
               50: '#EFEBE9',
               100: '#D7CCC8',
+              200: '#BCAAA4',
               300: '#A1887F',
               600: '#6D4C41',
+              700: '#5D4037',
               800: '#4E342E',
               900: '#3E2723'
             },
@@ -91,7 +95,15 @@
     }
     .game-card-bright:hover {
       transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 12px 24px -6px rgba(0,0,0,0.15);
+      box-shadow: 0 12px 24px -6px rgba(0,0,0,0.12);
+    }
+
+    @keyframes subtlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.015); }
+    }
+    .animate-subtle-pulse {
+      animation: subtlePulse 5s infinite ease-in-out;
     }
 
     @keyframes alertPulse {
@@ -101,14 +113,22 @@
     .animate-alert-pulse {
       animation: alertPulse 1.2s infinite;
     }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   </style>
 </head>
 
 <body class="bg-[#FAF5EE] text-mocha-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col antialiased">
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="sticky top-0 z-50 bg-[#F3E5AB]/90 dark:bg-mocha-900/90 backdrop-blur-md border-b-2 border-mocha-100 dark:border-mocha-800 shadow-sm transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-3">
+  <!-- ==================== STICKY HEADER ==================== -->
+  <header class="sticky top-0 z-50 bg-[#F3E5AB]/95 dark:bg-mocha-900/95 backdrop-blur-md border-b-2 border-mocha-100 dark:border-mocha-800 shadow-sm transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap justify-between items-center gap-3">
       
       <!-- Brand Logo -->
       <div class="flex items-center space-x-3">
@@ -116,9 +136,12 @@
           <i class="fa-solid fa-heart-pulse"></i>
         </div>
         <div>
-          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-mocha-900 dark:text-peach-100">
-            HarmonyCare
-          </h1>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-mocha-900 dark:text-peach-100">
+              HarmonyCare
+            </h1>
+            <span id="headerRoleBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-peach-500 text-white uppercase tracking-wider font-extrabold shadow-2xs">Patient</span>
+          </div>
           <p class="text-xs font-semibold text-mocha-600 dark:text-mint-200" id="portalSubhead">
             Parkinson's Integrated Care & Mind Suite
           </p>
@@ -129,21 +152,27 @@
       <div class="flex items-center flex-wrap gap-2">
         
         <!-- Live Sync Pill -->
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-mint-100 text-mint-800 border border-mint-200 shadow-sm dark:bg-mint-800 dark:text-mint-100">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-mint-100 text-mint-800 border border-mint-200 shadow-xs dark:bg-mint-800 dark:text-mint-100">
           <span class="w-2 h-2 mr-1.5 rounded-full bg-mint-500 animate-ping"></span>
           <span id="txtSyncStatus">Live Sync</span>
         </span>
 
         <!-- Emergency SOS Button -->
-        <button onclick="triggerEmergencySOS()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1">
+        <button onclick="triggerEmergencySOS()" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5">
           <i class="fa-solid fa-phone-volume"></i>
           <span>SOS</span>
         </button>
 
+        <!-- Sensory Breath Pause -->
+        <button onclick="triggerOverwhelmReset()" class="px-3 py-1.5 bg-peach-500 hover:bg-peach-600 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1">
+          <i class="fa-solid fa-wind"></i>
+          <span class="hidden sm:inline">Take a Breath</span>
+        </button>
+
         <!-- Font Resizer -->
         <div class="flex items-center bg-mocha-100 dark:bg-mocha-800 rounded-xl p-1 shadow-inner">
-          <button onclick="adjustFontSize(-1)" class="w-8 h-8 rounded-lg bg-white dark:bg-mocha-900 hover:bg-peach-100 dark:hover:bg-mocha-700 text-mocha-800 dark:text-mocha-100 font-bold text-sm shadow-xs transition" title="Decrease Text Size">A-</button>
-          <button onclick="adjustFontSize(1)" class="w-8 h-8 rounded-lg bg-white dark:bg-mocha-900 hover:bg-peach-100 dark:hover:bg-mocha-700 text-mocha-800 dark:text-mocha-100 font-bold text-sm shadow-xs transition ml-1" title="Increase Text Size">A+</button>
+          <button onclick="adjustFontSize(-1)" class="w-7 h-7 rounded-lg bg-white dark:bg-mocha-900 hover:bg-peach-100 text-mocha-800 dark:text-mocha-100 font-bold text-xs shadow-xs transition" title="Decrease Text Size">A-</button>
+          <button onclick="adjustFontSize(1)" class="w-7 h-7 rounded-lg bg-white dark:bg-mocha-900 hover:bg-peach-100 text-mocha-800 dark:text-mocha-100 font-bold text-xs shadow-xs transition ml-1" title="Increase Text Size">A+</button>
         </div>
 
         <!-- Language Selector -->
@@ -155,39 +184,58 @@
         </select>
 
         <!-- Dark Mode Toggle -->
-        <button onclick="toggleDarkMode()" class="w-9 h-9 rounded-xl bg-mocha-100 dark:bg-mocha-800 hover:bg-peach-200 dark:hover:bg-mocha-700 text-mocha-800 dark:text-peach-200 flex items-center justify-center transition shadow-sm">
-          <i class="fa-solid fa-moon dark:hidden"></i>
-          <i class="fa-solid fa-sun hidden dark:block"></i>
+        <button onclick="toggleDarkMode()" class="w-8 h-8 rounded-xl bg-mocha-100 dark:bg-mocha-800 hover:bg-peach-200 dark:hover:bg-mocha-700 text-mocha-800 dark:text-peach-200 flex items-center justify-center transition shadow-sm">
+          <i class="fa-solid fa-moon dark:hidden text-xs"></i>
+          <i class="fa-solid fa-sun hidden dark:block text-xs"></i>
         </button>
 
         <!-- Login / Sign-Up Button & Profile State -->
-        <button onclick="openAuthModal()" id="btnAuthModal" class="px-3.5 py-1.5 bg-mocha-800 hover:bg-mocha-900 text-peach-100 rounded-xl text-xs font-extrabold shadow-sm transition flex items-center gap-1.5">
+        <button onclick="openAuthModal()" id="btnAuthModal" class="px-3 py-1.5 bg-mocha-800 hover:bg-mocha-900 text-peach-100 rounded-xl text-xs font-extrabold shadow-sm transition flex items-center gap-1.5">
           <i class="fa-solid fa-user-circle"></i>
-          <span id="lblAuthUser">Login / Sign Up</span>
+          <span id="lblAuthUser">Eleanor Vance</span>
         </button>
-
-        <!-- Profile Tab Selector Switcher -->
-        <div class="bg-mocha-200 dark:bg-mocha-800 p-1 rounded-2xl flex space-x-1 shadow-inner">
-          <button onclick="switchPortal('patient')" id="tabPatient" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-white dark:bg-mocha-700 text-mocha-900 dark:text-peach-100 shadow-md">
-            <i class="fa-solid fa-user-heart mr-1"></i> Patient
-          </button>
-          <button onclick="switchPortal('caregiver')" id="tabCaregiver" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-mocha-700 dark:text-mocha-300 hover:bg-mocha-100/50">
-            <i class="fa-solid fa-hand-holding-medical mr-1"></i> Caregiver
-          </button>
-          <button onclick="switchPortal('doctor')" id="tabDoctor" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-mocha-700 dark:text-mocha-300 hover:bg-mocha-100/50">
-            <i class="fa-solid fa-user-md mr-1"></i> Doctor
-          </button>
-        </div>
 
       </div>
     </div>
   </header>
 
-  <!-- ==================== MAIN CONTENT ==================== -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <!-- ==================== NAVIGATION TAB BAR (SEPARATE SIDES) ==================== -->
+  <nav class="bg-peach-100/80 dark:bg-mocha-900 border-b border-mocha-200 dark:border-mocha-800 sticky top-[57px] z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto no-scrollbar py-2 gap-2 text-mocha-800 dark:text-peach-200">
+      <button onclick="switchTab('routine')" id="tab-routine" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-mocha-800 text-peach-100 shadow flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-list-check"></i> Daily Routine
+      </button>
+      <button onclick="switchTab('games')" id="tab-games" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white/70 dark:bg-mocha-800 hover:bg-peach-200/80 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-gamepad"></i> Mind Clinic Games
+      </button>
+      <button onclick="switchTab('progress')" id="tab-progress" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white/70 dark:bg-mocha-800 hover:bg-peach-200/80 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-chart-line"></i> Daily, Weekly & Monthly Progress
+      </button>
+      <button onclick="switchTab('vault')" id="tab-vault" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white/70 dark:bg-mocha-800 hover:bg-peach-200/80 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-id-badge"></i> Loved Ones & Face Recall
+      </button>
+      <button onclick="switchTab('speech-movement')" id="tab-speech-movement" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white/70 dark:bg-mocha-800 hover:bg-peach-200/80 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-microphone-lines"></i> Movement & Speech
+      </button>
+      <button onclick="switchTab('nutrition')" id="tab-nutrition" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white/70 dark:bg-mocha-800 hover:bg-peach-200/80 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-apple-whole"></i> Nutrition & Hydration
+      </button>
+      <button onclick="switchTab('caregiver')" id="tab-caregiver" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white/70 dark:bg-mocha-800 hover:bg-peach-200/80 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-hand-holding-medical"></i> Caregiver Portal
+      </button>
+      <button onclick="switchTab('doctor')" id="tab-doctor" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white/70 dark:bg-mocha-800 hover:bg-peach-200/80 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-user-md"></i> Doctor / Clinician
+      </button>
+    </div>
+  </nav>
 
-    <!-- ==================== PATIENT PORTAL ==================== -->
-    <section id="patientPortal" class="space-y-6">
+  <!-- ==================== MAIN BODY CONTENT VIEWS ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- ========================================================================= -->
+    <!-- SIDE 1: DAILY ROUTINE VIEW                                                -->
+    <!-- ========================================================================= -->
+    <section id="view-routine" class="tab-view space-y-6">
       
       <!-- Motivational Banner (Blush & Peach Warmth) -->
       <div class="bg-gradient-to-r from-peach-100 via-blush-100 to-mint-100 dark:from-mocha-800 dark:via-mocha-900 dark:to-mocha-800 p-6 rounded-3xl border-2 border-peach-200 dark:border-mocha-700 shadow-md relative overflow-hidden">
@@ -219,62 +267,20 @@
         </div>
       </div>
 
-      <!-- Quick Action Navigation Tabs -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <button onclick="scrollToSection('secTasks')" class="p-3.5 bg-mint-100 hover:bg-mint-200 dark:bg-mint-800/40 dark:hover:bg-mint-800/60 border border-mint-300 rounded-2xl text-left transition shadow-xs flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-xl bg-mint-500 text-white flex items-center justify-center font-bold text-lg">
-            <i class="fa-solid fa-list-check"></i>
-          </div>
-          <div>
-            <h3 class="font-extrabold text-mocha-900 dark:text-mint-100 text-sm" id="btnNavTasks">Daily Routine</h3>
-            <p class="text-xs text-mocha-600 dark:text-mint-200">Meds & Timing</p>
-          </div>
-        </button>
-
-        <button onclick="scrollToSection('secGames')" class="p-3.5 bg-peach-100 hover:bg-peach-200 dark:bg-peach-800/40 dark:hover:bg-peach-800/60 border border-peach-300 rounded-2xl text-left transition shadow-xs flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-xl bg-peach-500 text-white flex items-center justify-center font-bold text-lg">
-            <i class="fa-solid fa-gamepad"></i>
-          </div>
-          <div>
-            <h3 class="font-extrabold text-mocha-900 dark:text-peach-100 text-sm" id="btnNavGames">Mind Clinic</h3>
-            <p class="text-xs text-mocha-600 dark:text-peach-200">8 Bright Games</p>
-          </div>
-        </button>
-
-        <button onclick="scrollToSection('secSpeech')" class="p-3.5 bg-blush-100 hover:bg-blush-200 dark:bg-blush-800/40 dark:hover:bg-blush-800/60 border border-blush-300 rounded-2xl text-left transition shadow-xs flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-xl bg-blush-500 text-white flex items-center justify-center font-bold text-lg">
-            <i class="fa-solid fa-microphone"></i>
-          </div>
-          <div>
-            <h3 class="font-extrabold text-mocha-900 dark:text-blush-100 text-sm" id="btnNavSpeech">Speech Meter</h3>
-            <p class="text-xs text-mocha-600 dark:text-blush-200">Vocal Power Lab</p>
-          </div>
-        </button>
-
-        <button onclick="scrollToSection('secVault')" class="p-3.5 bg-mocha-100 hover:bg-mocha-200 dark:bg-mocha-800 dark:hover:bg-mocha-700 border border-mocha-300 rounded-2xl text-left transition shadow-xs flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-xl bg-mocha-800 text-amber-200 flex items-center justify-center font-bold text-lg">
-            <i class="fa-solid fa-photo-film"></i>
-          </div>
-          <div>
-            <h3 class="font-extrabold text-mocha-900 dark:text-mocha-100 text-sm" id="btnNavVault">Loved Ones</h3>
-            <p class="text-xs text-mocha-600 dark:text-mocha-300">Scan & Memories</p>
-          </div>
-        </button>
-      </div>
-
-      <!-- SECTION: Daily Tasks & Flexible Reminders -->
-      <section id="secTasks" class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-mocha-200 dark:border-mocha-800 shadow-sm space-y-4">
-        <div class="flex justify-between items-center flex-wrap gap-2">
+      <!-- Routines List Container -->
+      <div class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-mocha-200 dark:border-mocha-800 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
             <h2 class="text-xl font-extrabold text-mocha-900 dark:text-peach-100 flex items-center space-x-2">
               <i class="fa-solid fa-calendar-check text-mint-500"></i>
               <span id="titleDailyRoutine">Daily Tasks & Medication Schedule</span>
             </h2>
-            <p class="text-xs text-mocha-600 dark:text-mocha-300" id="subRoutine">Complete tasks to hear custom chimes. Postpone by +2m/+5m or mark incomplete.</p>
+            <p class="text-xs text-mocha-600 dark:text-mocha-300 mt-0.5" id="subRoutine">Complete tasks to hear custom chimes. Postpone by +2m/+5m or mark incomplete.</p>
           </div>
+
           <div class="flex items-center gap-2">
-            <button onclick="readNextTaskAloud()" class="px-3.5 py-1.5 bg-mocha-100 hover:bg-mocha-200 text-mocha-800 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs">
-              <i class="fa-solid fa-volume-high text-peach-600"></i> Read Aloud
+            <button onclick="readNextTaskAloud()" class="px-3.5 py-1.5 bg-mocha-100 hover:bg-peach-200 text-mocha-800 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+              <i class="fa-solid fa-volume-high text-peach-600"></i> Read Next Task
             </button>
             <button onclick="openEveningPreviewModal()" class="px-3.5 py-1.5 bg-peach-500 hover:bg-peach-600 text-white rounded-xl text-xs font-bold shadow-sm transition">
               <i class="fa-solid fa-moon mr-1"></i> <span id="btnEveningPreview">Evening Preview</span>
@@ -282,13 +288,14 @@
           </div>
         </div>
 
-        <div class="space-y-3" id="taskListContainer">
+        <!-- Task Items -->
+        <div class="space-y-3 pt-2" id="taskListContainer">
           <!-- Dynamically populated tasks -->
         </div>
-      </section>
+      </div>
 
       <!-- CORNER WIDGET: Daily Surprise Sensory Hobby Challenge -->
-      <section class="bg-gradient-to-r from-peach-50 via-cream-50 to-mint-50 dark:from-mocha-900 dark:to-mocha-800 p-6 rounded-3xl border-2 border-peach-300 dark:border-mocha-700 shadow-sm">
+      <div class="bg-gradient-to-r from-peach-50 via-cream-50 to-mint-50 dark:from-mocha-900 dark:to-mocha-800 p-6 rounded-3xl border-2 border-peach-300 dark:border-mocha-700 shadow-sm">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div class="flex items-start gap-3.5">
             <div class="w-12 h-12 rounded-2xl bg-peach-500 text-white flex items-center justify-center text-2xl font-bold shrink-0 shadow">
@@ -314,10 +321,15 @@
             </button>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- SECTION: Mind Clinic Games (Bright, High Visual Impact) -->
-      <section id="secGames" class="bg-gradient-to-br from-mint-50 via-peach-50 to-blush-50 dark:from-mocha-900 dark:to-mocha-950 p-6 rounded-3xl border-2 border-peach-200 dark:border-mocha-800 shadow-md">
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SIDE 2: MIND CLINIC GAMES VIEW                                            -->
+    <!-- ========================================================================= -->
+    <section id="view-games" class="tab-view hidden space-y-6">
+      <div class="bg-gradient-to-br from-mint-50 via-peach-50 to-blush-50 dark:from-mocha-900 dark:to-mocha-950 p-6 rounded-3xl border-2 border-peach-200 dark:border-mocha-800 shadow-md">
         <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <div>
             <div class="inline-flex items-center space-x-1.5 bg-peach-500 text-white px-3 py-1 rounded-full text-xs font-extrabold shadow-xs mb-1">
@@ -523,12 +535,131 @@
           </div>
 
         </div>
-      </section>
+      </div>
+    </section>
 
+    <!-- ========================================================================= -->
+    <!-- SIDE 3: DAILY, WEEKLY & MONTHLY PROGRESS VIEW                             -->
+    <!-- ========================================================================= -->
+    <section id="view-progress" class="tab-view hidden space-y-6">
+      <div class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-mocha-200 dark:border-mocha-800 shadow-sm space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-mocha-100 dark:border-mocha-800">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800">Coordination Telemetry</span>
+            <h2 class="text-2xl font-extrabold text-mocha-900 dark:text-peach-100 mt-1">Daily, Weekly & Monthly Consistency Hub</h2>
+            <p class="text-xs text-mocha-600 dark:text-mocha-300">Track execution adherence, reaction latency, and long-term cognitive stability.</p>
+          </div>
+
+          <!-- Timeframe Sub-tabs -->
+          <div class="flex items-center bg-mocha-100 dark:bg-mocha-800 p-1 rounded-2xl">
+            <button onclick="setTrackerSubView('daily')" id="subbtn-daily" class="px-4 py-1.5 text-xs font-bold rounded-xl bg-mocha-800 text-peach-100 shadow transition">Daily Log</button>
+            <button onclick="setTrackerSubView('weekly')" id="subbtn-weekly" class="px-4 py-1.5 text-xs font-bold rounded-xl text-mocha-700 dark:text-mocha-300 hover:bg-peach-100 transition">Weekly Bars</button>
+            <button onclick="setTrackerSubView('monthly')" id="subbtn-monthly" class="px-4 py-1.5 text-xs font-bold rounded-xl text-mocha-700 dark:text-mocha-300 hover:bg-peach-100 transition">Monthly Heatmap</button>
+          </div>
+        </div>
+
+        <!-- SUBVIEW A: DAILY SUMMARY -->
+        <div id="subview-daily" class="space-y-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-4 bg-mint-50 dark:bg-mocha-800 rounded-2xl border border-mint-200">
+              <span class="text-[10px] font-black uppercase text-mint-800 dark:text-mint-300 tracking-wider">Completion Rate</span>
+              <div class="text-2xl md:text-3xl font-black text-mint-700 dark:text-mint-200 mt-1">67%</div>
+              <span class="text-[11px] text-mint-600">4 of 6 core tasks done</span>
+            </div>
+            <div class="p-4 bg-peach-50 dark:bg-mocha-800 rounded-2xl border border-peach-200">
+              <span class="text-[10px] font-black uppercase text-peach-800 dark:text-peach-300 tracking-wider">Initiation Latency</span>
+              <div class="text-2xl md:text-3xl font-black text-peach-600 dark:text-peach-200 mt-1">3.4s</div>
+              <span class="text-[11px] text-peach-700">Consistent morning start</span>
+            </div>
+            <div class="p-4 bg-blush-50 dark:bg-mocha-800 rounded-2xl border border-blush-200">
+              <span class="text-[10px] font-black uppercase text-blush-800 dark:text-blush-300 tracking-wider">Total XP Earned</span>
+              <div class="text-2xl md:text-3xl font-black text-blush-600 dark:text-blush-200 mt-1">1,250 XP</div>
+              <span class="text-[11px] text-blush-700">Level 2 Mind Practitioner</span>
+            </div>
+            <div class="p-4 bg-mocha-50 dark:bg-mocha-800 rounded-2xl border border-mocha-200">
+              <span class="text-[10px] font-black uppercase text-mocha-800 dark:text-mocha-300 tracking-wider">Hydration Count</span>
+              <div class="text-2xl md:text-3xl font-black text-mocha-700 dark:text-mocha-200 mt-1">5 / 8</div>
+              <span class="text-[11px] text-mocha-600">Glasses logged today</span>
+            </div>
+          </div>
+
+          <!-- Repeated Delay & Bottleneck Warning Card -->
+          <div class="p-5 bg-rose-50 dark:bg-mocha-800 rounded-2xl border border-rose-200 space-y-2">
+            <div class="flex justify-between items-center text-xs font-bold">
+              <span class="text-rose-900 dark:text-rose-300 font-black"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-600"></i> Attention & Motor Bottleneck: Tasks Requiring Extended Time</span>
+              <span class="text-rose-700 text-[11px]">Identified by Caregiver Telemetry</span>
+            </div>
+            <div class="p-3 bg-white dark:bg-mocha-900 rounded-xl border border-rose-100 text-xs space-y-1">
+              <div class="flex justify-between font-bold text-mocha-900 dark:text-peach-100">
+                <span>Buttoning Shirt & Dressing Routine</span>
+                <span class="text-rose-600">4 Snoozes • Avg 19 min latency</span>
+              </div>
+              <p class="text-mocha-600 dark:text-mocha-300 text-[11px]">Recommended action: Practice finger dexterity opposition taps and provide scaffolding questions rather than doing it for her.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBVIEW B: WEEKLY BARS -->
+        <div id="subview-weekly" class="hidden space-y-4">
+          <div class="p-5 bg-peach-50/50 dark:bg-mocha-800 rounded-2xl border border-peach-200">
+            <h3 class="font-extrabold text-sm text-mocha-900 dark:text-peach-100 mb-3">Weekly Routine Adherence (Mon - Sun)</h3>
+            <div class="h-44 flex items-end justify-between gap-3 pt-6 px-2" id="weeklyBarsContainer">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBVIEW C: MONTHLY HEATMAP -->
+        <div id="subview-monthly" class="hidden space-y-4">
+          <div class="p-5 bg-peach-50/50 dark:bg-mocha-800 rounded-2xl border border-peach-200">
+            <h3 class="font-extrabold text-sm text-mocha-900 dark:text-peach-100 mb-3">Monthly Consistency Heatmap (Last 30 Days)</h3>
+            <div class="grid grid-cols-6 sm:grid-cols-10 gap-2 pt-2" id="monthlyHeatmapContainer">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SIDE 4: LOVED ONES VAULT & LIVE WEBCAM SCANNER VIEW                       -->
+    <!-- ========================================================================= -->
+    <section id="view-vault" class="tab-view hidden space-y-6">
+      <div class="bg-gradient-to-r from-mocha-800 via-mocha-900 to-mocha-800 text-peach-50 p-6 rounded-3xl border border-mocha-700 shadow-lg space-y-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-mocha-700 pb-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-peach-100 flex items-center space-x-2">
+              <i class="fa-solid fa-vault text-peach-400"></i>
+              <span id="titleLovedOnesVault">Loved Ones Memory Vault & Live Face Scanner</span>
+            </h2>
+            <p class="text-xs text-peach-200 mt-1" id="descLovedOnes">Personalized memory triggers, family contacts, and live webcam recognition.</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openLiveFaceScanModal()" class="px-4 py-2 bg-mint-500 hover:bg-mint-600 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center gap-1.5">
+              <i class="fa-solid fa-camera"></i> Scan Face (Who is this?)
+            </button>
+            <button onclick="addLovedOnePrompt()" class="px-4 py-2 bg-peach-500 hover:bg-peach-600 text-white font-extrabold text-xs rounded-xl shadow-md transition">
+              + Add Family Card
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="lovedOnesContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SIDE 5: MOVEMENT & SPEECH MOBILITY VIEW                                   -->
+    <!-- ========================================================================= -->
+    <section id="view-speech-movement" class="tab-view hidden space-y-6">
+      
       <!-- Speech Meter & Mobility Walk Tracker -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Speech Therapy Meter -->
-        <section id="secSpeech" class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-blush-200 dark:border-mocha-800 shadow-sm flex flex-col justify-between">
+        <div class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-blush-200 dark:border-mocha-800 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex items-center space-x-2 text-blush-700 dark:text-blush-300 mb-2">
               <i class="fa-solid fa-microphone-lines text-xl"></i>
@@ -560,10 +691,10 @@
             <i class="fa-solid fa-microphone"></i>
             <span>Start Vocal Volume Practice</span>
           </button>
-        </section>
+        </div>
 
         <!-- Mobility & Walk Tracker -->
-        <section class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-mint-200 dark:border-mocha-800 shadow-sm flex flex-col justify-between">
+        <div class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-mint-200 dark:border-mocha-800 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex justify-between items-center mb-2">
               <div class="flex items-center space-x-2 text-mint-700 dark:text-mint-300">
@@ -594,44 +725,64 @@
             <i class="fa-solid fa-person-walking"></i>
             <span id="btnLogWalk">Log Afternoon Garden Stroll</span>
           </button>
-        </section>
+        </div>
       </div>
 
+      <!-- Working Video Movement Drills -->
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-mocha-900 rounded-3xl overflow-hidden shadow-sm border border-mocha-200 dark:border-mocha-800">
+          <div class="relative bg-black aspect-video flex items-center justify-center">
+            <video id="vidMove1" class="w-full h-full object-cover" loop muted playsinline poster="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80">
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-senior-woman-practicing-yoga-with-arms-raised-41484-large.mp4" type="video/mp4">
+            </video>
+            <button onclick="toggleVideoPlayback('vidMove1', 'btnPlayMove1')" id="btnPlayMove1" class="absolute w-12 h-12 rounded-full bg-mint-500 text-white flex items-center justify-center text-lg shadow">
+              <i class="fa-solid fa-play"></i>
+            </button>
+          </div>
+          <div class="p-5 space-y-2">
+            <h4 class="font-bold text-sm text-mocha-900 dark:text-peach-100">Big Reach Sweeps (Amplitude)</h4>
+            <p class="text-xs text-mocha-600 dark:text-mocha-300">Open arms wide like a warm embrace, sweep high over head, and breathe deeply.</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-mocha-900 rounded-3xl overflow-hidden shadow-sm border border-mocha-200 dark:border-mocha-800">
+          <div class="relative bg-black aspect-video flex items-center justify-center">
+            <video id="vidMove2" class="w-full h-full object-cover" loop muted playsinline poster="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80">
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-elderly-woman-smiling-outdoors-41489-large.mp4" type="video/mp4">
+            </video>
+            <button onclick="toggleVideoPlayback('vidMove2', 'btnPlayMove2')" id="btnPlayMove2" class="absolute w-12 h-12 rounded-full bg-mint-500 text-white flex items-center justify-center text-lg shadow">
+              <i class="fa-solid fa-play"></i>
+            </button>
+          </div>
+          <div class="p-5 space-y-2">
+            <h4 class="font-bold text-sm text-mocha-900 dark:text-peach-100">Facial & Vocal Projection (AHHH)</h4>
+            <p class="text-xs text-mocha-600 dark:text-mocha-300">Exaggerate facial movements while speaking loud, clear vowel sounds.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SIDE 6: NUTRITION & HYDRATION VIEW                                        -->
+    <!-- ========================================================================= -->
+    <section id="view-nutrition" class="tab-view hidden space-y-6">
+      
       <!-- Articles Section -->
-      <section class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-mocha-200 dark:border-mocha-800 shadow-sm">
-        <h2 class="text-xl font-extrabold text-mocha-900 dark:text-peach-100 mb-4 flex items-center space-x-2">
+      <div class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-mocha-200 dark:border-mocha-800 shadow-sm space-y-4">
+        <h2 class="text-xl font-extrabold text-mocha-900 dark:text-peach-100 flex items-center space-x-2">
           <i class="fa-solid fa-apple-whole text-peach-500"></i>
           <span id="titleDietaryArticles">Parkinson's Nutrition & Mobility Articles</span>
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="articlesContainer"></div>
-      </section>
-
-      <!-- Loved Ones Vault with Face Scanner -->
-      <section id="secVault" class="bg-gradient-to-r from-mocha-800 via-mocha-900 to-mocha-800 text-peach-50 p-6 rounded-3xl border border-mocha-700 shadow-lg">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-          <div>
-            <h2 class="text-2xl font-extrabold text-peach-100 flex items-center space-x-2">
-              <i class="fa-solid fa-vault text-peach-400"></i>
-              <span id="titleLovedOnesVault">Loved Ones Memory Vault & Live Face Scanner</span>
-            </h2>
-            <p class="text-xs text-peach-200 mt-1" id="descLovedOnes">Personalized memory triggers, family contacts, and live webcam recognition.</p>
-          </div>
-          <div class="flex gap-2">
-            <button onclick="openLiveFaceScanModal()" class="px-4 py-2 bg-mint-500 hover:bg-mint-600 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center gap-1.5">
-              <i class="fa-solid fa-camera"></i> Scan Face (Who is this?)
-            </button>
-            <button onclick="addLovedOnePrompt()" class="px-4 py-2 bg-peach-500 hover:bg-peach-600 text-white font-extrabold text-xs rounded-xl shadow-md transition">
-              + Add Family Card
-            </button>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="lovedOnesContainer"></div>
-      </section>
+      </div>
 
     </section>
 
-    <!-- ==================== CAREGIVER PORTAL ==================== -->
-    <section id="caregiverPortal" class="hidden space-y-6">
+    <!-- ========================================================================= -->
+    <!-- SIDE 7: CAREGIVER PORTAL VIEW                                             -->
+    <!-- ========================================================================= -->
+    <section id="view-caregiver" class="tab-view hidden space-y-6">
       
       <div class="bg-mint-100 dark:bg-mocha-800 p-6 rounded-3xl border-2 border-mint-200 dark:border-mocha-700 shadow-sm">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -650,7 +801,7 @@
         </div>
       </div>
 
-      <!-- Task Ring Chart & Weekly Trend Chart -->
+      <!-- Task Ring Chart & Progress Graphs -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white dark:bg-mocha-900 p-6 rounded-3xl border border-mocha-200 dark:border-mocha-800 shadow-sm flex flex-col items-center">
           <h3 class="text-base font-extrabold text-mocha-900 dark:text-peach-100 mb-4" id="lblCaregiverChart1">Daily Completion Ring</h3>
@@ -703,8 +854,10 @@
 
     </section>
 
-    <!-- ==================== DOCTOR PORTAL ==================== -->
-    <section id="doctorPortal" class="hidden space-y-6">
+    <!-- ========================================================================= -->
+    <!-- SIDE 8: DOCTOR / CLINICIAN PORTAL VIEW                                    -->
+    <!-- ========================================================================= -->
+    <section id="view-doctor" class="tab-view hidden space-y-6">
       
       <div class="bg-mocha-900 text-peach-100 p-6 rounded-3xl border border-mocha-800 shadow-md">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -781,7 +934,9 @@
 
   </main>
 
-  <!-- ==================== AUTHENTICATION (LOGIN & SIGN-UP) MODAL ==================== -->
+  <!-- ==================== MODALS & SYSTEM DIALOGS ==================== -->
+
+  <!-- AUTHENTICATION (LOGIN & SIGN-UP) MODAL -->
   <div id="authModal" class="fixed inset-0 bg-mocha-900/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
     <div class="bg-white dark:bg-mocha-900 max-w-md w-full rounded-3xl border-2 border-peach-300 dark:border-mocha-700 p-6 shadow-2xl space-y-4">
       <div class="flex justify-between items-center border-b border-mocha-200 dark:border-mocha-800 pb-3">
@@ -794,7 +949,7 @@
         <button onclick="closeAuthModal()" class="text-mocha-500 hover:text-mocha-800 text-xl font-bold">&times;</button>
       </div>
 
-      <!-- Auth Tabs: Sign In / Create Account -->
+      <!-- Auth Tabs -->
       <div class="flex bg-mocha-100 dark:bg-mocha-800 p-1 rounded-2xl">
         <button onclick="switchAuthTab('login')" id="btnAuthTabLogin" class="flex-1 py-1.5 rounded-xl text-xs font-extrabold bg-white dark:bg-mocha-700 text-mocha-900 dark:text-peach-100 shadow-xs">
           Sign In
@@ -804,10 +959,9 @@
         </button>
       </div>
 
-      <!-- Form Inputs -->
       <div class="space-y-3">
         <div id="signupNameField" class="hidden">
-          <label class="block text-xs font-bold text-mocha-700 dark:text-mocha-300 mb-1">Full Legal Name</label>
+          <label class="block text-xs font-bold text-mocha-700 dark:text-mocha-300 mb-1">Full Name</label>
           <input type="text" id="authInputName" placeholder="e.g. Eleanor Vance" class="w-full px-3 py-2 text-xs font-bold rounded-xl border border-mocha-300 dark:bg-mocha-800 text-mocha-900 dark:text-peach-100">
         </div>
 
@@ -822,10 +976,10 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-mocha-700 dark:text-mocha-300 mb-1">Account Role Workspace</label>
+          <label class="block text-xs font-bold text-mocha-700 dark:text-mocha-300 mb-1">Role Workspace</label>
           <select id="authInputRole" class="w-full px-3 py-2 text-xs font-bold rounded-xl border border-mocha-300 dark:bg-mocha-800 text-mocha-900 dark:text-peach-100 cursor-pointer">
             <option value="patient">Patient Portal</option>
-            <option value="caregiver">Caregiver / Family Portal</option>
+            <option value="caregiver">Caregiver Portal</option>
             <option value="doctor">Doctor / Clinician Portal</option>
           </select>
         </div>
@@ -919,14 +1073,14 @@
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT APPLICATION CORE LOGIC ==================== -->
+  <!-- ==================== JAVASCRIPT APPLICATION CORE ==================== -->
   <script>
     let currentLang = 'en';
     let baseFontSize = 16;
     let taskScore = 4;
     const totalTasks = 6;
     let currentAuthMode = 'login';
-    let activeAlarmTask = null;
+    let activeAlarmTaskId = null;
     let webcamStream = null;
 
     // Translation Data Store
@@ -938,10 +1092,6 @@
         lblQuote: '"Every single step, no matter how small, is a victory on your path of strength."',
         lblStreakTitle: "Streak",
         lblScoreTitle: "Today",
-        btnNavTasks: "Daily Routine",
-        btnNavGames: "Mind Clinic",
-        btnNavSpeech: "Speech Meter",
-        btnNavVault: "Loved Ones",
         titleDailyRoutine: "Daily Tasks & Medication Schedule",
         subRoutine: "Complete tasks to earn custom chime sounds!",
         btnEveningPreview: "Evening Preview",
@@ -975,10 +1125,6 @@
         lblQuote: '"हर एक छोटा कदम आपकी ताकत के रास्ते पर एक बड़ी जीत है।"',
         lblStreakTitle: "लगातार दिन",
         lblScoreTitle: "आज का स्कोर",
-        btnNavTasks: "दैनिक दिनचर्या",
-        btnNavGames: "माइंड क्लिनिक",
-        btnNavSpeech: "वाणी मीटर",
-        btnNavVault: "प्रियजन",
         titleDailyRoutine: "दैनिक कार्य और दवा अनुसूची",
         subRoutine: "कस्टम साउंड बजाने के लिए कार्य पूरा करें!",
         btnEveningPreview: "संध्या पूर्वावलोकन",
@@ -1012,10 +1158,6 @@
         lblQuote: '"प्रत्येक लहान पाऊल हा तुमच्या सामर्थ्याच्या मार्गावरील विजय आहे."',
         lblStreakTitle: "सतत दिवस",
         lblScoreTitle: "आजचा गुण",
-        btnNavTasks: "दैनिक दिनक्रम",
-        btnNavGames: "माइंड क्लिनिक",
-        btnNavSpeech: "वाचा मीटर",
-        btnNavVault: "आप्तस्वकीय",
         titleDailyRoutine: "दैनिक कामे आणि औषध वेळापत्रक",
         subRoutine: "ध्वनी ट्यून मिळविण्यासाठी कामे पूर्ण करा!",
         btnEveningPreview: "संध्याकाळचे पूर्वदृश्य",
@@ -1049,10 +1191,6 @@
         lblQuote: '"Chaque petit pas est une victoire sur votre chemin de force."',
         lblStreakTitle: "Série",
         lblScoreTitle: "Aujourd'hui",
-        btnNavTasks: "Routine",
-        btnNavGames: "Clinique Esprit",
-        btnNavSpeech: "Mètre Vocal",
-        btnNavVault: "Proches",
         titleDailyRoutine: "Tâches Quotidiennes & Médicaments",
         subRoutine: "Complétez les tâches pour débloquer des sons !",
         btnEveningPreview: "Aperçu du Soir",
@@ -1084,9 +1222,7 @@
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     function playAudioChime(type) {
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
       const now = audioCtx.currentTime;
 
       if (type === 'bell') {
@@ -1210,7 +1346,83 @@
       { title: "Levodopa Timing Guidance", body: "Keep protein meals separated by 45 minutes from dose for maximal intestinal uptake." }
     ];
 
-    /* Render Tasks with Postpone (+2m, +5m) & Mark Not Done Buttons */
+    /* ==================== TAB NAVIGATION (SEPARATE SIDES) ==================== */
+    function switchTab(tabKey) {
+      // Hide all views
+      document.querySelectorAll('.tab-view').forEach(view => {
+        view.classList.add('hidden');
+      });
+
+      // Reset button styles
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.className = "nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white/70 dark:bg-mocha-800 hover:bg-peach-200/80 text-mocha-800 dark:text-peach-200 flex items-center gap-2 whitespace-nowrap";
+      });
+
+      // Show selected view
+      const targetView = document.getElementById(`view-${tabKey}`);
+      const targetBtn = document.getElementById(`tab-${tabKey}`);
+      if (targetView) targetView.classList.remove('hidden');
+      if (targetBtn) {
+        targetBtn.className = "nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-mocha-800 text-peach-100 shadow flex items-center gap-2 whitespace-nowrap";
+      }
+
+      if (tabKey === 'progress') {
+        renderWeeklyBars();
+        renderMonthlyHeatmap();
+      }
+      if (tabKey === 'caregiver') {
+        renderCaregiverLists();
+        if (ringChartInst) ringChartInst.resize();
+        if (lineChartInst) lineChartInst.resize();
+      }
+      if (tabKey === 'doctor') {
+        renderDoctorLogs();
+        if (docChartInst) docChartInst.resize();
+      }
+    }
+
+    /* Sub-tabs for Progress Section */
+    function setTrackerSubView(subKey) {
+      ['daily', 'weekly', 'monthly'].forEach(k => {
+        document.getElementById(`subview-${k}`).classList.toggle('hidden', k !== subKey);
+        const btn = document.getElementById(`subbtn-${k}`);
+        if (k === subKey) {
+          btn.className = "px-4 py-1.5 text-xs font-bold rounded-xl bg-mocha-800 text-peach-100 shadow transition";
+        } else {
+          btn.className = "px-4 py-1.5 text-xs font-bold rounded-xl text-mocha-700 dark:text-mocha-300 hover:bg-peach-100 transition";
+        }
+      });
+      if (subKey === 'weekly') renderWeeklyBars();
+      if (subKey === 'monthly') renderMonthlyHeatmap();
+    }
+
+    function renderWeeklyBars() {
+      const container = document.getElementById('weeklyBarsContainer');
+      const data = [
+        { day: 'Mon', pct: 85 }, { day: 'Tue', pct: 90 }, { day: 'Wed', pct: 80 },
+        { day: 'Thu', pct: 95 }, { day: 'Fri', pct: 88 }, { day: 'Sat', pct: 82 }, { day: 'Sun', pct: 92 }
+      ];
+      container.innerHTML = data.map(d => `
+        <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+          <div class="w-full bg-peach-200 dark:bg-mocha-700 rounded-t-xl h-32 flex items-end">
+            <div class="w-full bg-mint-500 rounded-t-xl" style="height: ${d.pct}%;"></div>
+          </div>
+          <span class="text-xs font-bold text-mocha-700 dark:text-peach-200">${d.day}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderMonthlyHeatmap() {
+      const container = document.getElementById('monthlyHeatmapContainer');
+      let html = '';
+      for (let i = 1; i <= 30; i++) {
+        const color = i % 7 === 0 ? 'bg-mint-200 dark:bg-mint-800' : (i % 4 === 0 ? 'bg-peach-200 dark:bg-peach-800' : 'bg-mint-500');
+        html += `<div class="aspect-square rounded-xl ${color} flex items-center justify-center text-[10px] font-bold text-white shadow-2xs">${i}</div>`;
+      }
+      container.innerHTML = html;
+    }
+
+    /* Tasks with Postpone & Not Done Buttons */
     function renderTasks() {
       const container = document.getElementById('taskListContainer');
       container.innerHTML = tasksData.map(t => {
@@ -1232,7 +1444,6 @@
               </div>
             </div>
 
-            <!-- Action Postpone & Not Done Buttons -->
             <div class="flex items-center space-x-1.5 self-end sm:self-center">
               <button onclick="postponeTask(${t.id}, 2)" class="px-2 py-1 bg-mocha-100 hover:bg-peach-200 text-mocha-800 rounded-lg text-xs font-bold" title="Delay 2 minutes">+2m</button>
               <button onclick="postponeTask(${t.id}, 5)" class="px-2 py-1 bg-mocha-100 hover:bg-peach-200 text-mocha-800 rounded-lg text-xs font-bold" title="Delay 5 minutes">+5m</button>
@@ -1311,13 +1522,13 @@
       const m = now.getMinutes();
       const currentStr = `${String(h % 12 || 12).padStart(2, '0')}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
       const due = tasksData.find(t => !t.done && t.time === currentStr);
-      if (due && activeAlarmTask !== due.id) {
+      if (due && activeAlarmTaskId !== due.id) {
         triggerSimulatedAlarm(due);
       }
     }, 25000);
 
     function triggerSimulatedAlarm(task) {
-      activeAlarmTask = task.id;
+      activeAlarmTaskId = task.id;
       document.getElementById('alarmModalTitle').innerText = task.title;
       document.getElementById('alarmModalSubtitle').innerText = `Scheduled for ${task.time}. Complete now or adjust time.`;
       document.getElementById('alarmModal').classList.remove('hidden');
@@ -1327,25 +1538,19 @@
     }
 
     function dismissAlarmDone() {
-      if (activeAlarmTask) {
-        toggleTask(activeAlarmTask);
-      }
+      if (activeAlarmTaskId) toggleTask(activeAlarmTaskId);
       document.getElementById('alarmModal').classList.add('hidden');
       document.getElementById('alarmModal').classList.remove('flex');
     }
 
     function postponeActiveAlarm(minutes) {
-      if (activeAlarmTask) {
-        postponeTask(activeAlarmTask, minutes);
-      }
+      if (activeAlarmTaskId) postponeTask(activeAlarmTaskId, minutes);
       document.getElementById('alarmModal').classList.add('hidden');
       document.getElementById('alarmModal').classList.remove('flex');
     }
 
     function markActiveAlarmNotDone() {
-      if (activeAlarmTask) {
-        markTaskNotDone(activeAlarmTask);
-      }
+      if (activeAlarmTaskId) markTaskNotDone(activeAlarmTaskId);
       document.getElementById('alarmModal').classList.add('hidden');
       document.getElementById('alarmModal').classList.remove('flex');
     }
@@ -1445,33 +1650,39 @@
 
     function renderCaregiverLists() {
       const alertContainer = document.getElementById('caregiverAlertList');
-      alertContainer.innerHTML = caregiverAlerts.map(a => `
-        <div class="p-3 rounded-2xl bg-mint-50 dark:bg-mocha-800 border border-mint-200 dark:border-mocha-700 flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <span class="w-2.5 h-2.5 rounded-full ${a.level === 'warning' ? 'bg-rose-500' : 'bg-mint-500'}"></span>
-            <span class="text-xs font-extrabold text-mocha-800 dark:text-mocha-100">${a.text}</span>
+      if (alertContainer) {
+        alertContainer.innerHTML = caregiverAlerts.map(a => `
+          <div class="p-3 rounded-2xl bg-mint-50 dark:bg-mocha-800 border border-mint-200 dark:border-mocha-700 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full ${a.level === 'warning' ? 'bg-rose-500' : 'bg-mint-500'}"></span>
+              <span class="text-xs font-extrabold text-mocha-800 dark:text-mocha-100">${a.text}</span>
+            </div>
+            <span class="text-[10px] font-bold text-mocha-500 dark:text-mocha-400">${a.time}</span>
           </div>
-          <span class="text-[10px] font-bold text-mocha-500 dark:text-mocha-400">${a.time}</span>
-        </div>
-      `).join('');
+        `).join('');
+      }
 
       const assignedContainer = document.getElementById('caregiverAssignedList');
-      assignedContainer.innerHTML = caregiverAssignedTasks.map(t => `
-        <div class="p-3 rounded-2xl bg-white dark:bg-mocha-850 border border-mocha-200 dark:border-mocha-700 flex items-center justify-between">
-          <div>
-            <p class="text-xs font-black text-mocha-900 dark:text-peach-100">${t.title}</p>
-            <p class="text-[10px] text-mocha-500">Assigned to: ${t.assignee}</p>
+      if (assignedContainer) {
+        assignedContainer.innerHTML = caregiverAssignedTasks.map(t => `
+          <div class="p-3 rounded-2xl bg-white dark:bg-mocha-850 border border-mocha-200 dark:border-mocha-700 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-black text-mocha-900 dark:text-peach-100">${t.title}</p>
+              <p class="text-[10px] text-mocha-500">Assigned to: ${t.assignee}</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-peach-100 text-peach-800">${t.status}</span>
           </div>
-          <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-peach-100 text-peach-800">${t.status}</span>
-        </div>
-      `).join('');
+        `).join('');
+      }
 
       const notesLog = document.getElementById('cgDoctorNotesLog');
-      notesLog.innerHTML = caregiverDoctorNotes.map(n => `
-        <div class="p-2 bg-white rounded-xl border text-xs">
-          <strong>${n.title}:</strong> ${n.body}
-        </div>
-      `).join('');
+      if (notesLog) {
+        notesLog.innerHTML = caregiverDoctorNotes.map(n => `
+          <div class="p-2 bg-white rounded-xl border text-xs">
+            <strong>${n.title}:</strong> ${n.body}
+          </div>
+        `).join('');
+      }
     }
 
     function saveCaregiverDoctorNote() {
@@ -1488,15 +1699,17 @@
 
     function renderDoctorLogs() {
       const container = document.getElementById('doctorLogFeed');
-      container.innerHTML = doctorLogs.map(l => `
-        <div class="p-3.5 rounded-2xl bg-mocha-50 dark:bg-mocha-800 border border-mocha-200 dark:border-mocha-700">
-          <div class="flex justify-between items-center mb-1">
-            <span class="text-xs font-black text-mocha-900 dark:text-peach-100">${l.date}</span>
-            <span class="px-2 py-0.5 bg-mint-100 text-mint-800 font-extrabold text-[10px] rounded-full">${l.status}</span>
+      if (container) {
+        container.innerHTML = doctorLogs.map(l => `
+          <div class="p-3.5 rounded-2xl bg-mocha-50 dark:bg-mocha-800 border border-mocha-200 dark:border-mocha-700">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-xs font-black text-mocha-900 dark:text-peach-100">${l.date}</span>
+              <span class="px-2 py-0.5 bg-mint-100 text-mint-800 font-extrabold text-[10px] rounded-full">${l.status}</span>
+            </div>
+            <p class="text-xs text-mocha-700 dark:text-mocha-300 font-medium">${l.note}</p>
           </div>
-          <p class="text-xs text-mocha-700 dark:text-mocha-300 font-medium">${l.note}</p>
-        </div>
-      `).join('');
+        `).join('');
+      }
     }
 
     function saveDoctorDirective() {
@@ -1547,33 +1760,14 @@
       
       closeAuthModal();
       document.getElementById('lblAuthUser').innerText = name;
-      switchPortal(role);
+      document.getElementById('headerRoleBadge').innerText = role.toUpperCase();
+      
+      if (role === 'caregiver') switchTab('caregiver');
+      else if (role === 'doctor') switchTab('doctor');
+      else switchTab('routine');
+
       playAudioChime('trumpet');
       alert(`Welcome, ${name}! Logged into the ${role.toUpperCase()} Workspace.`);
-    }
-
-    /* Portal Switching */
-    function switchPortal(role) {
-      document.getElementById('patientPortal').classList.add('hidden');
-      document.getElementById('caregiverPortal').classList.add('hidden');
-      document.getElementById('doctorPortal').classList.add('hidden');
-
-      document.getElementById('tabPatient').className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold text-mocha-700 dark:text-mocha-300 hover:bg-mocha-100/50";
-      document.getElementById('tabCaregiver').className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold text-mocha-700 dark:text-mocha-300 hover:bg-mocha-100/50";
-      document.getElementById('tabDoctor').className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold text-mocha-700 dark:text-mocha-300 hover:bg-mocha-100/50";
-
-      if (role === 'patient') {
-        document.getElementById('patientPortal').classList.remove('hidden');
-        document.getElementById('tabPatient').className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-white dark:bg-mocha-700 text-mocha-900 dark:text-peach-100 shadow-md";
-      } else if (role === 'caregiver') {
-        document.getElementById('caregiverPortal').classList.remove('hidden');
-        document.getElementById('tabCaregiver').className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-white dark:bg-mocha-700 text-mocha-900 dark:text-peach-100 shadow-md";
-        renderCaregiverLists();
-      } else {
-        document.getElementById('doctorPortal').classList.remove('hidden');
-        document.getElementById('tabDoctor').className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-white dark:bg-mocha-700 text-mocha-900 dark:text-peach-100 shadow-md";
-        renderDoctorLogs();
-      }
     }
 
     /* Mind Games Setup */
@@ -1776,6 +1970,20 @@
       alert('Walk Session Recorded! +350 Steps Added.');
     }
 
+    function toggleVideoPlayback(vidId, btnId) {
+      const v = document.getElementById(vidId);
+      const b = document.getElementById(btnId);
+      if (v.paused) {
+        v.play();
+        b.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+        b.classList.add('opacity-0');
+      } else {
+        v.pause();
+        b.innerHTML = `<i class="fa-solid fa-play"></i>`;
+        b.classList.remove('opacity-0');
+      }
+    }
+
     let ringChartInst = null;
     let lineChartInst = null;
     let docChartInst = null;
@@ -1786,7 +1994,7 @@
         type: 'doughnut',
         data: {
           labels: ['Completed', 'Remaining'],
-          datasets: [{ data: [4, 2], backgroundColor: ['#4CAF50', '#FFE0B2'], borderWidth: 0 }]
+          datasets: [{ data: [4, 2], backgroundColor: ['#7CB342', '#FFE0B2'], borderWidth: 0 }]
         },
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
       });
@@ -1845,11 +2053,6 @@
       document.documentElement.classList.toggle('dark');
     }
 
-    function scrollToSection(id) {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-
     function openEveningModal() {
       document.getElementById('eveningModal').classList.remove('hidden');
       document.getElementById('eveningModal').classList.add('flex');
@@ -1860,9 +2063,7 @@
       document.getElementById('eveningModal').classList.remove('flex');
     }
 
-    function openEveningPreviewModal() {
-      openEveningModal();
-    }
+    function openEveningPreviewModal() { openEveningModal(); }
 
     function promptAssignTask() {
       const t = prompt("Enter new task for Eleanor Vance:");
@@ -1899,6 +2100,12 @@
       alert("🚨 EMERGENCY SOS ACTIVATED!\nContacting Primary Caregiver: Julian Vance (+1 555-234-8901)");
     }
 
+    function triggerOverwhelmReset() {
+      playAudioChime('marimba');
+      speakText("Take a gentle breath. Inhale slowly... and exhale.");
+      alert("🌿 Pause & Breathe Reset:\nTake a deep, gentle breath in for 4 seconds, hold for 3, and exhale slowly for 5 seconds.");
+    }
+
     window.onload = function() {
       renderTasks();
       renderArticles();
@@ -1908,6 +2115,7 @@
       renderMaze();
       renderGame8();
       initCharts();
+      switchTab('routine');
     };
   </script>
 </body>
