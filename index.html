@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HarmonyCare - Cognitive Wellness & Routine Studio</title>
+  <title>HarmonyCare - Parkinson's Integrated Care & Mind Suite</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -67,13 +67,40 @@
       border-radius: 4px;
     }
 
-    .game-card-bright {
-      transition: all 0.22s ease-in-out;
+    /* 3D Tumbling Cube */
+    .scene-dice {
+      width: 80px;
+      height: 80px;
+      perspective: 400px;
     }
-    .game-card-bright:hover {
-      transform: translateY(-3px) scale(1.015);
-      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+    .cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    .cube-face {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border: 2px solid #ffffff;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 900;
+      color: white;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.2), 0 8px 16px rgba(217, 119, 6, 0.3);
+    }
+    .cube-face-1 { transform: rotateY(0deg) translateZ(40px); }
+    .cube-face-2 { transform: rotateY(90deg) translateZ(40px); }
+    .cube-face-3 { transform: rotateY(180deg) translateZ(40px); }
+    .cube-face-4 { transform: rotateY(-90deg) translateZ(40px); }
+    .cube-face-5 { transform: rotateX(90deg) translateZ(40px); }
+    .cube-face-6 { transform: rotateX(-90deg) translateZ(40px); }
 
     @keyframes softPulse {
       0%, 100% { transform: scale(1); }
@@ -103,11 +130,11 @@
 
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-200">
 
-  <!-- ==================== TOP GLOBAL HEADER ==================== -->
+  <!-- ==================== TOP NAVIGATION HEADER ==================== -->
   <header class="sticky top-0 z-50 bg-[#1e293b]/95 backdrop-blur-md text-white border-b border-slate-700 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-3">
       
-      <!-- Brand Logo -->
+      <!-- Logo & Role Badge -->
       <div class="flex items-center space-x-3">
         <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-cyan-500 to-amber-500 flex items-center justify-center text-white text-xl font-black shadow-lg">
           <i class="fa-solid fa-brain"></i>
@@ -127,7 +154,7 @@
         </div>
       </div>
 
-      <!-- Controls & Quick Actions -->
+      <!-- Quick Action Bar -->
       <div class="flex items-center flex-wrap gap-2.5">
         
         <!-- Emergency SOS Button -->
@@ -136,19 +163,19 @@
           <span>EMERGENCY SOS</span>
         </button>
 
-        <!-- Sensory Breath Reset -->
+        <!-- Sensory Breath Pause -->
         <button onclick="triggerOverwhelmReset()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5">
           <i class="fa-solid fa-wind"></i>
           <span class="hidden sm:inline">Take a Breath</span>
         </button>
 
-        <!-- Font Size Scaler -->
+        <!-- Text Scaler -->
         <div class="flex items-center bg-slate-800 rounded-xl p-0.5 border border-slate-700">
-          <button onclick="adjustFontSize(-1)" class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-black text-xs transition" title="Decrease Text Size">A-</button>
-          <button onclick="adjustFontSize(1)" class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-black text-xs transition ml-1" title="Increase Text Size">A+</button>
+          <button onclick="adjustFontSize(-1)" class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-black text-xs transition">A-</button>
+          <button onclick="adjustFontSize(1)" class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-black text-xs transition ml-1">A+</button>
         </div>
 
-        <!-- Language Selector -->
+        <!-- Language Picker -->
         <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-slate-800 border border-slate-700 text-white text-xs font-bold rounded-xl px-2 py-1.5 focus:outline-none cursor-pointer">
           <option value="en">English (EN)</option>
           <option value="hi">हिंदी (HI)</option>
@@ -156,7 +183,7 @@
           <option value="fr">Français (FR)</option>
         </select>
 
-        <!-- Auth Login/Sign-Up Trigger -->
+        <!-- Profile Login Trigger -->
         <button onclick="openAuthModal()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold shadow-sm transition flex items-center gap-1.5">
           <i class="fa-solid fa-user-circle"></i>
           <span id="lblAuthUser">Eleanor Vance</span>
@@ -166,41 +193,49 @@
     </div>
   </header>
 
-  <!-- ==================== ISOLATED TABS NAVIGATION BAR ==================== -->
+  <!-- ==================== TABS WITH ROLE ISOLATION ==================== -->
   <nav class="bg-white border-b border-slate-200 sticky top-[61px] z-40 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto no-scrollbar py-2 gap-2 text-slate-700">
-      <button onclick="switchTab('routine')" id="tab-routine" class="nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all bg-emerald-600 text-white shadow-md flex items-center gap-2 whitespace-nowrap">
+      
+      <!-- PATIENT TABS (Default Visible) -->
+      <button onclick="switchTab('routine')" id="tab-routine" class="nav-tab-btn patient-nav px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all bg-emerald-600 text-white shadow-md flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-list-check"></i> 1. Daily Routine
       </button>
-      <button onclick="switchTab('games')" id="tab-games" class="nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+      <button onclick="switchTab('games')" id="tab-games" class="nav-tab-btn patient-nav px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-gamepad"></i> 2. Mind Clinic Games
       </button>
-      <button onclick="switchTab('progress')" id="tab-progress" class="nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-chart-line"></i> 3. Progress Tracker
+      <button onclick="switchTab('vault')" id="tab-vault" class="nav-tab-btn patient-nav px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-id-badge"></i> 3. Loved Ones & Face Recall
       </button>
-      <button onclick="switchTab('vault')" id="tab-vault" class="nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-id-badge"></i> 4. Loved Ones & Face Recall
+      <button onclick="switchTab('movement')" id="tab-movement" class="nav-tab-btn patient-nav px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-person-walking"></i> 4. Movement & Speech
       </button>
-      <button onclick="switchTab('movement')" id="tab-movement" class="nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-person-walking"></i> 5. Movement & Speech
+      <button onclick="switchTab('nutrition')" id="tab-nutrition" class="nav-tab-btn patient-nav px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-apple-whole"></i> 5. Nutrition & Hydration
       </button>
-      <button onclick="switchTab('nutrition')" id="tab-nutrition" class="nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-apple-whole"></i> 6. Nutrition & Hydration
+
+      <!-- CAREGIVER TAB (Hidden from patient, only visible when logged in as Caregiver) -->
+      <button onclick="switchTab('caregiver')" id="tab-caregiver" class="nav-tab-btn caregiver-nav hidden px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-hands-holding-child"></i> Caregiver Oversight Hub
       </button>
-      <button onclick="switchTab('caregiver')" id="tab-caregiver" class="nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-hands-holding-child"></i> 7. Caregiver Portal
+
+      <!-- DOCTOR TAB (Hidden from patient, only visible when logged in as Doctor) -->
+      <button onclick="switchTab('doctor')" id="tab-doctor" class="nav-tab-btn doctor-nav hidden px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-user-doctor"></i> Doctor / Clinician Portal
       </button>
-      <button onclick="switchTab('doctor')" id="tab-doctor" class="nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-user-doctor"></i> 8. Doctor / Clinician
+
+      <!-- PROGRESS & TELEMETRY TAB (Caregiver & Doctor Only) -->
+      <button onclick="switchTab('progress')" id="tab-progress" class="nav-tab-btn telemetry-nav hidden px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-chart-line"></i> Patient Progress Telemetry
       </button>
     </div>
   </nav>
 
-  <!-- ==================== MAIN CONTENT (SWITCHED STRICTLY BY TABS) ==================== -->
+  <!-- ==================== MAIN CONTAINER ==================== -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
     <!-- ========================================================================= -->
-    <!-- TAB 1: DAILY ROUTINE (SINGLE FOCUS VIEW FIRST, THEN FULL SCHEDULE)         -->
+    <!-- TAB 1: DAILY ROUTINE (WITH MORNING WAKE-UP INTERACTIVE QUIZ)               -->
     <!-- ========================================================================= -->
     <section id="view-routine" class="tab-view space-y-6">
       
@@ -234,11 +269,43 @@
         </div>
       </div>
 
+      <!-- INTERACTIVE MORNING WAKE-UP REFRESHER QUIZ -->
+      <div id="morningQuizCard" class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6 md:p-8 rounded-3xl border-2 border-indigo-200 shadow-sm space-y-4">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-2 text-indigo-900 font-black text-xs uppercase tracking-wider">
+            <i class="fa-solid fa-circle-question text-base text-indigo-600"></i>
+            <span>Morning Memory & Task Initiation Check</span>
+          </div>
+          <span class="text-xs bg-indigo-200 text-indigo-900 font-bold px-3 py-1 rounded-full">Refresher</span>
+        </div>
+
+        <h3 class="text-xl md:text-2xl font-black text-slate-900" id="quizQuestionText">
+          "Good morning! You just woke up at 8:00 AM. What is the very first thing you need to do to begin your day smoothly?"
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="quizAnswersGrid">
+          <button onclick="handleMorningQuizAnswer(0)" class="p-4 bg-white hover:bg-indigo-100/50 border-2 border-slate-200 hover:border-indigo-400 rounded-2xl text-left text-xs sm:text-sm font-bold text-slate-800 transition shadow-xs flex items-center space-x-3">
+            <span class="w-7 h-7 rounded-xl bg-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center shrink-0">A</span>
+            <span>Take immediate heavy protein meal (Eggs & Cheese)</span>
+          </button>
+          <button onclick="handleMorningQuizAnswer(1)" class="p-4 bg-white hover:bg-emerald-100/50 border-2 border-slate-200 hover:border-emerald-400 rounded-2xl text-left text-xs sm:text-sm font-bold text-slate-800 transition shadow-xs flex items-center space-x-3">
+            <span class="w-7 h-7 rounded-xl bg-emerald-100 text-emerald-700 font-black text-xs flex items-center justify-center shrink-0">B</span>
+            <span>Gentle Wake-up, stretch & drink a warm glass of water</span>
+          </button>
+          <button onclick="handleMorningQuizAnswer(2)" class="p-4 bg-white hover:bg-indigo-100/50 border-2 border-slate-200 hover:border-indigo-400 rounded-2xl text-left text-xs sm:text-sm font-bold text-slate-800 transition shadow-xs flex items-center space-x-3">
+            <span class="w-7 h-7 rounded-xl bg-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center shrink-0">C</span>
+            <span>Immediately go out for 5 km brisk run</span>
+          </button>
+        </div>
+
+        <div id="quizFeedbackBox" class="hidden p-3.5 rounded-2xl text-xs font-bold"></div>
+      </div>
+
       <!-- Single Focus Mode vs Full List Toggle -->
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
         <div class="flex gap-2">
           <button onclick="setRoutineFocusMode('single')" id="btnFocusSingle" class="px-4 py-2 text-xs sm:text-sm font-black rounded-xl bg-slate-900 text-white shadow flex items-center gap-2">
-            <i class="fa-solid fa-bullseye text-emerald-400"></i> 1. One Task Focus (Recommended)
+            <i class="fa-solid fa-bullseye text-emerald-400"></i> 1. One Task Focus
           </button>
           <button onclick="setRoutineFocusMode('all')" id="btnFocusAll" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 flex items-center gap-2 transition">
             <i class="fa-solid fa-list-ul"></i> 2. View All Routines
@@ -255,48 +322,53 @@
         </div>
       </div>
 
-      <!-- VIEW A: SINGLE TASK FOCUS CARD (Prominent Front & Center) -->
+      <!-- VIEW A: SINGLE TASK FOCUS CARD -->
       <div id="containerSingleTask" class="space-y-4">
-        <div id="singleTaskCardBox" class="bg-white rounded-3xl p-8 md:p-12 calm-shadow border-2 border-emerald-200 text-center animate-soft-pulse flex flex-col items-center justify-center min-h-[360px]">
-          <!-- Rendered dynamically in JS -->
+        <div id="singleTaskCardBox" class="bg-white rounded-3xl p-8 md:p-12 calm-shadow border-2 border-emerald-200 text-center animate-soft-pulse flex flex-col items-center justify-center min-h-[340px]">
+          <!-- Rendered in JS -->
         </div>
       </div>
 
-      <!-- VIEW B: ALL TASKS FULL SCHEDULE (Hidden by default, shown upon toggle) -->
+      <!-- VIEW B: ALL TASKS FULL SCHEDULE -->
       <div id="containerAllTasks" class="hidden space-y-3">
-        <div class="flex justify-between items-center px-1">
-          <span class="text-xs font-black uppercase tracking-wider text-slate-500">Today's Complete Chronological Schedule</span>
-          <button onclick="openAddTaskModal()" class="px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow">+ Add Activity</button>
-        </div>
         <div id="allTasksList" class="space-y-3">
-          <!-- Rendered dynamically in JS -->
+          <!-- Rendered in JS -->
         </div>
       </div>
 
-      <!-- Corner Tactile Challenge Card -->
+      <!-- 3D ROLLING CUBE / DICE CORNER WIDGET FOR DAILY SENSORY HOBBY -->
       <div class="bg-gradient-to-r from-amber-50 via-orange-50 to-yellow-50 rounded-3xl p-6 border-2 border-amber-300 shadow-sm">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-start gap-3.5">
-            <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl font-bold shrink-0 shadow">
-              <i class="fa-solid fa-dice-d20"></i>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center space-x-6">
+            <!-- Physical 3D Animated Tumbling Cube -->
+            <div class="scene-dice cursor-pointer shrink-0" onclick="roll3DCubeAndHobby()" title="Click to Roll the 3D Cube!">
+              <div id="cube3D" class="cube">
+                <div class="cube-face cube-face-1"><i class="fa-solid fa-seedling"></i></div>
+                <div class="cube-face cube-face-2"><i class="fa-solid fa-paint-roller"></i></div>
+                <div class="cube-face cube-face-3"><i class="fa-solid fa-dice-three"></i></div>
+                <div class="cube-face cube-face-4"><i class="fa-solid fa-feather"></i></div>
+                <div class="cube-face cube-face-5"><i class="fa-solid fa-mug-hot"></i></div>
+                <div class="cube-face cube-face-6"><i class="fa-solid fa-music"></i></div>
+              </div>
             </div>
+
             <div>
-              <span class="text-[10px] font-black uppercase text-amber-800 tracking-wider">Daily Sensory Motor & Hobby Activity</span>
+              <span class="text-[10px] font-black uppercase text-amber-800 tracking-wider">Tactile 3D Cube Motor Challenge (Tap Cube to Roll)</span>
               <h3 class="text-lg font-black text-slate-900 mt-0.5" id="hobbyTitle">Pick One Flower from the Garden Bowl</h3>
               <p class="text-xs text-slate-700 mt-1 max-w-xl" id="hobbyDesc">
-                Take a mixed bowl with colorful flowers or soft balls. Gently pick up one flower with your fingers, place it into a fresh cup of water, and smell its soothing scent.
+                Take a mixed bowl with colorful flowers or soft balls. Gently pick up one flower with your fingers, place it into a fresh cup of water, and enjoy its soothing scent.
               </p>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="rollNewDailyHobby()" class="px-3.5 py-2 bg-white hover:bg-amber-100 text-amber-900 rounded-xl font-bold text-xs border border-amber-300 shadow-xs flex items-center gap-1.5 transition">
+            <button onclick="roll3DCubeAndHobby()" class="px-4 py-2.5 bg-white hover:bg-amber-100 text-amber-900 rounded-xl font-bold text-xs border border-amber-300 shadow-xs flex items-center gap-1.5 transition">
               <i class="fa-solid fa-dice"></i>
-              <span>Roll New Hobby</span>
+              <span>Roll 3D Cube</span>
             </button>
-            <button onclick="completeHobbyChallenge()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-black text-xs rounded-xl shadow flex items-center gap-1.5 transition">
+            <button onclick="completeHobbyChallenge()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-black text-xs rounded-xl shadow flex items-center gap-1.5 transition">
               <i class="fa-solid fa-gift"></i>
-              <span>Done! Claim Surprise Reward</span>
+              <span>Claim +60 XP Reward</span>
             </button>
           </div>
         </div>
@@ -305,328 +377,291 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 2: MIND CLINIC GAMES (ALL 8 BRIGHT INTERACTIVE GAMES)                 -->
+    <!-- TAB 2: MIND CLINIC GAMES (WITH MINI-TABS & RANDOM SELECTOR)                -->
     <!-- ========================================================================= -->
     <section id="view-games" class="tab-view hidden space-y-6">
       
       <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <span class="text-xs font-black uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">Cognitive Arcade</span>
-          <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2">Mind Clinic Games (8 Active Exercises)</h2>
-          <p class="text-xs sm:text-sm text-slate-600">Stimulating micro-puzzles for motor accuracy, reaction, memory, and spatial coordination (+50 XP each).</p>
+          <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2">Mind Clinic Interactive Games</h2>
+          <p class="text-xs sm:text-sm text-slate-600">Select any individual game from the mini-tabs below or click Random Choice (+50 XP each).</p>
         </div>
-        <div class="px-3.5 py-2 bg-amber-100 text-amber-900 font-bold rounded-2xl text-xs border border-amber-300">
-          <i class="fa-solid fa-star text-amber-500 mr-1"></i> Cognitive Reward Multiplier Active
+        <div class="flex items-center gap-2">
+          <button onclick="pickRandomMiniGame()" class="px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-black text-xs rounded-2xl shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-dice"></i> 🎲 Pick a Game For Me
+          </button>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- 8 Mini-Tabs Selector -->
+      <div class="flex overflow-x-auto no-scrollbar gap-2 pb-2">
+        <button onclick="switchMiniGame(1)" id="minigame-tab-1" class="minigame-tab px-3.5 py-2 rounded-xl text-xs font-black bg-slate-900 text-white shadow whitespace-nowrap">
+          1. Color Sequence
+        </button>
+        <button onclick="switchMiniGame(2)" id="minigame-tab-2" class="minigame-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
+          2. Shape Match
+        </button>
+        <button onclick="switchMiniGame(3)" id="minigame-tab-3" class="minigame-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
+          3. Finger Tap
+        </button>
+        <button onclick="switchMiniGame(4)" id="minigame-tab-4" class="minigame-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
+          4. Target Catch (5x)
+        </button>
+        <button onclick="switchMiniGame(5)" id="minigame-tab-5" class="minigame-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
+          5. Mini Maze
+        </button>
+        <button onclick="switchMiniGame(6)" id="minigame-tab-6" class="minigame-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
+          6. Word Unscramble
+        </button>
+        <button onclick="switchMiniGame(7)" id="minigame-tab-7" class="minigame-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
+          7. Melody Recall
+        </button>
+        <button onclick="switchMiniGame(8)" id="minigame-tab-8" class="minigame-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
+          8. Math Sprint
+        </button>
+      </div>
 
+      <!-- ACTIVE MINI-GAME CARD DISPLAY CONTAINER -->
+      <div id="miniGameCardContainer" class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm max-w-2xl mx-auto">
+        
         <!-- Game 1: Color Memory Pulse -->
-        <div class="game-card-bright bg-white p-5 rounded-3xl border-2 border-amber-400 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-black text-[11px]">Memory</span>
-              <i class="fa-solid fa-lightbulb text-amber-500 text-xl"></i>
+        <div id="mg-view-1" class="mg-view space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-black text-xs">Memory & Retention</span>
+              <h3 class="text-xl font-black text-slate-900 mt-1">1. Color Sequence Memory</h3>
             </div>
-            <h3 class="font-black text-slate-900 text-base">1. Color Sequence</h3>
-            <p class="text-xs text-slate-600 mt-1">Remember and repeat the glowing 3-color sequence.</p>
+            <i class="fa-solid fa-lightbulb text-amber-500 text-2xl"></i>
           </div>
-          <div class="mt-4">
-            <div id="game1Display" class="h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-xs font-black text-slate-800 mb-2 border border-slate-200">
-              Press Start
-            </div>
-            <div class="grid grid-cols-4 gap-1.5 mb-2">
-              <button onclick="pressColorSequence(0)" class="h-10 rounded-xl bg-rose-500 active:scale-95 transition"></button>
-              <button onclick="pressColorSequence(1)" class="h-10 rounded-xl bg-blue-500 active:scale-95 transition"></button>
-              <button onclick="pressColorSequence(2)" class="h-10 rounded-xl bg-emerald-500 active:scale-95 transition"></button>
-              <button onclick="pressColorSequence(3)" class="h-10 rounded-xl bg-amber-400 active:scale-95 transition"></button>
-            </div>
-            <button onclick="startColorSequenceGame()" class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl shadow transition">
-              Start Game
-            </button>
+          <p class="text-xs text-slate-600">Watch the glowing sequence of 3 colors, then tap the pads in exact order.</p>
+          <div id="game1Display" class="h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-sm font-black text-slate-800 border border-slate-200">
+            Press Start Game
           </div>
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="pressColorSequence(0)" class="h-14 rounded-2xl bg-rose-500 active:scale-95 transition shadow-sm"></button>
+            <button onclick="pressColorSequence(1)" class="h-14 rounded-2xl bg-blue-500 active:scale-95 transition shadow-sm"></button>
+            <button onclick="pressColorSequence(2)" class="h-14 rounded-2xl bg-emerald-500 active:scale-95 transition shadow-sm"></button>
+            <button onclick="pressColorSequence(3)" class="h-14 rounded-2xl bg-amber-400 active:scale-95 transition shadow-sm"></button>
+          </div>
+          <button onclick="startColorSequenceGame()" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-black text-xs rounded-xl shadow transition">
+            Start Sequence Pulse
+          </button>
         </div>
 
         <!-- Game 2: Dual N-Back Shape Focus -->
-        <div class="game-card-bright bg-white p-5 rounded-3xl border-2 border-cyan-400 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="px-2.5 py-0.5 rounded-lg bg-cyan-100 text-cyan-800 font-black text-[11px]">Attention</span>
-              <i class="fa-solid fa-shapes text-cyan-500 text-xl"></i>
+        <div id="mg-view-2" class="mg-view hidden space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-lg bg-cyan-100 text-cyan-800 font-black text-xs">Visual Focus</span>
+              <h3 class="text-xl font-black text-slate-900 mt-1">2. Shape Match Attention</h3>
             </div>
-            <h3 class="font-black text-slate-900 text-base">2. Shape Match</h3>
-            <p class="text-xs text-slate-600 mt-1">Tap match if current symbol equals previous!</p>
+            <i class="fa-solid fa-shapes text-cyan-500 text-2xl"></i>
           </div>
-          <div class="mt-4 text-center">
-            <div id="game2Box" class="h-14 rounded-2xl bg-cyan-50 border border-cyan-300 flex items-center justify-center text-xl font-black text-cyan-800 mb-3">
-              ❓
-            </div>
-            <div class="flex space-x-2">
-              <button onclick="checkGame2Match(true)" class="flex-1 py-2 bg-cyan-500 hover:bg-cyan-600 text-white font-extrabold text-xs rounded-xl shadow transition">
-                Match!
-              </button>
-              <button onclick="nextGame2Shape()" class="flex-1 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-extrabold text-xs rounded-xl transition">
-                Next ➔
-              </button>
-            </div>
+          <p class="text-xs text-slate-600">Tap 'Match!' if current symbol equals the one right before it!</p>
+          <div id="game2Box" class="h-20 rounded-2xl bg-cyan-50 border-2 border-cyan-300 flex items-center justify-center text-3xl font-black text-cyan-800">
+            ❓
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="checkGame2Match(true)" class="py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-black text-xs rounded-xl shadow transition">
+              Match!
+            </button>
+            <button onclick="nextGame2Shape()" class="py-3 bg-slate-200 hover:bg-slate-300 text-slate-800 font-black text-xs rounded-xl transition">
+              Next Shape ➔
+            </button>
           </div>
         </div>
 
         <!-- Game 3: Precision Finger Tap -->
-        <div class="game-card-bright bg-white p-5 rounded-3xl border-2 border-purple-400 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800 font-black text-[11px]">Motor Skill</span>
-              <i class="fa-solid fa-hand-pointer text-purple-500 text-xl"></i>
+        <div id="mg-view-3" class="mg-view hidden space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800 font-black text-xs">Motor Rhythm</span>
+              <h3 class="text-xl font-black text-slate-900 mt-1">3. Alternating Finger Taps</h3>
             </div>
-            <h3 class="font-black text-slate-900 text-base">3. Finger Tap Rhythm</h3>
-            <p class="text-xs text-slate-600 mt-1">Tap alternating buttons 10 times smoothly.</p>
+            <i class="fa-solid fa-hand-pointer text-purple-500 text-2xl"></i>
           </div>
-          <div class="mt-4">
-            <div class="text-center font-black text-xs text-purple-800 mb-2" id="game3Count">
-              Taps: 0 / 10
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-              <button id="g3BtnA" onclick="tapGame3('A')" class="py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-black rounded-xl text-xs shadow active:scale-95 transition">
-                LEFT
-              </button>
-              <button id="g3BtnB" disabled onclick="tapGame3('B')" class="py-2.5 bg-slate-200 text-slate-400 font-black rounded-xl text-xs active:scale-95 transition">
-                RIGHT
-              </button>
-            </div>
+          <p class="text-xs text-slate-600">Tap alternating buttons 10 times with smooth cadence to steady motor pathways.</p>
+          <div class="text-center font-black text-sm text-purple-800 bg-purple-50 p-3 rounded-2xl border border-purple-200" id="game3Count">
+            Taps: 0 / 10
           </div>
-        </div>
-
-        <!-- Game 4: Rapid Target Catch (WORKING 5-TARGET ROUND) -->
-        <div class="game-card-bright bg-white p-5 rounded-3xl border-2 border-emerald-400 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 font-black text-[11px]">Reaction</span>
-              <i class="fa-solid fa-bullseye text-emerald-500 text-xl"></i>
-            </div>
-            <h3 class="font-black text-slate-900 text-base">4. Target Catch (5x Round)</h3>
-            <p class="text-xs text-slate-600 mt-1">Catch the green target 5 consecutive times!</p>
-          </div>
-          <div class="mt-4">
-            <div id="game4Canvas" class="h-20 bg-emerald-50 border border-emerald-300 rounded-2xl relative overflow-hidden flex items-center justify-center">
-              <button id="game4Target" onclick="hitTargetCatch()" class="hidden absolute w-9 h-9 bg-emerald-500 hover:bg-emerald-600 rounded-full border-2 border-white shadow text-white font-black text-xs">
-                🎯
-              </button>
-              <span id="game4Status" class="text-xs font-bold text-emerald-800">Press Start to Play</span>
-            </div>
-            <button onclick="startFiveTargetRound()" class="w-full mt-2 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow transition">
-              Start 5-Target Round
+          <div class="grid grid-cols-2 gap-3">
+            <button id="g3BtnA" onclick="tapGame3('A')" class="py-4 bg-purple-600 hover:bg-purple-700 text-white font-black rounded-2xl text-sm shadow transition">
+              LEFT
+            </button>
+            <button id="g3BtnB" disabled onclick="tapGame3('B')" class="py-4 bg-slate-200 text-slate-400 font-black rounded-2xl text-sm transition">
+              RIGHT
             </button>
           </div>
         </div>
 
-        <!-- Game 5: Spatial Maze Path Finder -->
-        <div class="game-card-bright bg-white p-5 rounded-3xl border-2 border-rose-400 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="px-2.5 py-0.5 rounded-lg bg-rose-100 text-rose-800 font-black text-[11px]">Spatial</span>
-              <i class="fa-solid fa-compass text-rose-500 text-xl"></i>
+        <!-- Game 4: Target Catch (5x Round) -->
+        <div id="mg-view-4" class="mg-view hidden space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 font-black text-xs">Motor Speed</span>
+              <h3 class="text-xl font-black text-slate-900 mt-1">4. Rapid Target Catch (5-Catch Challenge)</h3>
             </div>
-            <h3 class="font-black text-slate-900 text-base">5. Mini Maze Navigator</h3>
-            <p class="text-xs text-slate-600 mt-1">Guide the runner 🏃 to the home 🏡 node.</p>
+            <i class="fa-solid fa-bullseye text-emerald-500 text-2xl"></i>
           </div>
-          <div class="mt-4">
-            <div class="grid grid-cols-3 gap-1 bg-slate-100 p-1.5 rounded-2xl border" id="mazeGrid"></div>
-            <div class="grid grid-cols-3 gap-1 mt-2">
-              <div></div>
-              <button onclick="moveMaze('up')" class="py-1 bg-rose-500 text-white rounded-lg font-bold text-xs">▲</button>
-              <div></div>
-              <button onclick="moveMaze('left')" class="py-1 bg-rose-500 text-white rounded-lg font-bold text-xs">◀</button>
-              <button onclick="moveMaze('down')" class="py-1 bg-rose-500 text-white rounded-lg font-bold text-xs">▼</button>
-              <button onclick="moveMaze('right')" class="py-1 bg-rose-500 text-white rounded-lg font-bold text-xs">▶</button>
+          <p class="text-xs text-slate-600">Catch the green target 5 consecutive times as it moves!</p>
+          <div id="game4Canvas" class="h-28 bg-emerald-50 border border-emerald-300 rounded-2xl relative overflow-hidden flex items-center justify-center">
+            <button id="game4Target" onclick="hitTargetCatch()" class="hidden absolute w-10 h-10 bg-emerald-500 hover:bg-emerald-600 rounded-full border-2 border-white shadow text-white font-black text-xs">
+              🎯
+            </button>
+            <span id="game4Status" class="text-xs font-black text-emerald-800">Press Start to Play</span>
+          </div>
+          <button onclick="startFiveTargetRound()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow transition">
+            Start 5-Catch Round
+          </button>
+        </div>
+
+        <!-- Game 5: Mini Maze -->
+        <div id="mg-view-5" class="mg-view hidden space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-lg bg-rose-100 text-rose-800 font-black text-xs">Spatial Planning</span>
+              <h3 class="text-xl font-black text-slate-900 mt-1">5. Mini Maze Navigator</h3>
             </div>
+            <i class="fa-solid fa-compass text-rose-500 text-2xl"></i>
+          </div>
+          <p class="text-xs text-slate-600">Use arrow buttons to navigate the runner 🏃 to the home 🏡 node.</p>
+          <div class="grid grid-cols-3 gap-1.5 bg-slate-100 p-2 rounded-2xl border" id="mazeGrid"></div>
+          <div class="grid grid-cols-3 gap-2">
+            <div></div>
+            <button onclick="moveMaze('up')" class="py-2 bg-rose-500 text-white rounded-xl font-black text-xs">▲</button>
+            <div></div>
+            <button onclick="moveMaze('left')" class="py-2 bg-rose-500 text-white rounded-xl font-black text-xs">◀</button>
+            <button onclick="moveMaze('down')" class="py-2 bg-rose-500 text-white rounded-xl font-black text-xs">▼</button>
+            <button onclick="moveMaze('right')" class="py-2 bg-rose-500 text-white rounded-xl font-black text-xs">▶</button>
           </div>
         </div>
 
         <!-- Game 6: Word Unscramble -->
-        <div class="game-card-bright bg-white p-5 rounded-3xl border-2 border-amber-500 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-black text-[11px]">Language</span>
-              <i class="fa-solid fa-spell-check text-amber-600 text-xl"></i>
+        <div id="mg-view-6" class="mg-view hidden space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-black text-xs">Language Fluidity</span>
+              <h3 class="text-xl font-black text-slate-900 mt-1">6. Word Unscramble</h3>
             </div>
-            <h3 class="font-black text-slate-900 text-base">6. Word Unscramble</h3>
-            <p class="text-xs text-slate-600 mt-1">Unscramble healthy wellness words!</p>
+            <i class="fa-solid fa-spell-check text-amber-600 text-2xl"></i>
           </div>
-          <div class="mt-4">
-            <div class="bg-amber-50 border border-amber-300 rounded-xl p-2 text-center mb-2">
-              <span id="g6Scrambled" class="text-base font-black tracking-widest text-amber-900">S M I L E</span>
-            </div>
-            <input type="text" id="g6Input" placeholder="Type answer..." class="w-full px-2 py-1.5 text-xs font-bold rounded-xl border border-slate-300 mb-2">
-            <button onclick="checkGame6Word()" class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl shadow transition">
-              Check Word
-            </button>
+          <p class="text-xs text-slate-600">Unscramble the health word below!</p>
+          <div class="bg-amber-50 border border-amber-300 rounded-2xl p-4 text-center">
+            <span id="g6Scrambled" class="text-xl font-black tracking-widest text-amber-900">S M I L E</span>
           </div>
+          <input type="text" id="g6Input" placeholder="Type answer..." class="w-full p-3 text-xs font-bold rounded-xl border border-slate-300">
+          <button onclick="checkGame6Word()" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-black text-xs rounded-xl shadow transition">
+            Check Word
+          </button>
         </div>
 
-        <!-- Game 7: Melody Recall (WORKING AUDIBLE SYNTHESIZER) -->
-        <div class="game-card-bright bg-white p-5 rounded-3xl border-2 border-teal-500 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="px-2.5 py-0.5 rounded-lg bg-teal-100 text-teal-800 font-black text-[11px]">Auditory</span>
-              <i class="fa-solid fa-music text-teal-500 text-xl"></i>
+        <!-- Game 7: Melody Recall -->
+        <div id="mg-view-7" class="mg-view hidden space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-lg bg-teal-100 text-teal-800 font-black text-xs">Auditory Pitch</span>
+              <h3 class="text-xl font-black text-slate-900 mt-1">7. Melody Recall</h3>
             </div>
-            <h3 class="font-black text-slate-900 text-base">7. Melody Recall</h3>
-            <p class="text-xs text-slate-600 mt-1">Listen to sequence of notes & repeat by ear!</p>
+            <i class="fa-solid fa-music text-teal-500 text-2xl"></i>
           </div>
-          <div class="mt-4">
-            <div id="melodyStatusBox" class="text-[11px] font-bold text-center text-teal-800 bg-teal-50 p-2 rounded-xl border border-teal-200 mb-2">
-              Tap "Play Target Melody"
-            </div>
-            <div class="flex justify-around items-center bg-teal-50/50 p-1.5 rounded-xl mb-2 border border-teal-200">
-              <button onclick="userTapMelodyNote(261.63, 'C')" class="w-8 h-8 bg-teal-600 text-white rounded-lg font-bold text-xs hover:bg-teal-700 shadow-xs">C</button>
-              <button onclick="userTapMelodyNote(329.63, 'E')" class="w-8 h-8 bg-teal-600 text-white rounded-lg font-bold text-xs hover:bg-teal-700 shadow-xs">E</button>
-              <button onclick="userTapMelodyNote(392.00, 'G')" class="w-8 h-8 bg-teal-600 text-white rounded-lg font-bold text-xs hover:bg-teal-700 shadow-xs">G</button>
-              <button onclick="userTapMelodyNote(523.25, 'C2')" class="w-8 h-8 bg-teal-600 text-white rounded-lg font-bold text-xs hover:bg-teal-700 shadow-xs">C2</button>
-            </div>
-            <button onclick="playAudibleMelodySequence()" class="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs rounded-xl shadow transition">
-              Play Target Melody
-            </button>
+          <p class="text-xs text-slate-600">Click Play Target Melody, listen carefully, then repeat notes by ear.</p>
+          <div id="melodyStatusBox" class="text-xs font-bold text-center text-teal-900 bg-teal-50 p-3 rounded-2xl border border-teal-200">
+            Tap "Play Target Melody" to listen
           </div>
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="userTapMelodyNote(261.63, 'C')" class="py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-black text-xs shadow">C</button>
+            <button onclick="userTapMelodyNote(329.63, 'E')" class="py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-black text-xs shadow">E</button>
+            <button onclick="userTapMelodyNote(392.00, 'G')" class="py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-black text-xs shadow">G</button>
+            <button onclick="userTapMelodyNote(523.25, 'C2')" class="py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-black text-xs shadow">C2</button>
+          </div>
+          <button onclick="playAudibleMelodySequence()" class="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-black text-xs rounded-xl shadow transition">
+            Play Target Melody
+          </button>
         </div>
 
-        <!-- Game 8: Quick Math Sprint (CONTINUOUS MULTI-ROUND MATH) -->
-        <div class="game-card-bright bg-white p-5 rounded-3xl border-2 border-indigo-500 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center mb-2">
-              <span class="px-2.5 py-0.5 rounded-lg bg-indigo-100 text-indigo-800 font-black text-[11px]">Math Sprint</span>
-              <i class="fa-solid fa-calculator text-indigo-500 text-xl"></i>
+        <!-- Game 8: Continuous Math Sprint -->
+        <div id="mg-view-8" class="mg-view hidden space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-lg bg-indigo-100 text-indigo-800 font-black text-xs">Mental Math</span>
+              <h3 class="text-xl font-black text-slate-900 mt-1">8. Continuous Math Sprint</h3>
             </div>
-            <h3 class="font-black text-slate-900 text-base">8. Math Sprint</h3>
-            <p class="text-xs text-slate-600 mt-1">Multi-round rapid addition & calculation!</p>
+            <i class="fa-solid fa-calculator text-indigo-500 text-2xl"></i>
           </div>
-          <div class="mt-4">
-            <div class="flex justify-between items-center text-[10px] font-bold text-indigo-900 mb-1">
-              <span>Score: <strong id="mathScoreTxt">0</strong></span>
-              <span id="mathRoundTxt">Round 1</span>
-            </div>
-            <div id="g8Eq" class="bg-indigo-50 border border-indigo-200 rounded-xl p-2 text-center text-base font-black text-indigo-900 mb-2">
-              12 + 15 = ?
-            </div>
-            <div class="grid grid-cols-3 gap-1.5" id="g8Options">
-              <!-- Rendered continuously in JS -->
-            </div>
+          <p class="text-xs text-slate-600">Solve continuous rapid calculations!</p>
+          <div class="flex justify-between items-center text-xs font-bold text-indigo-900">
+            <span>Score: <strong id="mathScoreTxt">0</strong></span>
+            <span id="mathRoundTxt">Round 1</span>
           </div>
+          <div id="g8Eq" class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4 text-center text-xl font-black text-indigo-900">
+            12 + 15 = ?
+          </div>
+          <div class="grid grid-cols-3 gap-2" id="g8Options"></div>
         </div>
 
       </div>
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 3: DAILY, WEEKLY & MONTHLY PROGRESS TRACKER                           -->
-    <!-- ========================================================================= -->
-    <section id="view-progress" class="tab-view hidden space-y-6">
-      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
-          <div>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800">Clinical & Self Telemetry</span>
-            <h2 class="text-2xl font-black text-slate-900 mt-1">Daily, Weekly & Monthly Consistency Hub</h2>
-            <p class="text-xs text-slate-600">Track execution adherence, reaction latency, and long-term cognitive stability.</p>
-          </div>
-
-          <!-- Timeframe Sub-tabs -->
-          <div class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200">
-            <button onclick="setTrackerSubView('daily')" id="subbtn-daily" class="px-4 py-2 text-xs font-black rounded-xl bg-slate-900 text-white shadow transition">Daily Log</button>
-            <button onclick="setTrackerSubView('weekly')" id="subbtn-weekly" class="px-4 py-2 text-xs font-bold rounded-xl text-slate-700 hover:bg-slate-200 transition">Weekly Bars</button>
-            <button onclick="setTrackerSubView('monthly')" id="subbtn-monthly" class="px-4 py-2 text-xs font-bold rounded-xl text-slate-700 hover:bg-slate-200 transition">Monthly Heatmap</button>
-          </div>
-        </div>
-
-        <!-- SUBVIEW A: DAILY SUMMARY -->
-        <div id="subview-daily" class="space-y-6">
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
-              <span class="text-[10px] font-black uppercase text-emerald-800 tracking-wider">Completion Rate</span>
-              <div class="text-2xl md:text-3xl font-black text-emerald-700 mt-1" id="dailyKpiRate">67%</div>
-              <span class="text-[11px] text-emerald-600 font-bold">4 of 6 core tasks done</span>
-            </div>
-            <div class="p-4 bg-cyan-50 rounded-2xl border border-cyan-200">
-              <span class="text-[10px] font-black uppercase text-cyan-800 tracking-wider">Initiation Latency</span>
-              <div class="text-2xl md:text-3xl font-black text-cyan-700 mt-1">3.4s</div>
-              <span class="text-[11px] text-cyan-600 font-bold">Consistent start</span>
-            </div>
-            <div class="p-4 bg-amber-50 rounded-2xl border border-amber-200">
-              <span class="text-[10px] font-black uppercase text-amber-800 tracking-wider">Total XP Earned</span>
-              <div class="text-2xl md:text-3xl font-black text-amber-700 mt-1">1,250 XP</div>
-              <span class="text-[11px] text-amber-600 font-bold">Level 2 Practitioner</span>
-            </div>
-            <div class="p-4 bg-purple-50 rounded-2xl border border-purple-200">
-              <span class="text-[10px] font-black uppercase text-purple-800 tracking-wider">Hydration Target</span>
-              <div class="text-2xl md:text-3xl font-black text-purple-700 mt-1">5 / 8</div>
-              <span class="text-[11px] text-purple-600 font-bold">Glasses logged today</span>
-            </div>
-          </div>
-
-          <!-- Bottleneck Delay Analysis -->
-          <div class="p-5 bg-rose-50 rounded-2xl border border-rose-200 space-y-2">
-            <div class="flex justify-between items-center text-xs font-bold">
-              <span class="text-rose-900 font-black"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-600"></i> Tasks Requiring Extended Time / Multiple Snoozes</span>
-              <span class="text-rose-700 text-[11px]">Caregiver Telemetry Alert</span>
-            </div>
-            <div class="p-3.5 bg-white rounded-xl border border-rose-100 text-xs space-y-1">
-              <div class="flex justify-between font-bold text-slate-900">
-                <span>Buttoning Shirt & Dressing Routine</span>
-                <span class="text-rose-600">4 Snoozes • Avg 19 min latency</span>
-              </div>
-              <p class="text-slate-600 text-[11px]">Recommended action: Practice finger dexterity opposition taps. Caregiver should provide guiding questions rather than doing it for her.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- SUBVIEW B: WEEKLY BARS -->
-        <div id="subview-weekly" class="hidden space-y-4">
-          <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200">
-            <h3 class="font-black text-sm text-slate-900 mb-3">Weekly Routine Adherence (Mon - Sun)</h3>
-            <div class="h-44 flex items-end justify-between gap-3 pt-6 px-2" id="weeklyBarsContainer"></div>
-          </div>
-        </div>
-
-        <!-- SUBVIEW C: MONTHLY HEATMAP -->
-        <div id="subview-monthly" class="hidden space-y-4">
-          <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200">
-            <h3 class="font-black text-sm text-slate-900 mb-3">Monthly Consistency Heatmap (Last 30 Days)</h3>
-            <div class="grid grid-cols-6 sm:grid-cols-10 gap-2 pt-2" id="monthlyHeatmapContainer"></div>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ========================================================================= -->
-    <!-- TAB 4: LOVED ONES VAULT & LIVE WEBCAM SCANNER                              -->
+    <!-- TAB 3: LOVED ONES VAULT & FLASHCARD QUIZ                                   -->
     <!-- ========================================================================= -->
     <section id="view-vault" class="tab-view hidden space-y-6">
-      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4">
+      
+      <!-- Interactive Loved Ones Recall Flashcard Quiz -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6 max-w-3xl mx-auto">
+        <div class="flex justify-between items-center border-b pb-4">
           <div>
-            <span class="text-xs font-bold text-cyan-700 uppercase tracking-wider">Prosopagnosia & Memory Support</span>
-            <h2 class="text-2xl font-black text-slate-900 mt-1">Loved Ones Memory Vault & Live Face Scanner</h2>
-            <p class="text-xs text-slate-600">Scan visitor face with webcam or review family cards to recall relatives without anxiety.</p>
+            <span class="text-xs font-black uppercase tracking-wider text-cyan-700">Memory Quiz</span>
+            <h2 class="text-2xl font-black text-slate-900 mt-1">Familiar Faces & Loved Ones Memory Recall</h2>
           </div>
-          <div class="flex gap-2">
-            <button onclick="openLiveFaceScanModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow transition flex items-center gap-1.5">
-              <i class="fa-solid fa-camera"></i> Scan Face (Who is this?)
-            </button>
-            <button onclick="addLovedOnePrompt()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow transition">
-              + Add Family Card
-            </button>
+          <button onclick="nextFaceQuizCard()" class="px-4 py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl shadow">
+            Next Face ➔
+          </button>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center gap-6 bg-slate-50 p-6 rounded-3xl border border-slate-200">
+          <img id="faceQuizPhoto" src="" class="w-40 h-40 rounded-2xl object-cover border-4 border-white shadow-md">
+          <div class="space-y-2 flex-1 text-center sm:text-left">
+            <span class="text-[10px] font-black uppercase text-amber-800 bg-amber-100 px-3 py-1 rounded-full">Voice Memory Prompt</span>
+            <h4 class="text-lg font-black text-slate-900" id="faceQuizClue">"She brought you fresh homemade apples and visited last Sunday."</h4>
+            <div class="flex flex-wrap items-center gap-2 pt-2">
+              <button onclick="speakFaceClue()" class="px-3 py-1.5 bg-white border rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100">
+                <i class="fa-solid fa-volume-high mr-1"></i> Read Clue Aloud
+              </button>
+              <button onclick="revealFaceRelation()" class="text-xs font-bold text-cyan-700 underline">
+                Need a hint? Tap for relation
+              </button>
+            </div>
+            <div id="faceRevealBox" class="hidden text-xs font-bold bg-cyan-100 text-cyan-900 p-2 rounded-xl mt-2"></div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="lovedOnesContainer">
-          <!-- Populated by JS -->
+        <div>
+          <div class="text-xs font-bold text-slate-600 mb-2">Select who this person is:</div>
+          <div id="faceOptionsGrid" class="grid grid-cols-2 gap-3"></div>
+          <div id="faceQuizFeedback" class="text-center font-bold text-sm mt-3 min-h-[20px]"></div>
         </div>
+
+        <div class="pt-4 border-t flex justify-between items-center">
+          <button onclick="openLiveFaceScanModal()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow flex items-center gap-1.5">
+            <i class="fa-solid fa-camera"></i> Live Webcam Visitor Scan
+          </button>
+          <button onclick="addLovedOnePrompt()" class="px-4 py-2.5 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl shadow">
+            + Add Family Card
+          </button>
+        </div>
+      </div>
+
+      <!-- Directory List -->
+      <div class="max-w-3xl mx-auto">
+        <h3 class="text-base font-black text-slate-900 mb-3">Family & Contact Directory</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="lovedOnesContainer"></div>
       </div>
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 5: MOVEMENT & SPEECH MOBILITY                                         -->
+    <!-- TAB 4: MOVEMENT & SPEECH                                                  -->
     <!-- ========================================================================= -->
     <section id="view-movement" class="tab-view hidden space-y-6">
       
@@ -654,14 +689,13 @@
           </button>
         </div>
 
-        <!-- Gait Metronome & Walk Log -->
         <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex justify-between items-center mb-2">
-              <h2 class="text-xl font-black text-slate-900">Gait Freezing Relief (100 BPM)</h2>
-              <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold">Audio Metronome</span>
+              <h2 class="text-xl font-black text-slate-900">Gait Metronome (100 BPM)</h2>
+              <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold">Cadence Relief</span>
             </div>
-            <p class="text-xs text-slate-600 mb-4">Listen to steady auditory beats to prevent gait shuffling and freezing.</p>
+            <p class="text-xs text-slate-600 mb-4">Steady auditory rhythm helps initiate steps smoothly without motor freezing.</p>
             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex justify-between items-center mb-4">
               <div>
                 <p class="text-xs text-slate-500 font-bold">Today's Walk</p>
@@ -715,22 +749,49 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 6: NUTRITION & HYDRATION                                              -->
+    <!-- TAB 5: NUTRITION & HYDRATION CALCULATOR                                    -->
     <!-- ========================================================================= -->
     <section id="view-nutrition" class="tab-view hidden space-y-6">
       
+      <!-- Personalized Hydration Calculator -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex justify-between items-center border-b pb-3">
+          <div>
+            <span class="text-xs font-black uppercase text-cyan-700">Calculated Hydration</span>
+            <h3 class="text-xl font-black text-slate-900 mt-1">Water Goal & Gut Motility Calculator</h3>
+          </div>
+          <div class="text-2xl font-black text-cyan-700" id="hydrationGlassesLabel">5 / 8 Glasses</div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4 text-xs font-bold">
+          <div>
+            <label class="block text-slate-600 mb-1">Body Weight (kg)</label>
+            <input type="number" id="calcWeight" value="65" onchange="calculatePersonalWaterTarget()" class="w-full p-2.5 border rounded-xl">
+          </div>
+          <div>
+            <label class="block text-slate-600 mb-1">Recommended Daily Target</label>
+            <div id="calcWaterTargetText" class="p-2.5 bg-cyan-50 text-cyan-900 rounded-xl border border-cyan-200 font-black">
+              2.0 Liters (~8 Glasses)
+            </div>
+          </div>
+          <div class="flex items-end gap-2">
+            <button onclick="logWaterGlass()" class="w-full py-2.5 bg-cyan-600 text-white rounded-xl shadow">+1 Glass Logged</button>
+          </div>
+        </div>
+      </div>
+
       <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
         <h2 class="text-xl font-black text-slate-900 flex items-center space-x-2">
           <i class="fa-solid fa-apple-whole text-amber-500"></i>
           <span>Parkinson's Nutrition & Medication Spacing Articles</span>
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="articlesContainer"></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="articlesContainer"></div>
       </div>
 
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 7: CAREGIVER PORTAL (FULL OVERSIGHT & ALERTS)                         -->
+    <!-- TAB 6: CAREGIVER PORTAL (ONLY VISIBLE TO CAREGIVER)                        -->
     <!-- ========================================================================= -->
     <section id="view-caregiver" class="tab-view hidden space-y-6">
       
@@ -739,17 +800,17 @@
           <div>
             <span class="px-3 py-1 bg-emerald-700 text-white font-extrabold text-xs rounded-full">Caregiver Workspace</span>
             <h2 class="text-2xl font-black text-slate-900 mt-2">Julian Vance - Patient Care Oversight Hub</h2>
-            <p class="text-xs text-slate-600">Monitor task compliance, active alerts, and assign new routine care tasks.</p>
+            <p class="text-xs text-slate-600">Patient: Eleanor Vance (#PD-8842). Telemetry and routine scheduling.</p>
           </div>
 
-          <button onclick="promptAssignTask()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow transition flex items-center space-x-2">
+          <button onclick="openAddTaskModal()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow transition flex items-center space-x-2">
             <i class="fa-solid fa-plus-circle"></i>
-            <span>Assign New Patient Task</span>
+            <span>Add Routine / Med</span>
           </button>
         </div>
       </div>
 
-      <!-- Ring Chart & Motor Speech Trend Chart -->
+      <!-- Ring Chart & Motor Trend -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col items-center">
           <h3 class="text-base font-black text-slate-900 mb-4">Daily Completion Ring</h3>
@@ -766,28 +827,18 @@
         </div>
       </div>
 
-      <!-- Alerts Feed & Queue -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-          <h3 class="text-base font-black text-slate-900 mb-3 flex items-center space-x-2">
-            <i class="fa-solid fa-bell text-amber-500"></i>
-            <span>Real-Time Patient Alerts</span>
-          </h3>
-          <div class="space-y-2.5" id="caregiverAlertList"></div>
-        </div>
-
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-          <h3 class="text-base font-black text-slate-900 mb-3">Assigned Routine Queue</h3>
-          <div class="space-y-2.5" id="caregiverAssignedList"></div>
-        </div>
+      <!-- Alerts Feed -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+        <h3 class="text-base font-black text-slate-900 mb-3 flex items-center space-x-2">
+          <i class="fa-solid fa-bell text-amber-500"></i>
+          <span>Real-Time Patient Alerts</span>
+        </h3>
+        <div class="space-y-2" id="caregiverAlertList"></div>
       </div>
 
-      <!-- Add Notes for Doctor from Caregiver -->
+      <!-- Caregiver Doctor Notes -->
       <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-        <h3 class="text-base font-black text-slate-900 mb-3 flex items-center gap-2">
-          <i class="fa-solid fa-notes-medical text-purple-600"></i>
-          <span>Add Caregiver Clinical Note for Dr. Marcus Vance</span>
-        </h3>
+        <h3 class="text-base font-black text-slate-900 mb-3">Add Caregiver Clinical Note for Dr. Marcus Vance</h3>
         <div class="grid md:grid-cols-3 gap-3">
           <div class="space-y-2">
             <input type="text" id="cgDoctorNoteTitle" placeholder="Topic (e.g. Tremor before 2 PM Levodopa)" class="w-full p-2.5 border rounded-xl text-xs">
@@ -803,7 +854,7 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 8: DOCTOR / CLINICIAN PORTAL                                          -->
+    <!-- TAB 7: DOCTOR / CLINICIAN PORTAL (ONLY VISIBLE TO DOCTOR)                 -->
     <!-- ========================================================================= -->
     <section id="view-doctor" class="tab-view hidden space-y-6">
       
@@ -842,21 +893,6 @@
           <p class="text-xs font-bold text-slate-500">Cognitive Velocity</p>
           <p class="text-3xl font-black text-purple-600 mt-1">820 pts</p>
           <p class="text-[11px] text-slate-400 mt-1">Strong reaction consistency</p>
-        </div>
-      </div>
-
-      <!-- Clinical Graphs -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-          <h3 class="text-base font-black text-slate-900 mb-3">14-Day Neurological Telemetry Graph</h3>
-          <div class="h-60">
-            <canvas id="doctorTelemetryChart"></canvas>
-          </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-          <h3 class="text-base font-black text-slate-900 mb-3">1-Week Clinical Feed</h3>
-          <div class="space-y-3" id="doctorLogFeed"></div>
         </div>
       </div>
 
@@ -933,32 +969,7 @@
     </div>
   </div>
 
-  <!-- REAL-TIME TIMER ALARM & SPOKEN ALERT MODAL -->
-  <div id="alarmModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
-    <div class="bg-white max-w-sm w-full rounded-3xl border-4 border-amber-500 p-6 text-center shadow-2xl space-y-4 animate-urgent-ring">
-      <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mx-auto animate-bounce">
-        <i class="fa-solid fa-bell"></i>
-      </div>
-      <div>
-        <span class="text-[10px] font-black uppercase tracking-wider text-amber-800">Activity Alarm Alert</span>
-        <h3 class="text-xl font-black text-slate-900 mt-1" id="alarmModalTitle">Morning Medication</h3>
-        <p class="text-xs text-slate-500 mt-1" id="alarmModalSubtitle">Scheduled right now. Please complete or adjust time.</p>
-      </div>
-
-      <div class="space-y-2">
-        <button onclick="dismissAlarmDone()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow">
-          <i class="fa-solid fa-check mr-1"></i> Complete Task (+25 XP)
-        </button>
-        <div class="grid grid-cols-3 gap-1.5">
-          <button onclick="postponeActiveAlarm(2)" class="py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold">+2 Mins</button>
-          <button onclick="postponeActiveAlarm(5)" class="py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold">+5 Mins</button>
-          <button onclick="markActiveAlarmNotDone()" class="py-2 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded-lg text-xs font-bold">Not Done</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- EMERGENCY SOS MODAL WITH DIRECT DIALING -->
+  <!-- EMERGENCY SOS MODAL -->
   <div id="emergencyModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
     <div class="bg-white max-w-sm w-full rounded-3xl border-4 border-rose-600 p-6 shadow-2xl space-y-4 text-center">
       <div class="w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-3xl mx-auto">
@@ -966,7 +977,7 @@
       </div>
       <div>
         <h3 class="text-xl font-black text-slate-900">Emergency Contacts</h3>
-        <p class="text-xs text-slate-600">One-tap direct dial to primary caregiver and medical center.</p>
+        <p class="text-xs text-slate-600">One-tap direct dial to primary family caregiver and clinic.</p>
       </div>
 
       <div class="space-y-2 text-left">
@@ -997,7 +1008,7 @@
     </div>
   </div>
 
-  <!-- LIVE WEBCAM VISITOR SCANNER MODAL -->
+  <!-- LIVE WEBCAM SCANNER MODAL -->
   <div id="webcamModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
     <div class="bg-white max-w-md w-full rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4 text-center">
       <div class="flex justify-between items-center">
@@ -1021,6 +1032,31 @@
         <button onclick="addCurrentScanAsNewMember()" class="py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow">
           Save as New Member
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REAL-TIME TIMER ALARM & SPOKEN ALERT MODAL -->
+  <div id="alarmModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+    <div class="bg-white max-w-sm w-full rounded-3xl border-4 border-amber-500 p-6 text-center shadow-2xl space-y-4 animate-urgent-ring">
+      <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mx-auto animate-bounce">
+        <i class="fa-solid fa-bell"></i>
+      </div>
+      <div>
+        <span class="text-[10px] font-black uppercase tracking-wider text-amber-800">Activity Alarm Alert</span>
+        <h3 class="text-xl font-black text-slate-900 mt-1" id="alarmModalTitle">Morning Medication</h3>
+        <p class="text-xs text-slate-500 mt-1" id="alarmModalSubtitle">Scheduled right now. Please complete or adjust time.</p>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="dismissAlarmDone()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow">
+          <i class="fa-solid fa-check mr-1"></i> Complete Task (+25 XP)
+        </button>
+        <div class="grid grid-cols-3 gap-1.5">
+          <button onclick="postponeActiveAlarm(2)" class="py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold">+2 Mins</button>
+          <button onclick="postponeActiveAlarm(5)" class="py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold">+5 Mins</button>
+          <button onclick="markActiveAlarmNotDone()" class="py-2 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded-lg text-xs font-bold">Not Done</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1108,158 +1144,19 @@
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT APPLICATION CORE ==================== -->
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
   <script>
-    let currentLang = 'en';
-    let baseFontSize = 16;
-    let currentAuthMode = 'login';
-    let activeAlarmTaskId = null;
-    let webcamStream = null;
-    let routineFocusMode = 'single';
-
-    /* Audio Synthesizers */
-    let audioCtx = null;
-    function initAudio() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
+    /* Routine Focus Mode */
+    function setRoutineFocusMode(mode) {
+      routineFocusMode = mode;
+      document.getElementById('containerSingleTask').classList.toggle('hidden', mode !== 'single');
+      document.getElementById('containerAllTasks').classList.toggle('hidden', mode === 'single');
+      document.getElementById('btnFocusSingle').className = mode === 'single' ? "px-4 py-2 text-xs sm:text-sm font-black rounded-xl bg-slate-900 text-white shadow flex items-center gap-2" : "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 flex items-center gap-2 transition";
+      document.getElementById('btnFocusAll').className = mode !== 'single' ? "px-4 py-2 text-xs sm:text-sm font-black rounded-xl bg-slate-900 text-white shadow flex items-center gap-2" : "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 flex items-center gap-2 transition";
+      renderTasks();
     }
 
-    function playAudioChime(type) {
-      try {
-        initAudio();
-        const now = audioCtx.currentTime;
-        if (type === 'bell') {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(880, now);
-          osc.frequency.exponentialRampToValueAtTime(440, now + 1.2);
-          gain.gain.setValueAtTime(0.4, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-          osc.connect(gain); gain.connect(audioCtx.destination);
-          osc.start(now); osc.stop(now + 1.2);
-        } else if (type === 'sax') {
-          [261.63, 329.63, 392.00].forEach((freq, idx) => {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(freq, now + idx * 0.05);
-            gain.gain.setValueAtTime(0.12, now + idx * 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(now + idx * 0.05); osc.stop(now + 0.9);
-          });
-        } else {
-          [523.25, 659.25, 783.99].forEach((freq, i) => {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, now + i * 0.08);
-            gain.gain.setValueAtTime(0.2, now + i * 0.08);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.5);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(now + i * 0.08); osc.stop(now + i * 0.08 + 0.5);
-          });
-        }
-      } catch (e) {
-        console.log("Audio waiting for user gesture");
-      }
-    }
-
-    function speakText(txt) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(txt);
-        u.rate = 0.88;
-        u.pitch = 1.0;
-        window.speechSynthesis.speak(u);
-      }
-    }
-
-    /* Central State */
-    let state = {
-      user: 'Eleanor Vance',
-      role: 'patient',
-      uid: 'HC-PT-8842',
-      wakeTime: '08:00',
-      xp: 1250,
-      streak: 7,
-      tasks: [
-        { id: 1, title: "Morning Levodopa (100mg) Medication", time: "08:00 AM", sound: "bell", done: true, tag: "Medication", status: 'done' },
-        { id: 2, title: "15-Min Speech Loudness Drill (AHHH)", time: "09:30 AM", sound: "sax", done: true, tag: "Speech", status: 'done' },
-        { id: 3, title: "Hydration & Glass of Warm Water", time: "11:00 AM", sound: "marimba", done: true, tag: "Wellness", status: 'done' },
-        { id: 4, title: "Afternoon Levodopa (100mg) Dose", time: "01:00 PM", sound: "bell", done: true, tag: "Medication", status: 'done' },
-        { id: 5, title: "Mind Clinic Finger Tap Dexterity", time: "03:30 PM", sound: "trumpet", done: false, tag: "Cognitive", status: 'pending' },
-        { id: 6, title: "Evening Relaxing Stretches & Walk", time: "06:00 PM", sound: "marimba", done: false, tag: "Physical", status: 'pending' }
-      ],
-      familiarPeople: [
-        { name: "Julian Vance", role: "Primary Caregiver (Son)", phone: "+1 (555) 234-8901", clue: "Your son Julian who visits every evening and brings fresh groceries.", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" },
-        { name: "Clara Vance", role: "Granddaughter", phone: "+1 (555) 345-6789", clue: "Your granddaughter Clara who loves drawing garden pictures with you.", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80" },
-        { name: "Dr. Marcus Vance", role: "Neurologist", phone: "+1 (555) 901-2345", clue: "Dr. Vance who checks your motor rhythm and Levodopa timing.", img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80" }
-      ],
-      caregiverAlerts: [
-        { time: "11:42 AM", text: "Task 'Buttoning Shirt' experienced 2 snoozes. Latency was 19 mins." },
-        { time: "02:05 PM", text: "Afternoon Levodopa dose snoozed for 5 minutes." }
-      ],
-      caregiverDoctorNotes: [
-        { title: "Pre-Dose Tremor Observation", body: "Slight motor tremor in right thumb prior to 2 PM Levodopa dose. Dressing took 18 minutes." }
-      ],
-      doctorDirectives: [
-        { title: "Levodopa Timing Guidance", body: "Keep protein meals separated by 45 minutes from dose for maximal intestinal uptake." }
-      ]
-    };
-
-    const DAILY_HOBBIES = [
-      { title: "Pick One Flower from the Garden Bowl", desc: "Take a mixed bowl with colorful flowers or petals. Gently pick up one flower with your fingers, place it into a fresh cup of water, and smell its scent." },
-      { title: "Color Sorting with Soft Balls", desc: "Take 3 colorful soft balls from a bowl. Place all yellow ones on the left, and blue ones on the right with steady finger grasps." },
-      { title: "Gentle Dice Roll & Counting Game", desc: "Roll a dice on the table. Count the dots out loud, then tap your finger on the desk that exact number of times." }
-    ];
-    let currentHobbyIdx = 0;
-
-    const articlesData = [
-      { id: 1, title: "Protein Timing & Levodopa Absorption", tag: "Nutrition", snippet: "Discover how spacing protein intake 1 hour around medication maximizes efficacy." },
-      { id: 2, title: "Hydration & Fiber for Autonomic Wellness", tag: "Dietary", snippet: "Essential recipes rich in soluble fiber to prevent sluggish digestion." },
-      { id: 3, title: "Mediterranean Polyphenols & Brain Care", tag: "Brain Health", snippet: "Berries, olive oil, and walnuts provide vital neuro-protective antioxidants." },
-      { id: 4, title: "Rhythmic Auditory Cueing for Gait", tag: "Physical Therapy", snippet: "Using steady metronome tempos to overcome stride freezing." },
-      { id: 5, title: "Dual-Task Cognitive Motor Training", tag: "Cognitive", snippet: "Combining physical walking with verbal word naming drills." },
-      { id: 6, title: "Sleep Hygiene & Circadian Rhythms", tag: "Wellness", snippet: "Optimizing bedroom lighting and evening routines for restful REM sleep." }
-    ];
-
-    /* ==================== TAB SWITCHING (ISOLATED PAGES) ==================== */
-    function switchTab(tabKey) {
-      // Hide all tabs
-      document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
-
-      // Reset button classes
-      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
-        btn.className = "nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap";
-      });
-
-      // Show selected tab
-      const targetView = document.getElementById(`view-${tabKey}`);
-      const targetBtn = document.getElementById(`tab-${tabKey}`);
-      if (targetView) targetView.classList.remove('hidden');
-      if (targetBtn) {
-        targetBtn.className = "nav-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all bg-emerald-600 text-white shadow-md flex items-center gap-2 whitespace-nowrap";
-      }
-
-      // Refresh specific tab contents
-      if (tabKey === 'progress') {
-        renderWeeklyBars();
-        renderMonthlyHeatmap();
-      }
-      if (tabKey === 'caregiver') {
-        renderCaregiverLists();
-        if (ringChartInst) ringChartInst.resize();
-        if (lineChartInst) lineChartInst.resize();
-      }
-      if (tabKey === 'doctor') {
-        renderDoctorLogs();
-        if (docChartInst) docChartInst.resize();
-      }
-    }
-
-    /* Sub-tabs for Progress Section */
+    /* Progress Tracker Sub-Views */
     function setTrackerSubView(subKey) {
       ['daily', 'weekly', 'monthly'].forEach(k => {
         document.getElementById(`subview-${k}`).classList.toggle('hidden', k !== subKey);
@@ -1274,154 +1171,30 @@
       if (subKey === 'monthly') renderMonthlyHeatmap();
     }
 
-    /* ==================== ROUTINE RENDERING (SINGLE FOCUS FIRST) ==================== */
-    function setRoutineFocusMode(mode) {
-      routineFocusMode = mode;
-      document.getElementById('containerSingleTask').classList.toggle('hidden', mode !== 'single');
-      document.getElementById('containerAllTasks').classList.toggle('hidden', mode === 'single');
-
-      document.getElementById('btnFocusSingle').className = mode === 'single' ? "px-4 py-2 text-xs sm:text-sm font-black rounded-xl bg-slate-900 text-white shadow flex items-center gap-2" : "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 flex items-center gap-2 transition";
-      document.getElementById('btnFocusAll').className = mode !== 'single' ? "px-4 py-2 text-xs sm:text-sm font-black rounded-xl bg-slate-900 text-white shadow flex items-center gap-2" : "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 flex items-center gap-2 transition";
-      renderTasks();
-    }
-
-    function renderTasks() {
-      // Single Task View Card (Prominent First)
-      const pendingTasks = state.tasks.filter(t => !t.done && t.status !== 'not_done');
-      const singleBox = document.getElementById('singleTaskCardBox');
-
-      if (pendingTasks.length === 0) {
-        singleBox.innerHTML = `
-          <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mb-3">
-            <i class="fa-solid fa-check"></i>
+    function renderWeeklyBars() {
+      const container = document.getElementById('weeklyBarsContainer');
+      const data = [{ day: 'Mon', pct: 85 }, { day: 'Tue', pct: 90 }, { day: 'Wed', pct: 80 }, { day: 'Thu', pct: 95 }, { day: 'Fri', pct: 88 }, { day: 'Sat', pct: 82 }, { day: 'Sun', pct: 92 }];
+      container.innerHTML = data.map(d => `
+        <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+          <div class="w-full bg-slate-200 rounded-t-xl h-32 flex items-end">
+            <div class="w-full bg-emerald-600 rounded-t-xl" style="height: ${d.pct}%;"></div>
           </div>
-          <h3 class="text-2xl font-black text-slate-900">All Routines Complete for Today!</h3>
-          <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-sm">Every single step supported your brain coordination today. Rest and take pride in your progress.</p>
-        `;
-      } else {
-        const cur = pendingTasks[0];
-        singleBox.innerHTML = `
-          <div class="flex items-center gap-2 mb-3">
-            <span class="px-3 py-1 bg-slate-100 text-slate-800 text-xs font-black rounded-full uppercase tracking-wider border border-slate-200">
-              ${cur.time} • ${cur.tag} Task Focus
-            </span>
-          </div>
-          <h3 class="text-2xl md:text-3xl font-black text-slate-900 max-w-xl mb-4 leading-tight">${cur.title}</h3>
-          
-          <!-- Postpone & Not Done Buttons -->
-          <div class="flex flex-wrap items-center justify-center gap-2 mb-6">
-            <button onclick="postponeTask(${cur.id}, 2)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl border border-slate-300">
-              +2 Mins
-            </button>
-            <button onclick="postponeTask(${cur.id}, 5)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl border border-slate-300">
-              +5 Mins
-            </button>
-            <button onclick="markTaskNotDone(${cur.id})" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl border border-rose-200">
-              Mark as Not Done
-            </button>
-          </div>
+          <span class="text-xs font-bold text-slate-700">${d.day}</span>
+        </div>
+      `).join('');
+    }
 
-          <div class="flex flex-wrap items-center justify-center gap-3">
-            <button onclick="toggleTask(${cur.id})" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base rounded-2xl shadow-lg transition transform active:scale-95 flex items-center gap-3">
-              <i class="fa-solid fa-circle-check text-xl"></i> Complete Task (+25 XP)
-            </button>
-            <button onclick="narrateTask('${cur.title}', '${cur.time}', '${cur.tag}')" class="p-4 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-2xl border border-slate-300 transition" title="Read Aloud">
-              <i class="fa-solid fa-volume-high text-lg"></i>
-            </button>
-          </div>
-        `;
+    function renderMonthlyHeatmap() {
+      const container = document.getElementById('monthlyHeatmapContainer');
+      let html = '';
+      for (let i = 1; i <= 30; i++) {
+        const color = i % 7 === 0 ? 'bg-emerald-200' : (i % 4 === 0 ? 'bg-amber-200' : 'bg-emerald-500');
+        html += `<div class="aspect-square rounded-xl ${color} flex items-center justify-center text-[10px] font-bold text-white shadow-xs">${i}</div>`;
       }
-
-      // All Tasks List
-      const allContainer = document.getElementById('allTasksList');
-      allContainer.innerHTML = state.tasks.map(t => {
-        const isDone = t.done;
-        const isNotDone = t.status === 'not_done';
-
-        return `
-          <div class="p-4 rounded-2xl border ${isDone ? 'bg-emerald-50/60 border-emerald-200' : (isNotDone ? 'bg-rose-50 border-rose-200' : 'bg-white border-slate-200')} flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs transition">
-            <div class="flex items-center space-x-3">
-              <button onclick="toggleTask(${t.id})" class="w-8 h-8 rounded-xl border-2 flex items-center justify-center transition shrink-0 ${isDone ? 'bg-emerald-600 border-emerald-600 text-white' : (isNotDone ? 'bg-rose-600 border-rose-600 text-white' : 'border-slate-300 bg-white')}">
-                ${isDone ? '<i class="fa-solid fa-check text-xs"></i>' : (isNotDone ? '<i class="fa-solid fa-xmark text-xs"></i>' : '')}
-              </button>
-              <div>
-                <p class="font-bold text-sm ${isDone ? 'line-through text-slate-400' : 'text-slate-900'}">${t.title}</p>
-                <div class="flex items-center space-x-2 mt-0.5">
-                  <span class="text-xs font-mono font-bold text-slate-500">${t.time}</span>
-                  <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${isDone ? 'bg-emerald-100 text-emerald-800' : (isNotDone ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700')}">
-                    ${isDone ? 'Completed' : (isNotDone ? 'Not Done' : t.tag)}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex items-center space-x-1.5 self-end sm:self-center">
-              <button onclick="postponeTask(${t.id}, 2)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold border border-slate-300">+2m</button>
-              <button onclick="postponeTask(${t.id}, 5)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold border border-slate-300">+5m</button>
-              <button onclick="markTaskNotDone(${t.id})" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg text-xs font-bold border border-rose-200">Not Done</button>
-              <button onclick="playAudioChime('${t.sound}')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-extrabold flex items-center space-x-1">
-                <i class="fa-solid fa-volume-high text-emerald-600"></i>
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
+      container.innerHTML = html;
     }
 
-    function toggleTask(id) {
-      const task = state.tasks.find(t => t.id === id);
-      if (task) {
-        task.done = !task.done;
-        task.status = task.done ? 'done' : 'pending';
-        if (task.done) {
-          playAudioChime(task.sound);
-          state.xp += 25;
-          document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
-        }
-        renderTasks();
-      }
-    }
-
-    function postponeTask(id, minutes) {
-      const task = state.tasks.find(t => t.id === id);
-      if (task) {
-        alert(`Task "${task.title}" delayed by ${minutes} minutes.`);
-        state.caregiverAlerts.unshift({
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          text: `Task "${task.title}" postponed by ${minutes} mins by Eleanor.`
-        });
-        renderCaregiverLists();
-      }
-    }
-
-    function markTaskNotDone(id) {
-      const task = state.tasks.find(t => t.id === id);
-      if (task) {
-        task.done = false;
-        task.status = 'not_done';
-        state.caregiverAlerts.unshift({
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          text: `⚠️ Task "${task.title}" marked as Not Done.`
-        });
-        renderTasks();
-        renderCaregiverLists();
-      }
-    }
-
-    function readActiveTaskAloud() {
-      const pending = state.tasks.filter(t => !t.done && t.status !== 'not_done');
-      if (pending.length > 0) {
-        speakText(`Your focus routine is: ${pending[0].title} scheduled for ${pending[0].time}.`);
-      } else {
-        speakText("All activities for today are completed! Wonderful work.");
-      }
-    }
-
-    function narrateTask(title, time, tag) {
-      speakText(`Scheduled for ${time}. ${tag} task: ${title}.`);
-    }
-
-    /* Automated Real-Time Alert with Sound and Speech */
+    /* Automated Alarm Clock Checker */
     setInterval(() => {
       const now = new Date();
       const h = now.getHours();
@@ -1457,266 +1230,7 @@
       document.getElementById('alarmModal').classList.remove('flex');
     }
 
-    /* ==================== MIND CLINIC GAMES ==================== */
-
-    /* Game 1: Color Sequence */
-    let g1Sequence = [];
-    let g1UserStep = 0;
-    function startColorSequenceGame() {
-      g1Sequence = [Math.floor(Math.random()*4), Math.floor(Math.random()*4), Math.floor(Math.random()*4)];
-      g1UserStep = 0;
-      document.getElementById('game1Display').innerText = `Watch 3 Pulses...`;
-      let i = 0;
-      const interval = setInterval(() => {
-        if (i < g1Sequence.length) {
-          const colors = ['Red', 'Blue', 'Green', 'Yellow'];
-          document.getElementById('game1Display').innerText = `Pulse ${i+1}: ${colors[g1Sequence[i]]}`;
-          playAudioChime('bell');
-          i++;
-        } else {
-          clearInterval(interval);
-          document.getElementById('game1Display').innerText = `Your Turn! Tap pads.`;
-        }
-      }, 700);
-    }
-    function pressColorSequence(idx) {
-      if (g1Sequence.length === 0) return;
-      if (g1Sequence[g1UserStep] === idx) {
-        g1UserStep++;
-        playAudioChime('marimba');
-        if (g1UserStep === g1Sequence.length) {
-          document.getElementById('game1Display').innerText = `🎉 Perfect Match!`;
-          g1Sequence = [];
-          state.xp += 50;
-        }
-      } else {
-        document.getElementById('game1Display').innerText = `❌ Try Again`;
-        g1Sequence = [];
-      }
-    }
-
-    /* Game 2: Dual N-Back */
-    const g2Shapes = ['⭐ Star', '🔷 Diamond', '🔴 Circle', '🟩 Square'];
-    let g2CurrentShape = '';
-    let g2PrevShape = '';
-    function nextGame2Shape() {
-      g2PrevShape = g2CurrentShape;
-      g2CurrentShape = g2Shapes[Math.floor(Math.random()*g2Shapes.length)];
-      document.getElementById('game2Box').innerText = g2CurrentShape;
-    }
-    function checkGame2Match(isMatch) {
-      if ((g2CurrentShape === g2PrevShape) === isMatch) {
-        playAudioChime('trumpet');
-        state.xp += 50;
-        alert('Correct Focus Match! +50 Points');
-      } else {
-        alert('Not a match this time!');
-      }
-      nextGame2Shape();
-    }
-
-    /* Game 3: Precision Finger Tap */
-    let g3Count = 0;
-    let g3Next = 'A';
-    function tapGame3(btn) {
-      if (btn === g3Next) {
-        g3Count++;
-        document.getElementById('game3Count').innerText = `Taps: ${g3Count} / 10`;
-        playAudioChime('marimba');
-        if (g3Count >= 10) {
-          alert('Great Smooth Rhythm Completed! +50 XP');
-          g3Count = 0;
-          state.xp += 50;
-          document.getElementById('game3Count').innerText = `Taps: 0 / 10`;
-        }
-        if (btn === 'A') {
-          g3Next = 'B';
-          document.getElementById('g3BtnA').disabled = true;
-          document.getElementById('g3BtnA').className = "py-2.5 bg-slate-200 text-slate-400 font-black rounded-xl text-xs";
-          document.getElementById('g3BtnB').disabled = false;
-          document.getElementById('g3BtnB').className = "py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-black rounded-xl text-xs shadow";
-        } else {
-          g3Next = 'A';
-          document.getElementById('g3BtnB').disabled = true;
-          document.getElementById('g3BtnB').className = "py-2.5 bg-slate-200 text-slate-400 font-black rounded-xl text-xs";
-          document.getElementById('g3BtnA').disabled = false;
-          document.getElementById('g3BtnA').className = "py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-black rounded-xl text-xs shadow";
-        }
-      }
-    }
-
-    /* Game 4: Target Catch (WORKING 5-TARGET ROUND) */
-    let targetCatches = 0;
-    let targetTimer = null;
-    function startFiveTargetRound() {
-      targetCatches = 0;
-      document.getElementById('game4Status').innerText = "Catch Target 1 of 5...";
-      spawnNextTarget();
-    }
-    function spawnNextTarget() {
-      document.getElementById('game4Target').classList.add('hidden');
-      setTimeout(() => {
-        const btn = document.getElementById('game4Target');
-        btn.style.top = Math.floor(Math.random()*45) + 'px';
-        btn.style.left = Math.floor(Math.random()*150) + 'px';
-        btn.classList.remove('hidden');
-      }, 700);
-    }
-    function hitTargetCatch() {
-      targetCatches++;
-      playAudioChime('bell');
-      if (targetCatches < 5) {
-        document.getElementById('game4Status').innerText = `Caught ${targetCatches} of 5! Next...`;
-        spawnNextTarget();
-      } else {
-        document.getElementById('game4Target').classList.add('hidden');
-        document.getElementById('game4Status').innerText = "🎉 5 Targets Caught! +50 XP";
-        playAudioChime('sax');
-        state.xp += 50;
-      }
-    }
-
-    /* Game 5: Maze */
-    let mazePos = { x: 0, y: 0 };
-    function renderMaze() {
-      const grid = document.getElementById('mazeGrid');
-      grid.innerHTML = '';
-      for (let y = 0; y < 3; y++) {
-        for (let x = 0; x < 3; x++) {
-          const isPlayer = (x === mazePos.x && y === mazePos.y);
-          const isHome = (x === 2 && y === 2);
-          grid.innerHTML += `
-            <div class="h-8 rounded-xl ${isPlayer ? 'bg-rose-500 text-white' : isHome ? 'bg-emerald-500 text-white' : 'bg-white'} flex items-center justify-center font-black text-xs shadow-xs">
-              ${isPlayer ? '🏃' : isHome ? '🏡' : ''}
-            </div>
-          `;
-        }
-      }
-    }
-    function moveMaze(dir) {
-      if (dir === 'up' && mazePos.y > 0) mazePos.y--;
-      if (dir === 'down' && mazePos.y < 2) mazePos.y++;
-      if (dir === 'left' && mazePos.x > 0) mazePos.x--;
-      if (dir === 'right' && mazePos.x < 2) mazePos.x++;
-      renderMaze();
-      if (mazePos.x === 2 && mazePos.y === 2) {
-        playAudioChime('bell');
-        alert('🏡 Reached Home Safe! +50 XP');
-        state.xp += 50;
-        mazePos = { x: 0, y: 0 };
-        renderMaze();
-      }
-    }
-
-    /* Game 6: Word Unscramble */
-    function checkGame6Word() {
-      const val = document.getElementById('g6Input').value.trim().toUpperCase();
-      if (val === 'SMILE' || val === 'HEALTH') {
-        playAudioChime('bell');
-        alert('✨ Word Correct! +50 XP');
-        state.xp += 50;
-        document.getElementById('g6Scrambled').innerText = 'H E A L T H';
-        document.getElementById('g6Input').value = '';
-      } else {
-        alert('Try typing SMILE or HEALTH!');
-      }
-    }
-
-    /* Game 7: Melody Recall (WORKING AUDIBLE SYNTH) */
-    let targetMelody = [];
-    let userMelodyStep = 0;
-    const NOTE_PITCHES = { 'C': 261.63, 'E': 329.63, 'G': 392.00, 'C2': 523.25 };
-    function playSingleSynthNote(freq) {
-      initAudio();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-      osc.connect(gain); gain.connect(audioCtx.destination);
-      osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-    }
-    function playAudibleMelodySequence() {
-      initAudio();
-      const noteNames = ['C', 'E', 'G', 'C2'];
-      targetMelody = [noteNames[Math.floor(Math.random()*4)], noteNames[Math.floor(Math.random()*4)], noteNames[Math.floor(Math.random()*4)]];
-      userMelodyStep = 0;
-      document.getElementById('melodyStatusBox').innerText = "Listening to 3 notes...";
-
-      targetMelody.forEach((name, i) => {
-        setTimeout(() => {
-          playSingleSynthNote(NOTE_PITCHES[name]);
-          if (i === targetMelody.length - 1) {
-            document.getElementById('melodyStatusBox').innerText = "Your turn! Tap the notes.";
-          }
-        }, i * 600);
-      });
-    }
-    function userTapMelodyNote(freq, noteName) {
-      playSingleSynthNote(freq);
-      if (targetMelody.length === 0) return;
-      if (noteName === targetMelody[userMelodyStep]) {
-        userMelodyStep++;
-        if (userMelodyStep === targetMelody.length) {
-          document.getElementById('melodyStatusBox').innerText = "⭐ Matched melody! +50 XP";
-          playAudioChime('sax');
-          state.xp += 50;
-          targetMelody = [];
-        }
-      } else {
-        document.getElementById('melodyStatusBox').innerText = "Try listening again!";
-        targetMelody = [];
-      }
-    }
-
-    /* Game 8: Continuous Math Sprint */
-    let mathScore = 0;
-    let mathRound = 1;
-    let currentMathAns = 27;
-    function renderMathSprintQuestion() {
-      const a = Math.floor(Math.random()*15) + 5;
-      const b = Math.floor(Math.random()*15) + 5;
-      currentMathAns = a + b;
-      document.getElementById('g8Eq').innerText = `${a} + ${b} = ?`;
-      document.getElementById('mathScoreTxt').innerText = mathScore;
-      document.getElementById('mathRoundTxt').innerText = `Round ${mathRound}`;
-
-      const wrong1 = currentMathAns + (Math.random() > 0.5 ? 2 : -2);
-      const wrong2 = currentMathAns + (Math.random() > 0.5 ? 3 : -3);
-      const options = [currentMathAns, wrong1, wrong2].sort(() => Math.random() - 0.5);
-
-      document.getElementById('g8Options').innerHTML = options.map(ans => `
-        <button onclick="checkMathAnswer(${ans})" class="py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow transition">${ans}</button>
-      `).join('');
-    }
-    function checkMathAnswer(ans) {
-      if (ans === currentMathAns) {
-        mathScore += 10;
-        mathRound++;
-        playAudioChime('bell');
-        renderMathSprintQuestion();
-      } else {
-        alert(`Almost! The answer was ${currentMathAns}.`);
-        renderMathSprintQuestion();
-      }
-    }
-
-    /* ==================== EMERGENCY & HEALTH MODALS ==================== */
-    function openEmergencyModal() {
-      document.getElementById('emergencyModal').classList.remove('hidden');
-      document.getElementById('emergencyModal').classList.add('flex');
-    }
-    function closeEmergencyModal() {
-      document.getElementById('emergencyModal').classList.add('hidden');
-      document.getElementById('emergencyModal').classList.remove('flex');
-    }
-    function triggerEmergencySOS() {
-      openEmergencyModal();
-      playAudioChime('bell');
-      speakText("Emergency SOS opened. Tap to call Julian Vance or medical clinic.");
-    }
-
+    /* Wake Time */
     function openWakeCustomizer() { document.getElementById('modalWakeTime').classList.remove('hidden'); }
     function closeWakeCustomizer() { document.getElementById('modalWakeTime').classList.add('hidden'); }
     function saveWakeTime() {
@@ -1730,6 +1244,7 @@
       }
     }
 
+    /* Add Task */
     function openAddTaskModal() { document.getElementById('modalAddTask').classList.remove('hidden'); }
     function closeAddTaskModal() { document.getElementById('modalAddTask').classList.add('hidden'); }
     function saveNewTask() {
@@ -1742,87 +1257,6 @@
         closeAddTaskModal();
         document.getElementById('newTaskTitle').value = '';
       }
-    }
-
-    /* Live Webcam Face Scanner */
-    function openLiveFaceScanModal() {
-      document.getElementById('webcamModal').classList.remove('hidden');
-      document.getElementById('webcamModal').classList.add('flex');
-      const v = document.getElementById('liveVideo');
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-          .then(stream => {
-            webcamStream = stream;
-            v.srcObject = stream;
-            document.getElementById('scanStatusTxt').innerText = "Webcam active. Align visitor's face.";
-          })
-          .catch(() => {
-            document.getElementById('scanStatusTxt').innerText = "Camera not detected. Simulation ready.";
-          });
-      }
-    }
-    function closeLiveFaceScanModal() {
-      if (webcamStream) webcamStream.getTracks().forEach(t => t.stop());
-      document.getElementById('webcamModal').classList.add('hidden');
-      document.getElementById('webcamModal').classList.remove('flex');
-    }
-    function runFaceRecognitionCheck() {
-      document.getElementById('scanStatusTxt').innerText = "Matching facial features against memory records...";
-      setTimeout(() => {
-        const found = state.familiarPeople[0];
-        document.getElementById('scanStatusTxt').innerHTML = `<span class="text-emerald-700 font-black">Identified:</span> ${found.name} (${found.role})<br><span class="text-[11px]">${found.clue}</span>`;
-        speakText(`This person is ${found.name}, your ${found.role}.`);
-      }, 1000);
-    }
-    function addCurrentScanAsNewMember() {
-      closeLiveFaceScanModal();
-      addLovedOnePrompt();
-    }
-
-    /* Auth Modal */
-    function openAuthModal() {
-      document.getElementById('authModal').classList.remove('hidden');
-      document.getElementById('authModal').classList.add('flex');
-    }
-    function closeAuthModal() {
-      document.getElementById('authModal').classList.add('hidden');
-      document.getElementById('authModal').classList.remove('flex');
-    }
-    function switchAuthTab(mode) {
-      currentAuthMode = mode;
-      document.getElementById('signupNameField').classList.toggle('hidden', mode === 'login');
-      document.getElementById('authModalHeading').innerText = mode === 'login' ? "Sign In to HarmonyCare" : "Create Your Account";
-      document.getElementById('btnAuthSubmit').innerText = mode === 'login' ? "Enter Workspace" : "Register & Enter";
-    }
-    function handleAuthSubmit() {
-      const email = document.getElementById('authInputEmail').value.trim();
-      const role = document.getElementById('authInputRole').value;
-      const name = currentAuthMode === 'signup' ? document.getElementById('authInputName').value.trim() : (email.split('@')[0] || "User");
-      closeAuthModal();
-      document.getElementById('lblAuthUser').innerText = name;
-      document.getElementById('headerRoleBadge').innerText = role.toUpperCase();
-      if (role === 'caregiver') switchTab('caregiver');
-      else if (role === 'doctor') switchTab('doctor');
-      else switchTab('routine');
-      playAudioChime('bell');
-      alert(`Welcome, ${name}! Logged into the ${role.toUpperCase()} Workspace.`);
-    }
-
-    /* Daily Hobbies & Sensory Motor */
-    function rollNewDailyHobby() {
-      currentHobbyIdx = (currentHobbyIdx + 1) % DAILY_HOBBIES.length;
-      const h = DAILY_HOBBIES[currentHobbyIdx];
-      document.getElementById('hobbyTitle').innerText = h.title;
-      document.getElementById('hobbyDesc').innerText = h.desc;
-      playAudioChime('marimba');
-      speakText(`Your sensory hobby challenge is: ${h.title}. ${h.desc}`);
-    }
-    function completeHobbyChallenge() {
-      playAudioChime('bell');
-      if (window.confetti) confetti({ particleCount: 80, spread: 60 });
-      state.xp += 60;
-      document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
-      alert("🎉 Wonderful job! You completed today's sensory motor challenge (+60 XP Special Reward awarded)!");
     }
 
     /* Speech & Metronome */
@@ -1885,27 +1319,11 @@
       document.getElementById('modalBreathing').classList.remove('flex');
     }
 
-    function openEveningPreviewModal() {
-      document.getElementById('eveningModal').classList.remove('hidden');
-      document.getElementById('eveningModal').classList.add('flex');
-    }
-    function closeEveningModal() {
-      document.getElementById('eveningModal').classList.add('hidden');
-      document.getElementById('eveningModal').classList.remove('flex');
-    }
-
-    /* Renders for Caregiver & Doctor */
+    /* Caregiver / Doctor Views */
     function renderCaregiverLists() {
       document.getElementById('caregiverAlertList').innerHTML = state.caregiverAlerts.map(a => `
         <div class="p-2.5 bg-slate-50 rounded-xl border text-xs text-slate-800">
           <strong>${a.time}:</strong> ${a.text}
-        </div>
-      `).join('');
-
-      document.getElementById('caregiverAssignedList').innerHTML = state.tasks.map(t => `
-        <div class="p-2.5 bg-slate-50 rounded-xl border text-xs flex justify-between">
-          <span>${t.time} - ${t.title}</span>
-          <strong class="${t.done ? 'text-emerald-700' : 'text-slate-400'}">${t.done ? 'Completed' : 'Pending'}</strong>
         </div>
       `).join('');
 
@@ -1926,15 +1344,6 @@
         document.getElementById('cgDoctorNoteBody').value = '';
         alert("Clinical note submitted to Doctor portal.");
       }
-    }
-
-    function renderDoctorLogs() {
-      document.getElementById('doctorLogFeed').innerHTML = `
-        <div class="p-3 bg-slate-100 rounded-xl text-xs space-y-1">
-          <p class="font-bold text-slate-900">Latest Caregiver Note: ${state.caregiverDoctorNotes[0]?.title || 'None'}</p>
-          <p class="text-slate-600">${state.caregiverDoctorNotes[0]?.body || 'Stable response.'}</p>
-        </div>
-      `;
     }
 
     function saveDoctorDirective() {
@@ -1979,7 +1388,8 @@
       if (n && r) {
         state.familiarPeople.push({
           name: n, role: r, phone: "+1 (555) 000-0000", clue: `Your ${r} ${n}.`,
-          img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
+          img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+          options: [n, "Doctor", "Neighbor", "Nurse"]
         });
         renderLovedOnes();
       }
@@ -2010,26 +1420,32 @@
     let docChartInst = null;
 
     function initCharts() {
-      const ctxRing = document.getElementById('caregiverRingChart').getContext('2d');
-      ringChartInst = new Chart(ctxRing, {
-        type: 'doughnut',
-        data: { labels: ['Done', 'Pending'], datasets: [{ data: [4, 2], backgroundColor: ['#10b981', '#cbd5e1'] }] },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
+      const ctxRing = document.getElementById('caregiverRingChart')?.getContext('2d');
+      if (ctxRing) {
+        ringChartInst = new Chart(ctxRing, {
+          type: 'doughnut',
+          data: { labels: ['Done', 'Pending'], datasets: [{ data: [4, 2], backgroundColor: ['#10b981', '#cbd5e1'] }] },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
 
-      const ctxLine = document.getElementById('caregiverLineChart').getContext('2d');
-      lineChartInst = new Chart(ctxLine, {
-        type: 'line',
-        data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Speech dB', data: [62, 65, 68, 64, 70, 72, 74], borderColor: '#f43f5e' }] },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
+      const ctxLine = document.getElementById('caregiverLineChart')?.getContext('2d');
+      if (ctxLine) {
+        lineChartInst = new Chart(ctxLine, {
+          type: 'line',
+          data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Speech dB', data: [62, 65, 68, 64, 70, 72, 74], borderColor: '#f43f5e' }] },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
 
-      const ctxDoc = document.getElementById('doctorTelemetryChart').getContext('2d');
-      docChartInst = new Chart(ctxDoc, {
-        type: 'bar',
-        data: { labels: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4'], datasets: [{ label: 'Tremor Index (cm)', data: [1.8, 1.5, 1.3, 1.2], backgroundColor: '#1e293b' }] },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
+      const ctxDoc = document.getElementById('doctorTelemetryChart')?.getContext('2d');
+      if (ctxDoc) {
+        docChartInst = new Chart(ctxDoc, {
+          type: 'bar',
+          data: { labels: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4'], datasets: [{ label: 'Tremor Index (cm)', data: [1.8, 1.5, 1.3, 1.2], backgroundColor: '#1e293b' }] },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
     }
 
     window.onload = function() {
@@ -2038,8 +1454,9 @@
       renderArticles();
       renderMaze();
       renderMathSprintQuestion();
+      calculatePersonalWaterTarget();
       initCharts();
-      switchTab('routine');
+      applyRolePermissions('patient');
     };
   </script>
 </body>
