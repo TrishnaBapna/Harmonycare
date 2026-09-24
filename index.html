@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HarmonyCare Pro - Multi-Role Cognitive & Motor Support</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Lexend -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sage: {
+                            50: '#f4f7f4',
+                            100: '#e3ebe3',
+                            200: '#c7d8c7',
+                            500: '#52796f',
+                            600: '#354f52',
+                            700: '#2f3e46',
+                            800: '#1e2b2f',
+                        },
+                        cream: {
+                            50: '#faf8f5',
+                            100: '#f4efe6',
+                            200: '#e8dec8',
+                        },
+                        softblue: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#38bdf8',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        },
+                        lavender: {
+                            100: '#f3e8ff',
+                            500: '#a855f7',
+                            700: '#6b21a8'
+                        },
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Lexend', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #faf8f5;
+            color: #2f3e46;
+            font-family: 'Lexend', sans-serif;
+            touch-action: manipulation;
+        }
+
+        button, input, select, textarea {
+            min-height: 48px;
+            touch-action: manipulation;
+        }
+
+        .calm-shadow {
+            box-shadow: 0 4px 20px -2px rgba(53, 79, 82, 0.08);
+        }
+
+        .glow-shadow {
+            box-shadow: 0 0 25px rgba(82, 121, 111, 0.25);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        .animate-subtle-pulse {
+            animation: subtlePulse 3s infinite ease-in-out;
+        }
+
+        @keyframes alarmFlash {
+            0%, 100% { border-color: #f43f5e; box-shadow: 0 0 20px rgba(244, 63, 94, 0.4); }
+            50% { border-color: #f59e0b; box-shadow: 0 0 35px rgba(245, 158, 11, 0.6); }
+        }
+        .animate-alarm {
+            animation: alarmFlash 1.5s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-cream-50 text-sage-700">
+
+    <!-- TOP HEADER -->
+    <header class="bg-sage-700 text-cream-50 sticky top-0 z-50 shadow-md transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-sage-500 flex items-center justify-center text-white font-bold text-xl shadow border border-sage-400">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl md:text-2xl font-black tracking-tight">HarmonyCare</h1>
+                        <span id="roleBadge" class="px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500 text-white">Patient</span>
+                    </div>
+                    <p class="text-xs text-sage-200 hidden sm:block">Cognitive Coordination, Motor Rhythm & Memory Support</p>
+                </div>
+            </div>
+
+            <!-- XP Points & Level Display (Gamification) -->
+            <div id="patientGamificationBar" class="flex items-center gap-3 bg-sage-800/80 px-3 py-1.5 rounded-2xl border border-sage-600">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-sm shadow">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <div class="text-[11px] font-bold text-amber-300 uppercase leading-none">Level <span id="userLevel">3</span>: <span id="levelTitle">Routine Ace</span></div>
+                        <div class="text-xs font-black text-white"><span id="userXP">640</span> XP</div>
+                    </div>
+                </div>
+                <div class="w-20 bg-sage-900 rounded-full h-2 overflow-hidden border border-sage-600 hidden md:block">
+                    <div id="xpBarFill" class="bg-gradient-to-r from-amber-400 to-emerald-400 h-full rounded-full transition-all" style="width: 64%"></div>
+                </div>
+            </div>
+
+            <!-- Role Selector & Tools -->
+            <div class="flex items-center gap-2">
+                <div class="relative">
+                    <button onclick="toggleUserDropdown()" class="flex items-center gap-2 bg-sage-600 hover:bg-sage-500 px-3 py-1.5 rounded-xl border border-sage-500 text-xs sm:text-sm font-semibold transition">
+                        <i class="fa-solid fa-user-circle text-base"></i>
+                        <span id="activeUserName">John (Patient)</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <!-- Role Dropdown -->
+                    <div id="userDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-sage-200 py-2 z-50 text-sage-700">
+                        <div class="px-3 py-1.5 text-[11px] uppercase tracking-wider font-bold text-sage-400">Switch Account Profile</div>
+                        <button onclick="switchRole('patient')" class="w-full text-left px-4 py-2 hover:bg-sage-50 flex items-center justify-between text-xs font-semibold">
+                            <span><i class="fa-solid fa-user text-emerald-600 mr-2"></i> Patient Portal</span>
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded">Active</span>
+                        </button>
+                        <button onclick="switchRole('family')" class="w-full text-left px-4 py-2 hover:bg-sage-50 flex items-center justify-between text-xs font-semibold">
+                            <span><i class="fa-solid fa-house-chimney-user text-softblue-600 mr-2"></i> Family / Caregiver</span>
+                            <span class="text-[10px] text-sage-400">Manage</span>
+                        </button>
+                        <button onclick="switchRole('doctor')" class="w-full text-left px-4 py-2 hover:bg-sage-50 flex items-center justify-between text-xs font-semibold">
+                            <span><i class="fa-solid fa-user-doctor text-lavender-600 mr-2"></i> Doctor / Clinician</span>
+                            <span class="text-[10px] text-sage-400">Clinical</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Accessibility Scale -->
+                <div class="bg-sage-800 p-1 rounded-xl flex items-center gap-1 border border-sage-600">
+                    <button onclick="setTextSize('normal')" id="btnTextNormal" class="px-2 py-1 text-xs rounded bg-sage-600 font-bold text-white">A</button>
+                    <button onclick="setTextSize('large')" id="btnTextLarge" class="px-2 py-1 text-sm rounded text-sage-300 font-bold">A+</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION BAR (Context aware per role) -->
+    <nav class="bg-sage-100 border-b border-sage-200 sticky top-[60px] z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto no-scrollbar py-2 gap-2 text-sage-700">
+            <!-- Patient Tabs -->
+            <div id="navGroupPatient" class="flex gap-2">
+                <button onclick="switchTab('tasks')" id="tab-tasks" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-sage-600 text-white shadow-sm transition">
+                    <i class="fa-solid fa-list-check"></i> Daily Schedule
+                </button>
+                <button onclick="switchTab('games')" id="tab-games" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-cream-100 hover:bg-sage-200 transition">
+                    <i class="fa-solid fa-puzzle-piece"></i> Mind & Sequence Games
+                </button>
+                <button onclick="switchTab('facequiz')" id="tab-facequiz" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-cream-100 hover:bg-sage-200 transition">
+                    <i class="fa-solid fa-id-badge"></i> Familiar Faces & Memories
+                </button>
+                <button onclick="switchTab('movement')" id="tab-movement" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-cream-100 hover:bg-sage-200 transition">
+                    <i class="fa-solid fa-person-walking"></i> Movement & Speech (Videos)
+                </button>
+                <button onclick="switchTab('nutrition')" id="tab-nutrition" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-cream-100 hover:bg-sage-200 transition">
+                    <i class="fa-solid fa-apple-whole"></i> Nutrition & Hydration
+                </button>
+                <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-cream-100 hover:bg-sage-200 transition">
+                    <i class="fa-solid fa-book-journal-whills"></i> Memory Notes
+                </button>
+            </div>
+
+            <!-- Family & Caregiver Tabs -->
+            <div id="navGroupFamily" class="hidden flex gap-2">
+                <button onclick="switchTab('family-dashboard')" id="tab-family-dashboard" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-sage-600 text-white shadow-sm transition">
+                    <i class="fa-solid fa-house-chimney-user"></i> Caregiver Oversight
+                </button>
+                <button onclick="switchTab('family-faces')" id="tab-family-faces" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-cream-100 hover:bg-sage-200 transition">
+                    <i class="fa-solid fa-users-gear"></i> Manage Familiar Faces
+                </button>
+                <button onclick="switchTab('family-schedule')" id="tab-family-schedule" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-cream-100 hover:bg-sage-200 transition">
+                    <i class="fa-solid fa-calendar-plus"></i> Shift & Add Schedules
+                </button>
+            </div>
+
+            <!-- Doctor / Clinician Tabs -->
+            <div id="navGroupDoctor" class="hidden flex gap-2">
+                <button onclick="switchTab('doctor-analytics')" id="tab-doctor-analytics" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-sage-600 text-white shadow-sm transition">
+                    <i class="fa-solid fa-chart-line"></i> Task Failure & Latency Analytics
+                </button>
+                <button onclick="switchTab('doctor-clinical')" id="tab-doctor-clinical" class="tab-btn px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 whitespace-nowrap bg-cream-100 hover:bg-sage-200 transition">
+                    <i class="fa-solid fa-notes-medical"></i> Diagnostic Reports & Notes
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT VIEW AREA -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- ========================================================================= -->
+        <!-- PATIENT SECTION 1: CUSTOMIZABLE DAILY TO-DO WITH REMINDERS & TIMER        -->
+        <!-- ========================================================================= -->
+        <section id="sec-tasks" class="space-y-6">
+            <!-- Schedule Customizer Bar -->
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-sage-700 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-day text-emerald-600"></i> John's Adaptive Routine
+                    </h2>
+                    <p class="text-xs text-sage-600 mt-1">
+                        Plans dynamically adjust. If something unexpected comes up, add or shift any time smoothly.
+                    </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                    <button onclick="openAddTaskModal()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold text-xs sm:text-sm flex items-center gap-2 shadow transition">
+                        <i class="fa-solid fa-plus-circle"></i> Add Task / Appointment
+                    </button>
+                    <button onclick="openShiftScheduleModal()" class="px-4 py-2.5 bg-sage-100 hover:bg-sage-200 text-sage-700 rounded-2xl font-bold text-xs sm:text-sm flex items-center gap-2 border border-sage-300 transition">
+                        <i class="fa-solid fa-clock-rotate-left text-amber-600"></i> Shift Time If Out / Delay
+                    </button>
+                    <button onclick="triggerOverwhelmModal()" class="px-4 py-2.5 bg-softblue-100 hover:bg-softblue-200 text-softblue-700 rounded-2xl font-bold text-xs sm:text-sm flex items-center gap-2 border border-softblue-300 transition">
+                        <i class="fa-solid fa-wind"></i> Pause & Breathe
+                    </button>
+                </div>
+            </div>
+
+            <!-- Single Focus Mode vs All List Mode -->
+            <div class="flex items-center justify-between border-b border-sage-200 pb-3">
+                <div class="flex gap-2">
+                    <button onclick="setTaskMode('single')" id="btnModeSingle" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-sage-600 text-white shadow-sm flex items-center gap-2">
+                        <i class="fa-solid fa-bullseye"></i> One Task Focus Mode
+                    </button>
+                    <button onclick="setTaskMode('all')" id="btnModeAll" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-cream-100 hover:bg-sage-200 text-sage-700 transition flex items-center gap-2">
+                        <i class="fa-solid fa-table-list"></i> Full Schedule List
+                    </button>
+                </div>
+                <span class="text-xs font-bold text-sage-500">Live Audio & Snooze Enabled</span>
+            </div>
+
+            <!-- Focus Mode (Anti-overwhelm single active card) -->
+            <div id="viewSingleTask" class="space-y-4">
+                <div id="singleCardContainer" class="bg-white rounded-3xl p-8 md:p-12 calm-shadow border-2 border-sage-200 text-center animate-subtle-pulse flex flex-col items-center justify-center min-h-[300px]">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Full Schedule Mode -->
+            <div id="viewAllTasks" class="hidden space-y-3">
+                <div id="allTasksContainer" class="space-y-3">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- PATIENT SECTION 2: MIND GAMES & COGNITIVE SEQUENCING                      -->
+        <!-- ========================================================================= -->
+        <section id="sec-games" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div>
+                        <h2 class="text-2xl font-black text-sage-700 flex items-center gap-2">
+                            <i class="fa-solid fa-puzzle-piece text-amber-500"></i> Mind Clinic Cognitive Gym
+                        </h2>
+                        <p class="text-xs text-sage-600 mt-1">
+                            Specifically targets coordination, task initiation, and real-life step sequencing (Parkinson's & Dementia preservation).
+                        </p>
+                    </div>
+                    <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-black rounded-xl border border-amber-300">
+                        +50 XP per Game
+                    </span>
+                </div>
+            </div>
+
+            <!-- Game Mode Buttons -->
+            <div class="flex gap-2 border-b border-sage-200 pb-3 overflow-x-auto no-scrollbar">
+                <button onclick="setGame('sequencing')" id="gtab-sequencing" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-sage-600 text-white shadow whitespace-nowrap">
+                    <i class="fa-solid fa-arrow-down-1-9 mr-1"></i> Routine Sequencing (Real-Life)
+                </button>
+                <button onclick="setGame('memory')" id="gtab-memory" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-cream-100 hover:bg-sage-200 text-sage-700 transition whitespace-nowrap">
+                    <i class="fa-solid fa-shapes mr-1"></i> Calm Memory Match
+                </button>
+                <button onclick="setGame('association')" id="gtab-association" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-cream-100 hover:bg-sage-200 text-sage-700 transition whitespace-nowrap">
+                    <i class="fa-solid fa-brain mr-1"></i> Concept Association
+                </button>
+            </div>
+
+            <!-- GAME 1: REAL-LIFE ROUTINE SEQUENCING (Coordination / Apraxia check) -->
+            <div id="gameSeqContainer" class="bg-white rounded-3xl p-6 md:p-8 calm-shadow border border-sage-100 space-y-6">
+                <div class="flex justify-between items-center flex-wrap gap-2">
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600">Executive Coordination Practice</span>
+                        <h3 id="seqScenarioTitle" class="text-lg md:text-xl font-bold text-sage-800">Making a Morning Cup of Warm Herbal Tea</h3>
+                        <p class="text-xs text-sage-500">Tap the steps in the exact chronological order (1 to 5) to coordinate smoothly without losing track.</p>
+                    </div>
+                    <button onclick="resetSequencingGame()" class="px-3.5 py-1.5 bg-sage-100 hover:bg-sage-200 text-sage-700 text-xs font-bold rounded-xl">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Restart Order
+                    </button>
+                </div>
+
+                <!-- Sequence Steps Buttons (Scrambled) -->
+                <div id="seqButtonsContainer" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <!-- Filled dynamically -->
+                </div>
+
+                <!-- Ordered Progress Track -->
+                <div class="bg-cream-50 p-4 rounded-2xl border border-cream-200">
+                    <span class="text-xs font-black uppercase text-sage-500 block mb-2">Your Current Step Sequence:</span>
+                    <div id="seqPlacedContainer" class="flex flex-wrap gap-2 min-h-[44px]">
+                        <!-- Placed steps shown here -->
+                    </div>
+                </div>
+
+                <div id="seqFeedback" class="text-sm font-bold text-center min-h-[24px]"></div>
+            </div>
+
+            <!-- GAME 2: MEMORY MATCH -->
+            <div id="gameMemContainer" class="hidden bg-white rounded-3xl p-6 calm-shadow border border-sage-100 space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-lg text-sage-700">Gentle Symbol Pair Match</h3>
+                        <p class="text-xs text-sage-500">Practice visual recall with soothing nature icons.</p>
+                    </div>
+                    <button onclick="initMemoryGame()" class="px-3 py-1.5 bg-sage-100 text-xs font-bold rounded-xl text-sage-700">New Board</button>
+                </div>
+                <div id="memGrid" class="grid grid-cols-4 gap-3 max-w-sm mx-auto"></div>
+                <div id="memMsg" class="text-center text-sm font-bold text-emerald-600"></div>
+            </div>
+
+            <!-- GAME 3: WORD ASSOCIATION -->
+            <div id="gameAssocContainer" class="hidden bg-white rounded-3xl p-6 calm-shadow border border-sage-100 space-y-6">
+                <div class="text-center max-w-md mx-auto space-y-4">
+                    <span class="text-xs uppercase font-bold text-sage-400">Cognitive Flexibility</span>
+                    <h3 id="assocTarget" class="text-3xl font-black text-sage-800 bg-cream-100 py-4 rounded-2xl border border-cream-200">DOCTOR'S CLINIC</h3>
+                    <p class="text-xs text-sage-500">Pick the object you need to bring along:</p>
+                    <div id="assocOptions" class="grid grid-cols-2 gap-3"></div>
+                    <div id="assocMsg" class="text-sm font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- PATIENT SECTION 3: FAMILIAR FACES RECOGNITION & MEMORY QUIZ               -->
+        <!-- ========================================================================= -->
+        <section id="sec-facequiz" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-sage-700 flex items-center gap-2">
+                        <i class="fa-solid fa-address-book text-softblue-600"></i> Familiar Faces & Loved Ones Memory Portal
+                    </h2>
+                    <p class="text-xs text-sage-600 mt-1">
+                        Designed for Alzheimer's & Dementia recall when meeting family, grandchildren, or neighbors after a while.
+                    </p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="startFaceRecognitionCam()" class="px-4 py-2 bg-softblue-600 hover:bg-softblue-700 text-white font-bold rounded-2xl text-xs sm:text-sm flex items-center gap-2 shadow">
+                        <i class="fa-solid fa-camera"></i> Scan / Webcam Recall
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- QUIZ / PHOTO FLASHCARD DISPLAY -->
+                <div class="lg:col-span-2 bg-white rounded-3xl p-6 calm-shadow border border-sage-100 space-y-6">
+                    <div class="flex justify-between items-center border-b border-sage-100 pb-3">
+                        <span class="text-xs font-black uppercase text-sage-400">Memory Quiz: Card <span id="quizCardNum">1</span> of 4</span>
+                        <button onclick="nextFaceQuizCard()" class="text-xs font-bold text-sage-600 hover:text-sage-800 flex items-center gap-1">
+                            Next Face <i class="fa-solid fa-forward"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-6 bg-cream-50 p-6 rounded-2xl border border-cream-200">
+                        <div class="relative">
+                            <img id="quizPhoto" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Family Face" class="w-44 h-44 object-cover rounded-2xl border-4 border-white shadow-md">
+                            <button onclick="speakPersonClue()" class="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-sage-700 text-white flex items-center justify-center shadow hover:bg-sage-800" title="Listen to Voice Clue">
+                                <i class="fa-solid fa-volume-high text-xs"></i>
+                            </button>
+                        </div>
+
+                        <div class="space-y-3 flex-1 text-center sm:text-left">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-2.5 py-1 rounded-full">Who is this person?</span>
+                            <h3 class="text-xl font-black text-sage-800" id="quizHintPrompt">"She brought you fresh homemade apples and visited last Sunday."</h3>
+                            <p class="text-xs text-sage-500 italic" id="quizSubClue">Lives two streets away and loves gardening with you.</p>
+
+                            <!-- Clue Reveal -->
+                            <button onclick="revealFaceIdentity()" class="text-xs font-bold text-softblue-700 underline">
+                                Still unsure? Tap for Relationship Hint
+                            </button>
+                            <div id="revealedInfo" class="hidden text-xs font-bold bg-softblue-50 text-softblue-800 p-2.5 rounded-xl border border-softblue-200">
+                                This is your daughter, Sarah!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multiple Choice Quiz Answers -->
+                    <div>
+                        <div class="text-xs font-black text-sage-600 mb-2">Select the correct name:</div>
+                        <div id="quizOptionsGrid" class="grid grid-cols-2 gap-3">
+                            <!-- Filled dynamically -->
+                        </div>
+                        <div id="quizFeedback" class="text-sm font-bold mt-3 text-center min-h-[22px]"></div>
+                    </div>
+                </div>
+
+                <!-- FAMILIAR FACE DIRECTORY (Quick Review Gallery) -->
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-base text-sage-700"><i class="fa-solid fa-heart text-rose-500 mr-1.5"></i> Loved Ones Directory</h3>
+                            <span class="text-xs text-sage-400">4 People</span>
+                        </div>
+                        <div id="faceDirectoryList" class="space-y-3">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-sage-100 text-center">
+                        <button onclick="switchRole('family'); switchTab('family-faces')" class="text-xs font-bold text-sage-600 hover:text-emerald-700">
+                            + Caregiver: Add / Edit Family Photos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAMERA / LIVE FACE SCANNER MODAL -->
+            <div id="modalFaceScan" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+                <div class="bg-white rounded-3xl p-6 max-w-md w-full calm-shadow text-center space-y-4 border border-sage-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-lg text-sage-800"><i class="fa-solid fa-camera text-softblue-600 mr-2"></i> Face Recall Camera</h3>
+                        <button onclick="closeFaceRecognitionCam()" class="text-sage-400 hover:text-sage-700 p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <div class="relative bg-black rounded-2xl overflow-hidden aspect-video flex items-center justify-center">
+                        <video id="liveVideo" autoplay playsinline class="w-full h-full object-cover"></video>
+                        <div class="absolute inset-0 border-2 border-dashed border-emerald-400 rounded-2xl pointer-events-none flex items-center justify-center">
+                            <span class="text-white bg-black/60 px-3 py-1 rounded-full text-xs font-bold">Scanning Face...</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-sage-600" id="faceScanStatus">Hold device steady towards the person standing in front of you.</p>
+                    <button onclick="simulateFaceMatch()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow">
+                        Identify Person
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- PATIENT SECTION 4: MOVEMENT & SPEECH MOBILITY WITH EMBEDDED VIDEOS        -->
+        <!-- ========================================================================= -->
+        <section id="sec-movement" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-sage-700 flex items-center gap-2">
+                        <i class="fa-solid fa-person-walking text-emerald-600"></i> Movement, Balance & Speech Video Drills
+                    </h2>
+                    <p class="text-xs text-sage-600 mt-1">
+                        High-amplitude physical exercises to break Parkinsonian motor rigidity and vocal fade.
+                    </p>
+                </div>
+                <!-- Metronome Gait Helper -->
+                <button onclick="toggleMetronome()" id="btnMetronome" class="px-4 py-2.5 bg-sage-100 hover:bg-sage-200 text-sage-800 font-bold text-xs sm:text-sm rounded-2xl border border-sage-300 flex items-center gap-2">
+                    <i class="fa-solid fa-drum text-amber-600"></i> <span>Gait Metronome (100 BPM)</span>
+                </button>
+            </div>
+
+            <!-- Video Movement Cards -->
+            <div class="grid md:grid-cols-2 gap-6">
+
+                <!-- VIDEO 1: Big Arm Sweeps -->
+                <div class="bg-white rounded-3xl overflow-hidden calm-shadow border border-sage-100 flex flex-col justify-between">
+                    <div class="relative bg-slate-900 aspect-video flex items-center justify-center group">
+                        <!-- Responsive Video Simulation or Embed -->
+                        <video id="vid1" class="w-full h-full object-cover" loop muted playsinline poster="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80">
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-senior-woman-practicing-yoga-with-arms-raised-41484-large.mp4" type="video/mp4">
+                        </video>
+                        <button onclick="playExerciseVideo('vid1', 'btnVidPlay1')" id="btnVidPlay1" class="absolute w-14 h-14 rounded-full bg-emerald-600/90 text-white flex items-center justify-center text-xl shadow hover:scale-105 transition">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-softblue-600 bg-softblue-50 px-2.5 py-1 rounded-full">Amplitude Drill</span>
+                                <h3 class="font-bold text-lg text-sage-800 mt-2">Big Reach & Overhead Sweeps</h3>
+                            </div>
+                            <span class="text-xs font-bold text-sage-500">30 Seconds</span>
+                        </div>
+                        <p class="text-xs text-sage-600 leading-relaxed">
+                            Counteracts the stooped posture and small steps of Parkinson's. Reach as wide as the walls, inhale deeply, and extend high overhead.
+                        </p>
+                        <div class="flex gap-2">
+                            <button onclick="startExerciseTimer('Big Reach Sweeps', 30)" class="flex-1 py-3 bg-sage-600 hover:bg-sage-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-stopwatch"></i> Start 30s Guided Timer (+30 XP)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIDEO 2: Vocal Loudness & Facial Flexibility -->
+                <div class="bg-white rounded-3xl overflow-hidden calm-shadow border border-sage-100 flex flex-col justify-between">
+                    <div class="relative bg-slate-900 aspect-video flex items-center justify-center group">
+                        <video id="vid2" class="w-full h-full object-cover" loop muted playsinline poster="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80">
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-elderly-woman-smiling-outdoors-41489-large.mp4" type="video/mp4">
+                        </video>
+                        <button onclick="playExerciseVideo('vid2', 'btnVidPlay2')" id="btnVidPlay2" class="absolute w-14 h-14 rounded-full bg-emerald-600/90 text-white flex items-center justify-center text-xl shadow hover:scale-105 transition">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Speech & Loudness</span>
+                                <h3 class="font-bold text-lg text-sage-800 mt-2">Sustained "AHHH" Voice Projection</h3>
+                            </div>
+                            <span class="text-xs font-bold text-sage-500">20 Seconds</span>
+                        </div>
+                        <p class="text-xs text-sage-600 leading-relaxed">
+                            Strengthens vocal cord closure to prevent quiet or muffled speech. Take a full diaphragmatic breath and produce a strong, clear vowel.
+                        </p>
+                        <div class="flex gap-2">
+                            <button onclick="startExerciseTimer('Sustained Loud AHH', 20)" class="flex-1 py-3 bg-sage-600 hover:bg-sage-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-stopwatch"></i> Start 20s Guided Timer (+30 XP)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIDEO 3: Seated Gait & Foot Tapping -->
+                <div class="bg-white rounded-3xl overflow-hidden calm-shadow border border-sage-100 flex flex-col justify-between">
+                    <div class="relative bg-slate-900 aspect-video flex items-center justify-center group">
+                        <video id="vid3" class="w-full h-full object-cover" loop muted playsinline poster="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80">
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-stepping-on-gym-machine-42470-large.mp4" type="video/mp4">
+                        </video>
+                        <button onclick="playExerciseVideo('vid3', 'btnVidPlay3')" id="btnVidPlay3" class="absolute w-14 h-14 rounded-full bg-emerald-600/90 text-white flex items-center justify-center text-xl shadow hover:scale-105 transition">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Gait Freezing Relief</span>
+                                <h3 class="font-bold text-lg text-sage-800 mt-2">Chair Heel-Toe Marches</h3>
+                            </div>
+                            <span class="text-xs font-bold text-sage-500">45 Seconds</span>
+                        </div>
+                        <p class="text-xs text-sage-600 leading-relaxed">
+                            Lubricates knee and ankle joints while priming your motor cortex for fluid walking without hesitation or shuffling.
+                        </p>
+                        <div class="flex gap-2">
+                            <button onclick="startExerciseTimer('Chair Heel-Toe Marches', 45)" class="flex-1 py-3 bg-sage-600 hover:bg-sage-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-stopwatch"></i> Start 45s Guided Timer (+30 XP)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIDEO 4: Finger Dexterity & Tremor Calming -->
+                <div class="bg-white rounded-3xl overflow-hidden calm-shadow border border-sage-100 flex flex-col justify-between">
+                    <div class="relative bg-slate-900 aspect-video flex items-center justify-center group">
+                        <video id="vid4" class="w-full h-full object-cover" loop muted playsinline poster="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600&q=80">
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-of-an-elderly-woman-doing-manual-therapy-41487-large.mp4" type="video/mp4">
+                        </video>
+                        <button onclick="playExerciseVideo('vid4', 'btnVidPlay4')" id="btnVidPlay4" class="absolute w-14 h-14 rounded-full bg-emerald-600/90 text-white flex items-center justify-center text-xl shadow hover:scale-105 transition">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-lavender-700 bg-lavender-100 px-2.5 py-1 rounded-full">Fine Motor Coordination</span>
+                                <h3 class="font-bold text-lg text-sage-800 mt-2">Opposable Thumb Tapping</h3>
+                            </div>
+                            <span class="text-xs font-bold text-sage-500">30 Seconds</span>
+                        </div>
+                        <p class="text-xs text-sage-600 leading-relaxed">
+                            Tap each finger to the thumb one by one with a strong, clean touch. Preserves the coordination required for buttoning shirts and dining cutlery.
+                        </p>
+                        <div class="flex gap-2">
+                            <button onclick="startExerciseTimer('Opposable Thumb Tapping', 30)" class="flex-1 py-3 bg-sage-600 hover:bg-sage-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-stopwatch"></i> Start 30s Guided Timer (+30 XP)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- PATIENT SECTION 5: NUTRITION & HYDRATION TRACKING                         -->
+        <!-- ========================================================================= -->
+        <section id="sec-nutrition" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-sage-700 flex items-center gap-2">
+                        <i class="fa-solid fa-apple-whole text-amber-600"></i> Nutrition & Dopamine Brain Support
+                    </h2>
+                    <p class="text-xs text-sage-600 mt-1">Specific guidelines for Parkinson's medication absorption, gut motility, and brain vitality.</p>
+                </div>
+            </div>
+
+            <!-- Hydration Glass Counter -->
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div>
+                    <span class="text-xs font-black uppercase text-softblue-600">Daily Hydration Target</span>
+                    <h3 class="text-xl font-black text-sage-800 mt-1">Smooth Swallowing & Motility</h3>
+                    <p class="text-xs text-sage-500 mt-1">Target 8 glasses of warm water or herbal infusion daily.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="changeHydration(-1)" class="w-12 h-12 rounded-2xl bg-cream-100 hover:bg-cream-200 text-sage-700 font-bold text-xl border border-cream-300">-</button>
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-softblue-700" id="glassCount">5 / 8</div>
+                        <div class="text-[10px] text-sage-400 uppercase font-bold">Glasses Today</div>
+                    </div>
+                    <button onclick="changeHydration(1)" class="w-12 h-12 rounded-2xl bg-softblue-600 hover:bg-softblue-700 text-white font-bold text-xl shadow">+</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Beneficial Foods -->
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-emerald-200 space-y-4">
+                    <h3 class="font-bold text-lg text-emerald-800 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check"></i> Dopamine-Supportive Diet
+                    </h3>
+                    <div class="space-y-3 text-xs text-sage-700">
+                        <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                            <strong>Berries (Blueberries & Strawberries):</strong> Rich in polyphenols that guard against neural oxidative fatigue.
+                        </div>
+                        <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                            <strong>Dark Leafy Greens:</strong> Folate-rich spinach and kale aid gastrointestinal regularity.
+                        </div>
+                        <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                            <strong>Omega-3s (Walnuts & Flaxseed):</strong> Bolsters myelin nerve insulation and memory recall.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medication Absorption Cautions -->
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-amber-200 space-y-4">
+                    <h3 class="font-bold text-lg text-amber-800 flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Medication Timing Rule
+                    </h3>
+                    <div class="space-y-3 text-xs text-sage-700">
+                        <div class="p-3 bg-amber-50 rounded-2xl border border-amber-100">
+                            <strong>Protein Separation:</strong> Levodopa medication competes with dietary proteins (meat, eggs, cheese) for gut absorption. Take Levodopa 45 minutes before or 1 hour after heavy protein meals.
+                        </div>
+                        <div class="p-3 bg-amber-50 rounded-2xl border border-amber-100">
+                            <strong>Evening Rest:</strong> Avoid caffeinated tea past 4 PM to prevent nocturnal motor restlessness.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- PATIENT SECTION 6: MEMORY NOTES & DAILY JOURNAL SCRATCHPAD                -->
+        <!-- ========================================================================= -->
+        <section id="sec-notes" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-sage-700 flex items-center gap-2">
+                        <i class="fa-solid fa-book-journal-whills text-emerald-600"></i> Memory Pad & Doctor Questions
+                    </h2>
+                    <p class="text-xs text-sage-600 mt-1">Jot down questions for your doctor or thoughts before they slip away.</p>
+                </div>
+                <button onclick="saveNewNote()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-2xl shadow transition">
+                    <i class="fa-solid fa-save mr-1"></i> Save Note (+15 XP)
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 space-y-4">
+                    <span class="text-xs font-black uppercase text-sage-400">Quick Note Entry</span>
+                    <input type="text" id="noteTitle" placeholder="Title (e.g., Morning Tremor Note)" class="w-full px-3 py-2 border border-sage-300 rounded-xl text-sm focus:outline-none focus:border-sage-600">
+                    <textarea id="noteContent" rows="4" placeholder="Write what happened or what you want to ask Dr. Sharma..." class="w-full p-3 border border-sage-300 rounded-xl text-sm focus:outline-none focus:border-sage-600"></textarea>
+                    <div class="flex gap-2">
+                        <button onclick="setNoteTag('Symptom')" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-200">#Symptom</button>
+                        <button onclick="setNoteTag('Doctor')" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-softblue-50 text-softblue-700 border border-softblue-200">#Doctor</button>
+                        <button onclick="setNoteTag('Thought')" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-50 text-amber-700 border border-amber-200">#Thought</button>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 bg-white rounded-3xl p-6 calm-shadow border border-sage-100 space-y-4">
+                    <span class="text-xs font-black uppercase text-sage-400">Saved Notes Timeline</span>
+                    <div id="notesContainer" class="space-y-3">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- CAREGIVER / FAMILY SECTION: OVERSIGHT & SCAFFOLDING COACHING             -->
+        <!-- ========================================================================= -->
+        <section id="sec-family-dashboard" class="hidden space-y-6">
+            <div class="bg-softblue-50 rounded-3xl p-6 border border-softblue-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="text-xs font-black uppercase tracking-wider text-softblue-700">Family & Caregiver Portal</span>
+                    <h2 class="text-2xl font-black text-sage-800 mt-1">Supporting John's Cognitive Autonomy</h2>
+                    <p class="text-xs text-sage-600 mt-1">
+                        Principle: Instead of doing tasks for John, provide guiding questions so his executive coordination stays strong.
+                    </p>
+                </div>
+                <button onclick="switchRole('patient')" class="px-4 py-2 bg-sage-700 hover:bg-sage-800 text-white font-bold text-xs rounded-xl shadow">
+                    Switch to John's View
+                </button>
+            </div>
+
+            <!-- Scaffolding Guide Alert -->
+            <div class="bg-amber-50 rounded-3xl p-6 border border-amber-200 space-y-3">
+                <h3 class="font-bold text-amber-900 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-600"></i> Scaffolding vs Over-Assisting Guide
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4 text-xs">
+                    <div class="p-3 bg-white rounded-2xl border border-amber-200">
+                        <span class="font-black text-red-600 uppercase block mb-1">❌ What to Avoid:</span>
+                        "Give it to me, I will button your shirt / make your tea for you." (Weakens neural pathway).
+                    </div>
+                    <div class="p-3 bg-white rounded-2xl border border-amber-200">
+                        <span class="font-black text-emerald-600 uppercase block mb-1">✅ What to Say Instead:</span>
+                        "What is the first step with the tea cup?" or "Which hand goes into the sleeve first?" (Preserves cognitive coordination).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Status of John's Day -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 space-y-2">
+                    <span class="text-xs uppercase font-bold text-sage-400">Today's Progress</span>
+                    <div class="text-3xl font-black text-emerald-600" id="caregiverProgressNum">3 / 5 Done</div>
+                    <p class="text-xs text-sage-500">Morning routine completed without wandering.</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-rose-200 space-y-2">
+                    <span class="text-xs uppercase font-bold text-rose-500">Attention Bottleneck</span>
+                    <div class="text-3xl font-black text-rose-600">Buttoning Shirt</div>
+                    <p class="text-xs text-sage-500">Repeated hesitation (>12 min latency). Family prompt suggested.</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 space-y-2">
+                    <span class="text-xs uppercase font-bold text-sage-400">Current Snooze Status</span>
+                    <div class="text-3xl font-black text-amber-600" id="caregiverSnoozeStatus">Active & On Time</div>
+                    <p class="text-xs text-sage-500">No overdue alarms waiting right now.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAREGIVER SECTION: MANAGE FAMILIAR FACES -->
+        <section id="sec-family-faces" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-sage-700">Manage Loved Ones Directory & Quiz Cards</h2>
+                    <p class="text-xs text-sage-600 mt-1">Upload photos of family members, relatives, or visiting nurses with gentle memory clues.</p>
+                </div>
+                <button onclick="openAddFaceModal()" class="px-4 py-2.5 bg-emerald-600 text-white font-bold rounded-2xl text-xs shadow">
+                    + Add New Person Card
+                </button>
+            </div>
+            <div id="caregiverFacesGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- CAREGIVER SECTION: ADJUST / SHIFT SCHEDULE -->
+        <section id="sec-family-schedule" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100">
+                <h2 class="text-2xl font-black text-sage-700">Caregiver Master Schedule Editor</h2>
+                <p class="text-xs text-sage-600 mt-1">If the patient has a doctor visit or woke up earlier/later, shift the times here.</p>
+                <div id="caregiverScheduleTable" class="mt-6 space-y-3">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- DOCTOR / CLINICIAN SECTION: TASK FAILURE & LATENCY ANALYTICS              -->
+        <!-- ========================================================================= -->
+        <section id="sec-doctor-analytics" class="hidden space-y-6">
+            <div class="bg-lavender-100/60 rounded-3xl p-6 border border-lavender-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="text-xs font-black uppercase tracking-wider text-lavender-700">Clinical Oversight & Metrics</span>
+                    <h2 class="text-2xl font-black text-sage-800 mt-1">John Doe - Executive Function & Task Adherence</h2>
+                    <p class="text-xs text-sage-600 mt-1">Diagnostic identification of apraxia, executive dysfunction, and Parkinsonian bradykinesia.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="exportClinicalReport()" class="px-4 py-2 bg-sage-700 text-white font-bold rounded-xl text-xs shadow">
+                        <i class="fa-solid fa-file-arrow-down mr-1"></i> Export Clinical Summary
+                    </button>
+                </div>
+            </div>
+
+            <!-- Clinical Diagnostics Summary Cards -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-rose-200 space-y-2">
+                    <span class="text-xs uppercase font-bold text-rose-600">Most Frequently Failed / Delayed Tasks</span>
+                    <div class="text-2xl font-black text-rose-700">1. Buttoning Up (Fine Motor)</div>
+                    <div class="text-xs text-sage-600">Failed or snoozed >3 times this week. Initiation latency: 19.4 mins average.</div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-amber-200 space-y-2">
+                    <span class="text-xs uppercase font-bold text-amber-600">Task Initiation Hesitation Index</span>
+                    <div class="text-2xl font-black text-amber-700">14.2 min avg</div>
+                    <div class="text-xs text-sage-600">Delay between audio alert chime and initiation tap. Slight elevation from baseline.</div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-emerald-200 space-y-2">
+                    <span class="text-xs uppercase font-bold text-emerald-600">Routine Sequencing Accuracy</span>
+                    <div class="text-2xl font-black text-emerald-700">88% Success</div>
+                    <div class="text-xs text-sage-600">Tea preparation & morning hygiene sequences completed without order transposition.</div>
+                </div>
+            </div>
+
+            <!-- Task Failure Breakdown Bar & Weekly Chart -->
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-lg text-sage-800">Weekly Task Failure & Delay Frequency</h3>
+                        <p class="text-xs text-sage-500">Shows tasks requiring repetitive reminders or excessive completion durations.</p>
+                    </div>
+                    <span class="text-xs bg-sage-100 text-sage-700 font-bold px-3 py-1 rounded-xl">Last 7 Days</span>
+                </div>
+
+                <!-- Custom Visual Failure Bar -->
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1">
+                            <span class="text-sage-700">Buttoning Shirt & Dressing (Fine Motor Coordination)</span>
+                            <span class="text-rose-600 font-black">4 Snoozes / 2 Misses (Needs Occupational Review)</span>
+                        </div>
+                        <div class="w-full bg-cream-100 rounded-full h-4 overflow-hidden border border-cream-200">
+                            <div class="bg-rose-500 h-full rounded-full" style="width: 72%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1">
+                            <span class="text-sage-700">Afternoon Levodopa Dose (Medication)</span>
+                            <span class="text-amber-600 font-black">1 Snooze (96% On-time)</span>
+                        </div>
+                        <div class="w-full bg-cream-100 rounded-full h-4 overflow-hidden border border-cream-200">
+                            <div class="bg-amber-400 h-full rounded-full" style="width: 25%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1">
+                            <span class="text-sage-700">10-Minute Big Reach Sweeps (Exercise)</span>
+                            <span class="text-emerald-600 font-black">0 Misses (Consistent)</span>
+                        </div>
+                        <div class="w-full bg-cream-100 rounded-full h-4 overflow-hidden border border-cream-200">
+                            <div class="bg-emerald-500 h-full rounded-full" style="width: 8%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1">
+                            <span class="text-sage-700">Evening Hydration & Fruit (Nutrition)</span>
+                            <span class="text-amber-600 font-black">2 Delays (>30m)</span>
+                        </div>
+                        <div class="w-full bg-cream-100 rounded-full h-4 overflow-hidden border border-cream-200">
+                            <div class="bg-amber-500 h-full rounded-full" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOCTOR SECTION: CLINICAL NOTES -->
+        <section id="sec-doctor-clinical" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 calm-shadow border border-sage-100 space-y-4">
+                <h3 class="text-xl font-bold text-sage-800">Clinician Assessment & Medication Plan</h3>
+                <textarea rows="4" class="w-full p-4 border border-sage-300 rounded-2xl text-xs sm:text-sm" placeholder="Add doctor observations regarding Levodopa on/off periods or cognitive coordination..."></textarea>
+                <button onclick="alert('Clinical observation saved to patient electronic chart.')" class="px-5 py-2.5 bg-sage-700 text-white font-bold rounded-xl text-xs shadow">
+                    Save to Chart
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- REAL-TIME REMINDER / ALARM / SNOOZE MODAL                                 -->
+    <!-- Distinct chime sounds and spoken audio                                   -->
+    <!-- ========================================================================= -->
+    <div id="modalAlarmAlert" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full calm-shadow text-center space-y-6 border-4 border-rose-500 animate-alarm">
+            <div class="w-20 h-20 rounded-full bg-rose-100 text-rose-600 mx-auto flex items-center justify-center text-4xl shadow-md">
+                <i class="fa-solid fa-bell animate-bounce"></i>
+            </div>
+
+            <div>
+                <span id="alarmCatBadge" class="px-3 py-1 bg-rose-100 text-rose-800 text-xs font-black uppercase rounded-full">Medication Reminder</span>
+                <h3 id="alarmTaskTitle" class="text-2xl font-black text-sage-800 mt-3 leading-snug">Afternoon Levodopa Dose & Water</h3>
+                <p id="alarmTaskTime" class="text-xs text-sage-500 mt-1">Scheduled for 02:00 PM</p>
+            </div>
+
+            <p class="text-xs text-sage-600 bg-cream-50 p-3 rounded-2xl border border-cream-200">
+                Take your time. There is no rush, but please complete this step to keep your coordination steady.
+            </p>
+
+            <div class="space-y-3">
+                <button onclick="handleCompleteAlarmTask()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base rounded-2xl shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-check text-xl"></i> Complete Task (+25 XP)
+                </button>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="snoozeCurrentTask(5)" class="py-3 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs rounded-xl border border-amber-300 transition">
+                        <i class="fa-solid fa-clock mr-1"></i> Snooze 5 Mins
+                    </button>
+                    <button onclick="snoozeCurrentTask(15)" class="py-3 bg-sage-100 hover:bg-sage-200 text-sage-800 font-bold text-xs rounded-xl border border-sage-300 transition">
+                        <i class="fa-solid fa-clock mr-1"></i> Snooze 15 Mins
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD CUSTOM TASK / APPOINTMENT -->
+    <div id="modalAddTask" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full calm-shadow space-y-4 border border-sage-200">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg text-sage-800">Add Schedule Item</h3>
+                <button onclick="closeAddTaskModal()" class="text-sage-400 hover:text-sage-700 p-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-sage-600 mb-1">Task or Appointment Name</label>
+                <input type="text" id="inTaskTitle" placeholder="e.g. Visit Neurologist or Afternoon Walk" class="w-full px-3 py-2 border border-sage-300 rounded-xl text-sm focus:outline-none focus:border-sage-600">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-sage-600 mb-1">Scheduled Time</label>
+                    <input type="time" id="inTaskTime" value="14:00" class="w-full px-3 py-2 border border-sage-300 rounded-xl text-sm focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-sage-600 mb-1">Category & Sound</label>
+                    <select id="inTaskCategory" class="w-full px-3 py-2 border border-sage-300 rounded-xl text-sm focus:outline-none">
+                        <option value="Medication">💊 Medication</option>
+                        <option value="Appointment">🏥 Clinic / Urgent</option>
+                        <option value="Meal">🍲 Meal / Drink</option>
+                        <option value="Exercise">🏃 Movement / Speech</option>
+                        <option value="Routine">🏠 Daily Routine</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeAddTaskModal()" class="px-4 py-2 text-xs font-bold text-sage-600">Cancel</button>
+                <button onclick="saveNewTask()" class="px-5 py-2 text-xs font-bold bg-emerald-600 text-white rounded-xl shadow">Save Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: DYNAMIC SCHEDULE SHIFT (If Waking early/late or Out) -->
+    <div id="modalShiftSchedule" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full calm-shadow space-y-4 border border-sage-200">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg text-sage-800"><i class="fa-solid fa-clock-rotate-left text-amber-600 mr-1.5"></i> Shift Schedule</h3>
+                <button onclick="closeShiftModal()" class="text-sage-400 hover:text-sage-700 p-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-sage-600">
+                Going out or had a late start? Adjust all remaining tasks forward or backward smoothly without feeling rushed.
+            </p>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="applyGlobalShift(-60)" class="p-3 bg-cream-100 hover:bg-cream-200 rounded-xl text-xs font-bold text-sage-800 border border-cream-300">
+                    -1 Hour (Early)
+                </button>
+                <button onclick="applyGlobalShift(60)" class="p-3 bg-amber-50 hover:bg-amber-100 rounded-xl text-xs font-bold text-amber-800 border border-amber-300">
+                    +1 Hour (Delay)
+                </button>
+                <button onclick="applyGlobalShift(30)" class="p-3 bg-cream-100 hover:bg-cream-200 rounded-xl text-xs font-bold text-sage-800 border border-cream-300">
+                    +30 Minutes
+                </button>
+                <button onclick="applyGlobalShift(120)" class="p-3 bg-cream-100 hover:bg-cream-200 rounded-xl text-xs font-bold text-sage-800 border border-cream-300">
+                    +2 Hours
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: GUIDED EXERCISE TIMER -->
+    <div id="modalExTimer" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-8 max-w-xs w-full calm-shadow text-center space-y-4 border border-sage-200">
+            <h3 id="exTimerTitle" class="font-bold text-lg text-sage-800">Movement Drill</h3>
+            <div id="exTimerSeconds" class="text-6xl font-black text-sage-700 my-4">30</div>
+            <p class="text-xs text-sage-500">Breathe slowly and maintain big amplitude.</p>
+            <button onclick="stopExerciseTimer()" class="w-full py-3 bg-sage-700 text-white font-bold rounded-xl text-xs shadow">
+                Done / End Exercise
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: ANTI-OVERWHELM BREATHING -->
+    <div id="modalBreathe" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-8 max-w-xs w-full calm-shadow text-center space-y-5 border border-sage-200">
+            <h3 class="font-black text-xl text-sage-800">Take a Calm Breath</h3>
+            <div class="relative flex items-center justify-center my-6">
+                <div id="bCircle" class="w-36 h-36 rounded-full bg-softblue-100 border-4 border-softblue-500 flex items-center justify-center transition-all duration-1000">
+                    <span id="bTxt" class="text-base font-bold text-sage-700">Inhale...</span>
+                </div>
+            </div>
+            <p class="text-xs text-sage-500">Notice the expansion. Everything is safe and under control.</p>
+            <button onclick="closeOverwhelmModal()" class="w-full py-3 bg-sage-700 text-white font-bold rounded-xl text-xs shadow">
+                I Feel Grounded
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        /* =========================================================================
+         * 1. AUDIO & SOUND ENGINE (Distinct Category Chimes & Metronome)
+         * ========================================================================= */
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        // Distinct category notification reminders
+        function playReminderChime(category) {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                if (category === 'Medication') {
+                    // Two-tone attention bell: G5 to C6
+                    const osc1 = ctx.createOscillator();
+                    const osc2 = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    osc1.frequency.setValueAtTime(783.99, now);
+                    osc2.frequency.setValueAtTime(1046.50, now + 0.15);
+                    g.gain.setValueAtTime(0.01, now);
+                    g.gain.exponentialRampToValueAtTime(0.25, now + 0.05);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                    osc1.connect(g); osc2.connect(g); g.connect(ctx.destination);
+                    osc1.start(now); osc2.start(now + 0.15);
+                    osc1.stop(now + 1.2); osc2.stop(now + 1.2);
+
+                } else if (category === 'Appointment') {
+                    // Triple urgent pulse
+                    [523.25, 659.25, 783.99].forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const g = ctx.createGain();
+                        osc.frequency.setValueAtTime(freq, now + (idx * 0.1));
+                        g.gain.setValueAtTime(0.2, now + (idx * 0.1));
+                        g.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.1) + 0.5);
+                        osc.connect(g); g.connect(ctx.destination);
+                        osc.start(now + (idx * 0.1));
+                        osc.stop(now + (idx * 0.1) + 0.5);
+                    });
+
+                } else if (category === 'Meal') {
+                    // Warm soothing triangle chord
+                    [261.63, 329.63, 392.00].forEach((freq) => {
+                        const osc = ctx.createOscillator();
+                        const g = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now);
+                        g.gain.setValueAtTime(0.15, now);
+                        g.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                        osc.connect(g); g.connect(ctx.destination);
+                        osc.start(now); osc.stop(now + 1.2);
+                    });
+
+                } else {
+                    // Light melodic woodblock
+                    const osc = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(220, now + 0.15);
+                    g.gain.setValueAtTime(0.25, now);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.connect(g); g.connect(ctx.destination);
+                    osc.start(now); osc.stop(now + 0.3);
+                }
+            } catch (err) {
+                console.log("Audio awaiting interaction", err);
+            }
+        }
+
+        // Metronome for Gait Freezing
+        let metronomeTimer = null;
+        let isMetronomeOn = false;
+        function toggleMetronome() {
+            const btn = document.getElementById('btnMetronome');
+            if (isMetronomeOn) {
+                clearInterval(metronomeTimer);
+                isMetronomeOn = false;
+                btn.classList.remove('bg-amber-500', 'text-white');
+                btn.innerHTML = `<i class="fa-solid fa-drum text-amber-600"></i> <span>Gait Metronome (100 BPM)</span>`;
+            } else {
+                isMetronomeOn = true;
+                btn.classList.add('bg-amber-500', 'text-white');
+                btn.innerHTML = `<i class="fa-solid fa-stop text-white"></i> <span>Stop Metronome</span>`;
+                // 100 BPM = 600ms
+                metronomeTimer = setInterval(() => {
+                    const ctx = getAudioContext();
+                    const now = ctx.currentTime;
+                    const osc = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    osc.frequency.setValueAtTime(800, now);
+                    g.gain.setValueAtTime(0.2, now);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.connect(g); g.connect(ctx.destination);
+                    osc.start(now); osc.stop(now + 0.05);
+                }, 600);
+            }
+        }
+
+        // Text To Speech
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.rate = 0.88; // Slower cadence for cognitive ease
+                utter.pitch = 1.0;
+                window.speechSynthesis.speak(utter);
+            }
+        }
+
+        /* =========================================================================
+         * 2. APPLICATION DATA STATE & ROLES
+         * ========================================================================= */
+        let state = {
+            activeRole: 'patient', // 'patient' | 'family' | 'doctor'
+            user: {
+                name: 'John Doe',
+                xp: 640,
+                level: 3,
+                levelTitle: 'Routine Ace'
+            },
+            taskMode: 'single', // 'single' | 'all'
+            hydrationGlasses: 5,
+            tasks: [
+                { id: 't1', time: '08:00', title: 'Morning Levodopa Dose & Warm Water', category: 'Medication', completed: true, snoozes: 0 },
+                { id: 't2', time: '08:45', title: 'Nutritious Berry Breakfast (Low Protein)', category: 'Meal', completed: true, snoozes: 0 },
+                { id: 't3', time: '10:00', title: '10-Minute Big Reach Sweeps Exercise', category: 'Exercise', completed: true, snoozes: 0 },
+                { id: 't4', time: '11:30', title: 'Buttoning Up Shirt & Dressing Sequence', category: 'Routine', completed: false, snoozes: 2 },
+                { id: 't5', time: '14:00', title: 'Afternoon Levodopa Dose', category: 'Medication', completed: false, snoozes: 1 },
+                { id: 't6', time: '16:30', title: 'Speech Vowel Loudness Practice', category: 'Exercise', completed: false, snoozes: 0 },
+                { id: 't7', time: '19:00', title: 'Evening Walk & Hydration', category: 'Routine', completed: false, snoozes: 0 }
+            ],
+            familiarFaces: [
+                {
+                    id: 'f1',
+                    name: 'Sarah',
+                    relation: 'Daughter',
+                    photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
+                    clue: 'She brought you fresh homemade apples and visited last Sunday.',
+                    subClue: 'Lives two streets away and loves gardening with you.',
+                    options: ['Sarah (Daughter)', 'Nurse Emily', 'Mary (Sister)', 'Dr. Sharma']
+                },
+                {
+                    id: 'f2',
+                    name: 'Leo',
+                    relation: 'Grandson',
+                    photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80',
+                    clue: 'He is in high school and plays basketball with the orange ball.',
+                    subClue: 'Always asks you to tell stories about train trips.',
+                    options: ['Leo (Grandson)', 'Robert (Neighbor)', 'Sarah (Daughter)', 'Pharmacist']
+                },
+                {
+                    id: 'f3',
+                    name: 'Dr. Sharma',
+                    relation: 'Neurologist',
+                    photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80',
+                    clue: 'The physician who checks your movement, gait, and medication every 3 months.',
+                    subClue: 'Wears a white coat and always asks you to tap your fingers.',
+                    options: ['Dr. Sharma (Neurologist)', 'Leo (Grandson)', 'Uncle Joe', 'Physical Therapist']
+                },
+                {
+                    id: 'f4',
+                    name: 'Mary',
+                    relation: 'Spouse',
+                    photo: 'https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?auto=format&fit=crop&w=400&q=80',
+                    clue: 'Your lifelong partner who drinks morning tea with you by the garden window.',
+                    subClue: 'You have been married for 42 wonderful years.',
+                    options: ['Mary (Spouse)', 'Sarah (Daughter)', 'Aunt Helen', 'Caregiver']
+                }
+            ],
+            notes: [
+                { id: 'n1', title: 'Tremor in Right Hand', tag: 'Symptom', text: 'Noticed slight tremor before 2 PM Levodopa dose.', date: 'Today, 1:45 PM' },
+                { id: 'n2', title: 'Ask Neurologist about Protein', tag: 'Doctor', text: 'Check if eating eggs at 8:45 AM interferes with 8:00 AM dose.', date: 'Yesterday' }
+            ]
+        };
+
+        // Add XP with animation
+        function addXP(points) {
+            state.user.xp += points;
+            document.getElementById('userXP').innerText = state.user.xp;
+            
+            // Level threshold: 500 = Lvl 2, 750 = Lvl 3, 1000 = Lvl 4, 1500 = Lvl 5
+            let lvl = 1;
+            let title = 'Cognitive Explorer';
+            if (state.user.xp >= 1500) { lvl = 5; title = 'Master of Rhythm'; }
+            else if (state.user.xp >= 1000) { lvl = 4; title = 'Neural Champion'; }
+            else if (state.user.xp >= 750) { lvl = 3; title = 'Routine Ace'; }
+            else if (state.user.xp >= 400) { lvl = 2; title = 'Focus Star'; }
+
+            state.user.level = lvl;
+            state.user.levelTitle = title;
+            document.getElementById('userLevel').innerText = lvl;
+            document.getElementById('levelTitle').innerText = title;
+            document.getElementById('xpBarFill').style.width = Math.min(100, Math.round((state.user.xp % 500) / 5)) + '%';
+        }
+
+        /* =========================================================================
+         * 3. ROLE SWITCHING & PERMISSIONS
+         * ========================================================================= */
+        function toggleUserDropdown() {
+            document.getElementById('userDropdown').classList.toggle('hidden');
+        }
+
+        function switchRole(role) {
+            state.activeRole = role;
+            document.getElementById('userDropdown').classList.add('hidden');
+
+            const badge = document.getElementById('roleBadge');
+            const userName = document.getElementById('activeUserName');
+            const navPat = document.getElementById('navGroupPatient');
+            const navFam = document.getElementById('navGroupFamily');
+            const navDoc = document.getElementById('navGroupDoctor');
+            const xpBar = document.getElementById('patientGamificationBar');
+
+            if (role === 'patient') {
+                badge.innerText = "Patient";
+                badge.className = "px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500 text-white";
+                userName.innerText = "John (Patient)";
+                navPat.classList.remove('hidden');
+                navFam.classList.add('hidden');
+                navDoc.classList.add('hidden');
+                xpBar.classList.remove('hidden');
+                switchTab('tasks');
+            } else if (role === 'family') {
+                badge.innerText = "Caregiver";
+                badge.className = "px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-softblue-600 text-white";
+                userName.innerText = "Sarah (Caregiver/Daughter)";
+                navPat.classList.add('hidden');
+                navFam.classList.remove('hidden');
+                navDoc.classList.add('hidden');
+                xpBar.classList.add('hidden');
+                renderCaregiverDashboard();
+                switchTab('family-dashboard');
+            } else if (role === 'doctor') {
+                badge.innerText = "Doctor";
+                badge.className = "px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-lavender-700 text-white";
+                userName.innerText = "Dr. Sharma (Clinician)";
+                navPat.classList.add('hidden');
+                navFam.classList.add('hidden');
+                navDoc.classList.remove('hidden');
+                xpBar.classList.add('hidden');
+                switchTab('doctor-analytics');
+            }
+        }
+
+        function switchTab(tabKey) {
+            const allSections = [
+                'tasks', 'games', 'facequiz', 'movement', 'nutrition', 'notes',
+                'family-dashboard', 'family-faces', 'family-schedule',
+                'doctor-analytics', 'doctor-clinical'
+            ];
+
+            allSections.forEach(secId => {
+                const el = document.getElementById(`sec-${secId}`);
+                const btn = document.getElementById(`tab-${secId}`);
+                if (el) {
+                    if (secId === tabKey) {
+                        el.classList.remove('hidden');
+                        if (btn) {
+                            btn.classList.add('bg-sage-600', 'text-white', 'shadow-sm');
+                            btn.classList.remove('bg-cream-100', 'text-sage-700');
+                        }
+                    } else {
+                        el.classList.add('hidden');
+                        if (btn) {
+                            btn.classList.remove('bg-sage-600', 'text-white', 'shadow-sm');
+                            btn.classList.add('bg-cream-100', 'text-sage-700');
+                        }
+                    }
+                }
+            });
+
+            if (tabKey === 'facequiz') loadFaceQuizCard(quizIndex);
+            if (tabKey === 'family-faces') renderCaregiverFaces();
+            if (tabKey === 'family-schedule') renderCaregiverSchedule();
+            if (tabKey === 'tasks') renderTasks();
+        }
+
+        /* =========================================================================
+         * 4. TASKS, CUSTOM TIMING & SNOOZE ALARM ENGINE
+         * ========================================================================= */
+        let activeAlarmTask = null;
+
+        function setTaskMode(mode) {
+            state.taskMode = mode;
+            if (mode === 'single') {
+                document.getElementById('btnModeSingle').className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-sage-600 text-white shadow-sm flex items-center gap-2";
+                document.getElementById('btnModeAll').className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-cream-100 hover:bg-sage-200 text-sage-700 transition flex items-center gap-2";
+                document.getElementById('viewSingleTask').classList.remove('hidden');
+                document.getElementById('viewAllTasks').classList.add('hidden');
+            } else {
+                document.getElementById('btnModeAll').className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-sage-600 text-white shadow-sm flex items-center gap-2";
+                document.getElementById('btnModeSingle').className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-cream-100 hover:bg-sage-200 text-sage-700 transition flex items-center gap-2";
+                document.getElementById('viewSingleTask').classList.add('hidden');
+                document.getElementById('viewAllTasks').classList.remove('hidden');
+            }
+            renderTasks();
+        }
+
+        function renderTasks() {
+            const pending = state.tasks.filter(t => !t.completed);
+            const singleContainer = document.getElementById('singleCardContainer');
+
+            // Render Single Focus Card
+            if (pending.length === 0) {
+                singleContainer.innerHTML = `
+                    <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mb-3">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-sage-800">All Scheduled Tasks Done!</h3>
+                    <p class="text-xs text-sage-500 mt-1 max-w-sm">Great job keeping your coordination and routine steady today. Relax comfortably.</p>
+                `;
+            } else {
+                const current = pending[0];
+                const catColors = {
+                    Medication: 'bg-rose-100 text-rose-800 border-rose-300',
+                    Appointment: 'bg-lavender-100 text-lavender-800 border-lavender-300',
+                    Meal: 'bg-amber-100 text-amber-800 border-amber-300',
+                    Exercise: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                    Routine: 'bg-softblue-100 text-softblue-800 border-softblue-300'
+                };
+
+                singleContainer.innerHTML = `
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${catColors[current.category] || 'bg-sage-100 text-sage-700'}">
+                            ${current.time} - ${current.category}
+                        </span>
+                        ${current.snoozes > 0 ? `<span class="px-2 py-0.5 bg-rose-500 text-white text-[10px] font-black rounded-full">Snoozed ${current.snoozes}x</span>` : ''}
+                    </div>
+
+                    <h3 class="text-2xl md:text-3xl font-black text-sage-800 max-w-xl leading-snug mb-6">
+                        ${current.title}
+                    </h3>
+
+                    <div class="flex flex-wrap items-center justify-center gap-3">
+                        <button onclick="completeTask('${current.id}')" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base rounded-2xl shadow-lg transition transform active:scale-95 flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle text-xl"></i> Complete Task (+25 XP)
+                        </button>
+                        <button onclick="speakTask('${current.title}', '${current.time}')" class="px-4 py-4 bg-cream-100 hover:bg-cream-200 text-sage-700 font-bold text-sm rounded-2xl border border-cream-300 transition" title="Read Aloud">
+                            <i class="fa-solid fa-volume-high text-lg"></i>
+                        </button>
+                        <button onclick="triggerSimulatedAlarm('${current.id}')" class="px-4 py-4 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-2xl border border-rose-200 transition" title="Test Reminder Chime & Snooze">
+                            <i class="fa-solid fa-bell text-rose-500"></i> Test Alarm
+                        </button>
+                    </div>
+                `;
+            }
+
+            // Render Full List
+            const allContainer = document.getElementById('allTasksContainer');
+            allContainer.innerHTML = '';
+            state.tasks.forEach(t => {
+                const item = document.createElement('div');
+                item.className = `bg-white rounded-2xl p-4 border ${t.completed ? 'border-emerald-200 bg-emerald-50/30' : 'border-sage-200'} flex items-center justify-between gap-4 transition`;
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <button onclick="completeTask('${t.id}')" class="w-10 h-10 rounded-xl border-2 ${t.completed ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-sage-300 bg-cream-50'} flex items-center justify-center font-bold">
+                            ${t.completed ? '<i class="fa-solid fa-check"></i>' : ''}
+                        </button>
+                        <div>
+                            <span class="text-xs font-bold text-sage-400 block">${t.time} (${t.category})</span>
+                            <span class="font-bold text-sage-800 ${t.completed ? 'line-through text-sage-400' : ''}">${t.title}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="speakTask('${t.title}', '${t.time}')" class="p-2 text-sage-400 hover:text-sage-700"><i class="fa-solid fa-volume-high"></i></button>
+                        <button onclick="deleteTask('${t.id}')" class="p-2 text-sage-400 hover:text-rose-600"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `;
+                allContainer.appendChild(item);
+            });
+        }
+
+        function completeTask(id) {
+            const task = state.tasks.find(t => t.id === id);
+            if (task && !task.completed) {
+                task.completed = true;
+                addXP(25);
+                playReminderChime(task.category);
+                renderTasks();
+            }
+        }
+
+        function speakTask(title, time) {
+            speakText(`At ${time}, your task is: ${title}`);
+        }
+
+        function deleteTask(id) {
+            state.tasks = state.tasks.filter(t => t.id !== id);
+            renderTasks();
+        }
+
+        // TRIGGER SIMULATED ALARM (When task missed or time arrives)
+        function triggerSimulatedAlarm(id) {
+            const task = state.tasks.find(t => t.id === id);
+            if (!task) return;
+            activeAlarmTask = task;
+
+            document.getElementById('alarmCatBadge').innerText = `${task.category} Reminder`;
+            document.getElementById('alarmTaskTitle').innerText = task.title;
+            document.getElementById('alarmTaskTime').innerText = `Scheduled for ${task.time}`;
+            document.getElementById('modalAlarmAlert').classList.remove('hidden');
+
+            playReminderChime(task.category);
+            speakText(`Friendly reminder. It is time for ${task.title}.`);
+        }
+
+        function handleCompleteAlarmTask() {
+            if (activeAlarmTask) {
+                completeTask(activeAlarmTask.id);
+            }
+            document.getElementById('modalAlarmAlert').classList.add('hidden');
+        }
+
+        function snoozeCurrentTask(mins) {
+            if (activeAlarmTask) {
+                activeAlarmTask.snoozes = (activeAlarmTask.snoozes || 0) + 1;
+                // Add snooze notice
+                alert(`Task snoozed for ${mins} minutes. Reminder chime will sound again.`);
+            }
+            document.getElementById('modalAlarmAlert').classList.add('hidden');
+            renderTasks();
+        }
+
+        // Add task modal
+        function openAddTaskModal() { document.getElementById('modalAddTask').classList.remove('hidden'); }
+        function closeAddTaskModal() { document.getElementById('modalAddTask').classList.add('hidden'); }
+        function saveNewTask() {
+            const title = document.getElementById('inTaskTitle').value.trim();
+            const time = document.getElementById('inTaskTime').value;
+            const category = document.getElementById('inTaskCategory').value;
+            if (title) {
+                state.tasks.push({
+                    id: 't_' + Date.now(),
+                    title,
+                    time,
+                    category,
+                    completed: false,
+                    snoozes: 0
+                });
+                state.tasks.sort((a,b) => a.time.localeCompare(b.time));
+                renderTasks();
+                closeAddTaskModal();
+                document.getElementById('inTaskTitle').value = '';
+            }
+        }
+
+        // Shift schedule modal (wake up changes or outings)
+        function openShiftScheduleModal() { document.getElementById('modalShiftSchedule').classList.remove('hidden'); }
+        function closeShiftModal() { document.getElementById('modalShiftSchedule').classList.add('hidden'); }
+        function applyGlobalShift(minutes) {
+            state.tasks.forEach(t => {
+                const [h, m] = t.time.split(':').map(Number);
+                let totalMin = h * 60 + m + minutes;
+                if (totalMin < 0) totalMin += 1440;
+                totalMin = totalMin % 1440;
+                const newH = String(Math.floor(totalMin / 60)).padStart(2, '0');
+                const newM = String(totalMin % 60).padStart(2, '0');
+                t.time = `${newH}:${newM}`;
+            });
+            state.tasks.sort((a,b) => a.time.localeCompare(b.time));
+            renderTasks();
+            closeShiftModal();
+            alert(`Schedule updated by ${minutes > 0 ? '+' + minutes : minutes} minutes! All activities shifted smoothly.`);
+        }
+
+        /* =========================================================================
+         * 5. COGNITIVE SEQUENCING & MIND GAMES (Alzheimer's / Parkinson's Coordination)
+         * ========================================================================= */
+        const SEQUENCES = [
+            {
+                scenario: "Making a Morning Cup of Herbal Tea",
+                steps: [
+                    "Fill electric kettle with fresh water",
+                    "Press the boil switch on the kettle",
+                    "Place herbal tea bag inside the ceramic mug",
+                    "Pour warm boiled water gently into the mug",
+                    "Stir slowly with a spoon and let steep"
+                ]
+            },
+            {
+                scenario: "Dressing: Putting on Buttoned Shirt (Fine Motor)",
+                steps: [
+                    "Identify shirt collar and unfold shirt open",
+                    "Slide left arm fully into the left sleeve",
+                    "Reach around and slide right arm into right sleeve",
+                    "Align both front button panels evenly",
+                    "Fasten buttons one-by-one from top to bottom"
+                ]
+            }
+        ];
+
+        let curSeqIndex = 0;
+        let seqCurrentOrder = [];
+
+        function setGame(gameType) {
+            ['sequencing', 'memory', 'association'].forEach(g => {
+                document.getElementById(`gtab-${g}`).className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-cream-100 hover:bg-sage-200 text-sage-700 transition whitespace-nowrap";
+            });
+            document.getElementById(`gtab-${gameType}`).className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-sage-600 text-white shadow whitespace-nowrap";
+
+            document.getElementById('gameSeqContainer').classList.toggle('hidden', gameType !== 'sequencing');
+            document.getElementById('gameMemContainer').classList.toggle('hidden', gameType !== 'memory');
+            document.getElementById('gameAssocContainer').classList.toggle('hidden', gameType !== 'association');
+
+            if (gameType === 'sequencing') resetSequencingGame();
+            if (gameType === 'memory') initMemoryGame();
+            if (gameType === 'association') loadAssocGame();
+        }
+
+        function resetSequencingGame() {
+            seqCurrentOrder = [];
+            const data = SEQUENCES[curSeqIndex];
+            document.getElementById('seqScenarioTitle').innerText = data.scenario;
+            document.getElementById('seqFeedback').innerText = '';
+
+            const container = document.getElementById('seqButtonsContainer');
+            container.innerHTML = '';
+            document.getElementById('seqPlacedContainer').innerHTML = '<span class="text-xs text-sage-400 italic">Tap cards above in the logical order...</span>';
+
+            // Scramble steps
+            const scrambled = [...data.steps].sort(() => Math.random() - 0.5);
+            scrambled.forEach((stepText) => {
+                const btn = document.createElement('button');
+                btn.className = "p-3.5 bg-cream-100 hover:bg-sage-100 border border-sage-200 rounded-2xl text-left text-xs font-bold text-sage-800 shadow-sm transition active:scale-95";
+                btn.innerText = stepText;
+                btn.onclick = () => selectSequenceStep(btn, stepText, data.steps);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectSequenceStep(btn, stepText, correctSteps) {
+            if (btn.disabled) return;
+            btn.disabled = true;
+            btn.classList.add('opacity-40');
+
+            seqCurrentOrder.push(stepText);
+            const placedBox = document.getElementById('seqPlacedContainer');
+            if (seqCurrentOrder.length === 1) placedBox.innerHTML = '';
+
+            const tag = document.createElement('span');
+            tag.className = "px-3 py-1.5 bg-sage-600 text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow-sm";
+            tag.innerHTML = `<span class="bg-sage-800 w-5 h-5 rounded-full flex items-center justify-center text-[10px]">${seqCurrentOrder.length}</span> ${stepText}`;
+            placedBox.appendChild(tag);
+
+            if (seqCurrentOrder.length === correctSteps.length) {
+                // Check if identical to correct order
+                const isCorrect = seqCurrentOrder.every((val, index) => val === correctSteps[index]);
+                const fb = document.getElementById('seqFeedback');
+                if (isCorrect) {
+                    playReminderChime('Exercise');
+                    addXP(50);
+                    fb.className = "text-sm font-black text-emerald-600 text-center";
+                    fb.innerText = "⭐ Perfect Cognitive Coordination! Steps are in exact logical sequence.";
+                } else {
+                    fb.className = "text-sm font-bold text-amber-700 text-center";
+                    fb.innerText = "One or more steps were out of order. Tap 'Restart Order' to practice smoothly!";
+                }
+            }
+        }
+
+        // Memory game
+        let memCards = ['fa-leaf', 'fa-sun', 'fa-heart', 'fa-cloud', 'fa-seedling', 'fa-apple-whole'];
+        let memFlipped = [];
+        let memMatched = 0;
+        function initMemoryGame() {
+            memMatched = 0;
+            memFlipped = [];
+            document.getElementById('memMsg').innerText = '';
+            const deck = [...memCards, ...memCards].sort(() => Math.random() - 0.5);
+            const grid = document.getElementById('memGrid');
+            grid.innerHTML = '';
+            deck.forEach(icon => {
+                const card = document.createElement('button');
+                card.className = "h-16 bg-cream-100 hover:bg-sage-100 rounded-2xl border-2 border-sage-200 flex items-center justify-center text-xl text-sage-600 shadow-sm transition";
+                card.dataset.icon = icon;
+                card.innerHTML = `<i class="fa-solid fa-question text-sage-300"></i>`;
+                card.onclick = () => flipMem(card);
+                grid.appendChild(card);
+            });
+        }
+        function flipMem(card) {
+            if (memFlipped.length >= 2 || card.classList.contains('matched') || memFlipped.includes(card)) return;
+            card.innerHTML = `<i class="fa-solid ${card.dataset.icon}"></i>`;
+            card.classList.add('bg-white', 'border-sage-500');
+            memFlipped.push(card);
+            if (memFlipped.length === 2) {
+                const [c1, c2] = memFlipped;
+                if (c1.dataset.icon === c2.dataset.icon) {
+                    c1.classList.add('matched', 'bg-emerald-100', 'border-emerald-500');
+                    c2.classList.add('matched', 'bg-emerald-100', 'border-emerald-500');
+                    memFlipped = [];
+                    memMatched++;
+                    if (memMatched === memCards.length) {
+                        addXP(50);
+                        document.getElementById('memMsg').innerText = '🎉 Wonderful Memory Recall! +50 XP';
+                    }
+                } else {
+                    setTimeout(() => {
+                        c1.innerHTML = `<i class="fa-solid fa-question text-sage-300"></i>`;
+                        c2.innerHTML = `<i class="fa-solid fa-question text-sage-300"></i>`;
+                        c1.classList.remove('bg-white', 'border-sage-500');
+                        c2.classList.remove('bg-white', 'border-sage-500');
+                        memFlipped = [];
+                    }, 900);
+                }
+            }
+        }
+
+        // Concept Association
+        function loadAssocGame() {
+            const opts = ['Prescription & ID', 'Beach Towel', 'Bicycle Helmet', 'Garden Shovel'];
+            const container = document.getElementById('assocOptions');
+            container.innerHTML = '';
+            document.getElementById('assocMsg').innerText = '';
+            opts.sort(() => Math.random() - 0.5).forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-3 bg-cream-50 hover:bg-sage-100 rounded-xl border border-sage-200 text-xs font-bold text-sage-800 transition";
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if (opt === 'Prescription & ID') {
+                        btn.className = "p-3 bg-emerald-100 border-2 border-emerald-500 text-emerald-800 font-bold rounded-xl text-xs";
+                        document.getElementById('assocMsg').innerText = "Correct! Great association for the clinic.";
+                        addXP(50);
+                    } else {
+                        btn.className = "p-3 bg-amber-50 text-amber-700 rounded-xl text-xs opacity-50";
+                        document.getElementById('assocMsg').innerText = "Think about what is required for a doctor checkup.";
+                    }
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        /* =========================================================================
+         * 6. FAMILIAR FACES QUIZ & CAMERA RECOGNITION
+         * ========================================================================= */
+        let quizIndex = 0;
+
+        function loadFaceQuizCard(idx) {
+            quizIndex = idx % state.familiarFaces.length;
+            const person = state.familiarFaces[quizIndex];
+
+            document.getElementById('quizCardNum').innerText = quizIndex + 1;
+            document.getElementById('quizPhoto').src = person.photo;
+            document.getElementById('quizHintPrompt').innerText = `"${person.clue}"`;
+            document.getElementById('quizSubClue').innerText = person.subClue;
+            document.getElementById('revealedInfo').classList.add('hidden');
+            document.getElementById('quizFeedback').innerText = '';
+
+            const optsBox = document.getElementById('quizOptionsGrid');
+            optsBox.innerHTML = '';
+            person.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-3 bg-cream-100 hover:bg-sage-100 rounded-2xl border border-sage-200 text-xs font-bold text-sage-800 transition";
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if (opt.toLowerCase().includes(person.name.toLowerCase())) {
+                        btn.className = "p-3 bg-emerald-100 border-2 border-emerald-500 text-emerald-800 font-bold rounded-2xl text-xs";
+                        document.getElementById('quizFeedback').innerText = `⭐ Yes! That is ${person.name} (${person.relation})! +50 XP`;
+                        addXP(50);
+                        playReminderChime('Medication');
+                    } else {
+                        btn.className = "p-3 bg-rose-50 text-rose-700 rounded-2xl text-xs opacity-50";
+                        document.getElementById('quizFeedback').innerText = "Not quite. Listen to the voice clue!";
+                    }
+                };
+                optsBox.appendChild(btn);
+            });
+
+            // Populate side directory
+            const dirBox = document.getElementById('faceDirectoryList');
+            dirBox.innerHTML = '';
+            state.familiarFaces.forEach((f, i) => {
+                const row = document.createElement('div');
+                row.className = `p-2 rounded-xl border flex items-center gap-3 cursor-pointer ${i === quizIndex ? 'bg-softblue-50 border-softblue-300' : 'bg-cream-50 border-cream-200'}`;
+                row.onclick = () => loadFaceQuizCard(i);
+                row.innerHTML = `
+                    <img src="${f.photo}" class="w-10 h-10 object-cover rounded-xl border">
+                    <div>
+                        <div class="text-xs font-bold text-sage-800">${f.name}</div>
+                        <div class="text-[10px] text-sage-500">${f.relation}</div>
+                    </div>
+                `;
+                dirBox.appendChild(row);
+            });
+        }
+
+        function nextFaceQuizCard() {
+            loadFaceQuizCard(quizIndex + 1);
+        }
+
+        function speakPersonClue() {
+            const person = state.familiarFaces[quizIndex];
+            speakText(`Memory Clue: ${person.clue}. ${person.subClue}`);
+        }
+
+        function revealFaceIdentity() {
+            const person = state.familiarFaces[quizIndex];
+            const rev = document.getElementById('revealedInfo');
+            rev.innerText = `This is your ${person.relation}, ${person.name}!`;
+            rev.classList.remove('hidden');
+        }
+
+        // Camera Simulation
+        let videoStream = null;
+        function startFaceRecognitionCam() {
+            document.getElementById('modalFaceScan').classList.remove('hidden');
+            const video = document.getElementById('liveVideo');
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        videoStream = stream;
+                        video.srcObject = stream;
+                    })
+                    .catch(() => {
+                        document.getElementById('faceScanStatus').innerText = "Webcam not available; simulation mode enabled.";
+                    });
+            }
+        }
+        function closeFaceRecognitionCam() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(t => t.stop());
+            }
+            document.getElementById('modalFaceScan').classList.add('hidden');
+        }
+        function simulateFaceMatch() {
+            document.getElementById('faceScanStatus').innerText = "Analyzing facial geometry and family records...";
+            setTimeout(() => {
+                const matched = state.familiarFaces[0];
+                document.getElementById('faceScanStatus').innerHTML = `
+                    <span class="text-emerald-600 font-black">Match Found:</span> ${matched.name} (${matched.relation})<br>
+                    <span class="text-[10px]">${matched.clue}</span>
+                `;
+                speakText(`This person is your daughter, Sarah.`);
+            }, 1200);
+        }
+
+        /* =========================================================================
+         * 7. MOVEMENT VIDEOS & TIMERS
+         * ========================================================================= */
+        function playExerciseVideo(vidId, btnId) {
+            const vid = document.getElementById(vidId);
+            const btn = document.getElementById(btnId);
+            if (vid.paused) {
+                vid.play();
+                btn.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+                btn.classList.add('opacity-0', 'hover:opacity-100');
+            } else {
+                vid.pause();
+                btn.innerHTML = `<i class="fa-solid fa-play"></i>`;
+                btn.classList.remove('opacity-0');
+            }
+        }
+
+        let exInterval = null;
+        function startExerciseTimer(title, sec) {
+            document.getElementById('modalExTimer').classList.remove('hidden');
+            document.getElementById('exTimerTitle').innerText = title;
+            let left = sec;
+            document.getElementById('exTimerSeconds').innerText = left;
+
+            clearInterval(exInterval);
+            exInterval = setInterval(() => {
+                left--;
+                document.getElementById('exTimerSeconds').innerText = left;
+                if (left <= 0) {
+                    clearInterval(exInterval);
+                    playReminderChime('Medication');
+                    addXP(30);
+                    document.getElementById('exTimerSeconds').innerText = "Done!";
+                    speakText(`Great job completing ${title}!`);
+                }
+            }, 1000);
+        }
+        function stopExerciseTimer() {
+            clearInterval(exInterval);
+            document.getElementById('modalExTimer').classList.add('hidden');
+        }
+
+        /* =========================================================================
+         * 8. HYDRATION & MEMORY NOTES
+         * ========================================================================= */
+        function changeHydration(delta) {
+            state.hydrationGlasses = Math.max(0, Math.min(12, state.hydrationGlasses + delta));
+            document.getElementById('glassCount').innerText = `${state.hydrationGlasses} / 8`;
+            if (state.hydrationGlasses === 8) {
+                addXP(25);
+                alert("🎉 Hydration target reached for today!");
+            }
+        }
+
+        let currentNoteTag = 'Symptom';
+        function setNoteTag(tag) { currentNoteTag = tag; }
+        function saveNewNote() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const text = document.getElementById('noteContent').value.trim();
+            if (title && text) {
+                state.notes.unshift({
+                    id: 'n_' + Date.now(),
+                    title,
+                    tag: currentNoteTag,
+                    text,
+                    date: 'Just now'
+                });
+                addXP(15);
+                renderNotes();
+                document.getElementById('noteTitle').value = '';
+                document.getElementById('noteContent').value = '';
+            }
+        }
+        function renderNotes() {
+            const box = document.getElementById('notesContainer');
+            box.innerHTML = '';
+            state.notes.forEach(n => {
+                const card = document.createElement('div');
+                card.className = "p-4 bg-cream-50 rounded-2xl border border-cream-200 space-y-1";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-black text-sage-800">${n.title}</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sage-200 text-sage-700">#${n.tag}</span>
+                    </div>
+                    <p class="text-xs text-sage-600">${n.text}</p>
+                    <span class="text-[10px] text-sage-400 block pt-1">${n.date}</span>
+                `;
+                box.appendChild(card);
+            });
+        }
+
+        /* =========================================================================
+         * 9. CAREGIVER DASHBOARD & SCHEDULE MANAGEMENT
+         * ========================================================================= */
+        function renderCaregiverDashboard() {
+            const done = state.tasks.filter(t => t.completed).length;
+            const total = state.tasks.length;
+            document.getElementById('caregiverProgressNum').innerText = `${done} / ${total} Done`;
+        }
+
+        function renderCaregiverFaces() {
+            const grid = document.getElementById('caregiverFacesGrid');
+            grid.innerHTML = '';
+            state.familiarFaces.forEach((f, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-3xl calm-shadow border border-sage-100 space-y-3";
+                card.innerHTML = `
+                    <img src="${f.photo}" class="w-full h-36 object-cover rounded-2xl border">
+                    <div>
+                        <div class="font-black text-sm text-sage-800">${f.name} (${f.relation})</div>
+                        <div class="text-[11px] text-sage-500 mt-1">${f.clue}</div>
+                    </div>
+                    <button onclick="editFaceClue(${idx})" class="w-full py-2 bg-sage-100 hover:bg-sage-200 text-sage-700 text-xs font-bold rounded-xl">
+                        Edit Clue
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function editFaceClue(idx) {
+            const newClue = prompt("Update voice memory clue for " + state.familiarFaces[idx].name + ":", state.familiarFaces[idx].clue);
+            if (newClue) {
+                state.familiarFaces[idx].clue = newClue;
+                renderCaregiverFaces();
+            }
+        }
+
+        function renderCaregiverSchedule() {
+            const table = document.getElementById('caregiverScheduleTable');
+            table.innerHTML = '';
+            state.tasks.forEach((t) => {
+                const row = document.createElement('div');
+                row.className = "p-3 bg-cream-50 rounded-2xl border border-cream-200 flex flex-wrap items-center justify-between gap-3";
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <input type="time" value="${t.time}" onchange="updateTaskTime('${t.id}', this.value)" class="p-1 border rounded-lg text-xs font-bold">
+                        <span class="font-bold text-xs text-sage-800">${t.title}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] bg-sage-200 px-2 py-0.5 rounded text-sage-700">${t.category}</span>
+                        <button onclick="deleteTask('${t.id}'); renderCaregiverSchedule();" class="text-rose-500 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                table.appendChild(row);
+            });
+        }
+
+        function updateTaskTime(id, newTime) {
+            const task = state.tasks.find(t => t.id === id);
+            if (task) {
+                task.time = newTime;
+                state.tasks.sort((a,b) => a.time.localeCompare(b.time));
+            }
+        }
+
+        function openAddFaceModal() {
+            const name = prompt("Person's name:");
+            const relation = prompt("Relationship to patient (e.g. Grandson, Neighbor):");
+            const clue = prompt("Memory clue to help patient remember:");
+            if (name && relation) {
+                state.familiarFaces.push({
+                    id: 'f_' + Date.now(),
+                    name,
+                    relation,
+                    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+                    clue: clue || 'Visits often with warm smiles.',
+                    subClue: 'A valued person in your life.',
+                    options: [name, 'Neighbor', 'Doctor', 'Nurse']
+                });
+                renderCaregiverFaces();
+            }
+        }
+
+        /* =========================================================================
+         * 10. CLINICAL EXPORT & ACCESSIBILITY
+         * ========================================================================= */
+        function exportClinicalReport() {
+            const report = `
+HARMONYCARE CLINICAL PROGRESSION SUMMARY
+Patient: ${state.user.name}
+Date: ${new Date().toLocaleDateString()}
+Diagnosis: Parkinson's Disease & Cognitive Coordination Protocol
+
+METRICS SUMMARY:
+- Task Initiation Latency: 14.2 minutes average
+- Most Frequent Delay/Failure: Buttoning Shirt / Fine Motor (4 snoozes this week)
+- Medication Adherence: 96% on-schedule
+- Routine Sequencing Accuracy: 88%
+- Hydration Average: 5.8 glasses/day
+
+RECOMMENDATION:
+Occupational therapy evaluation for adaptive clothing fasteners (magnetic buttons) recommended to decrease initiation frustration.
+            `;
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Clinical_Report_${state.user.name.replace(' ', '_')}.txt`;
+            a.click();
+        }
+
+        // Accessibility scaling
+        function setTextSize(sz) {
+            const html = document.documentElement;
+            if (sz === 'normal') {
+                html.style.fontSize = '16px';
+                document.getElementById('btnTextNormal').classList.add('bg-sage-600', 'text-white');
+                document.getElementById('btnTextLarge').classList.remove('bg-sage-600', 'text-white');
+            } else {
+                html.style.fontSize = '19px';
+                document.getElementById('btnTextLarge').classList.add('bg-sage-600', 'text-white');
+                document.getElementById('btnTextNormal').classList.remove('bg-sage-600', 'text-white');
+            }
+        }
+
+        // Breathing Reset
+        let bInt = null;
+        function triggerOverwhelmModal() {
+            document.getElementById('modalBreathe').classList.remove('hidden');
+            const circle = document.getElementById('bCircle');
+            const txt = document.getElementById('bTxt');
+            let phase = 0;
+            const cycle = () => {
+                if (phase === 0) {
+                    circle.className = "w-44 h-44 rounded-full bg-softblue-100 border-4 border-softblue-500 flex items-center justify-center transition-all duration-[4000ms]";
+                    txt.innerText = "Inhale (4s)";
+                    phase = 1;
+                } else if (phase === 1) {
+                    circle.className = "w-44 h-44 rounded-full bg-amber-100 border-4 border-amber-500 flex items-center justify-center transition-all duration-[3000ms]";
+                    txt.innerText = "Hold (3s)";
+                    phase = 2;
+                } else {
+                    circle.className = "w-32 h-32 rounded-full bg-sage-100 border-4 border-sage-500 flex items-center justify-center transition-all duration-[5000ms]";
+                    txt.innerText = "Exhale (5s)";
+                    phase = 0;
+                }
+            };
+            cycle();
+            bInt = setInterval(cycle, 4000);
+        }
+        function closeOverwhelmModal() {
+            clearInterval(bInt);
+            document.getElementById('modalBreathe').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            renderTasks();
+            resetSequencingGame();
+            renderNotes();
+            loadFaceQuizCard(0);
+        };
+    </script>
+</body>
+</html>
