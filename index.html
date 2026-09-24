@@ -3,53 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HarmonyCare - Multi-Timeframe Coordination & Care Platform</title>
+    <title>HarmonyCare - Cognitive Support & Multi-Timeframe Coordination</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome 6 -->
+    <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Lexend & Plus Jakarta Sans Font for exact UI match -->
+    <!-- Google Fonts: Plus Jakarta Sans & Lexend -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#1e332d',
-                            green: '#20a76a',
-                            lightgreen: '#d1fae5',
-                            cream: '#fcfaf6',
-                            border: '#e7e2d7',
-                            cardbg: '#ffffff',
-                            pill: '#ebfdf2',
-                            pilltext: '#15803d',
-                            warmbeige: '#f5efe4',
-                            warmbeigeborder: '#e6dcce',
-                            slatepill: '#334e4a',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
             background-color: #f7f5f0;
-            color: #1a2e2b;
+            color: #1b2e2b;
             font-family: 'Plus Jakarta Sans', sans-serif;
             touch-action: manipulation;
         }
 
         .calm-shadow {
-            box-shadow: 0 4px 25px -4px rgba(26, 46, 43, 0.05);
+            box-shadow: 0 4px 25px -4px rgba(26, 46, 43, 0.06);
         }
 
         .no-scrollbar::-webkit-scrollbar {
@@ -60,67 +33,81 @@
             scrollbar-width: none;
         }
 
+        @keyframes gentlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.018); }
+        }
+        .animate-gentle-pulse {
+            animation: gentlePulse 4s infinite ease-in-out;
+        }
+
         @keyframes alarmPulse {
-            0%, 100% { border-color: #ef4444; box-shadow: 0 0 25px rgba(239, 68, 68, 0.35); }
-            50% { border-color: #f59e0b; box-shadow: 0 0 35px rgba(245, 158, 11, 0.5); }
+            0%, 100% { border-color: #ef4444; box-shadow: 0 0 25px rgba(239, 68, 68, 0.4); }
+            50% { border-color: #f59e0b; box-shadow: 0 0 35px rgba(245, 158, 11, 0.6); }
         }
         .animate-alarm-pulse {
             animation: alarmPulse 1.4s infinite;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-brand-lightgreen">
+<body class="min-h-screen flex flex-col antialiased selection:bg-[#daf5e6]">
 
-    <!-- GLOBAL COMPACT TOP BAR WITH ROLE SELECTOR & SOS -->
+    <!-- ========================================================================= -->
+    <!-- GLOBAL TOP BAR WITH ROLE SELECTOR, SOS & ACCESSIBILITY                    -->
+    <!-- ========================================================================= -->
     <header class="bg-[#243c36] text-[#f7f5f0] sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-[#2e8b68] flex items-center justify-center text-white font-black text-lg shadow">
+                <div class="w-9 h-9 rounded-xl bg-[#20a76a] flex items-center justify-center text-white font-black text-lg shadow">
                     <i class="fa-solid fa-brain"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="text-lg font-extrabold tracking-tight">HarmonyCare</h1>
-                        <span id="globalRoleBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#20a76a] text-white">
-                            Caregiver Portal
+                        <span id="globalPortalBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#20a76a] text-white">
+                            Patient Portal
                         </span>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2.5">
+            <!-- Role Selector & Tools -->
+            <div class="flex items-center gap-2 sm:gap-3">
                 <!-- Emergency SOS button -->
-                <button onclick="triggerEmergencySOS()" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold text-xs flex items-center gap-1.5 shadow transition">
+                <button onclick="triggerEmergencySOS()" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold text-xs flex items-center gap-1.5 shadow transition animate-pulse">
                     <i class="fa-solid fa-phone-volume"></i>
                     <span>Emergency SOS</span>
                 </button>
 
                 <!-- Font Scaler -->
                 <div class="bg-[#1b2d29] p-0.5 rounded-xl flex items-center gap-1 border border-[#3b5951]">
-                    <button onclick="setFontSize('normal')" id="btnFontNormal" class="px-2 py-1 text-xs rounded bg-[#2e8b68] font-bold text-white">A</button>
-                    <button onclick="setFontSize('large')" id="btnFontLarge" class="px-2 py-1 text-xs rounded text-[#a7c2bb] font-bold">A+</button>
+                    <button onclick="setFontScale('normal')" id="btnFontNormal" class="px-2 py-1 text-xs rounded bg-[#20a76a] font-bold text-white">A</button>
+                    <button onclick="setFontScale('large')" id="btnFontLarge" class="px-2 py-1 text-xs rounded text-[#a7c2bb] font-bold">A+</button>
                 </div>
 
-                <!-- Role Dropdown -->
+                <!-- Three Role Portal Switcher -->
                 <div class="relative">
-                    <button onclick="toggleRoleDropdown()" class="flex items-center gap-2 bg-[#1b2d29] hover:bg-[#28423c] px-3 py-1.5 rounded-xl border border-[#3b5951] text-xs font-bold transition">
-                        <i id="roleIcon" class="fa-solid fa-house-chimney-user text-[#6ee7b7]"></i>
-                        <span id="roleLabel">2. Caregiver (Meera)</span>
+                    <button onclick="togglePortalDropdown()" class="flex items-center gap-2 bg-[#1b2d29] hover:bg-[#28423c] px-3.5 py-1.5 rounded-xl border border-[#3b5951] text-xs font-bold transition shadow-sm">
+                        <i id="portalHeaderIcon" class="fa-solid fa-user text-emerald-400"></i>
+                        <span id="portalHeaderLabel">1. Patient (John)</span>
                         <i class="fa-solid fa-chevron-down text-[10px] text-[#a7c2bb]"></i>
                     </button>
-                    <div id="roleDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 py-2 z-50 text-gray-800">
-                        <div class="px-4 py-1 text-[10px] uppercase font-black text-gray-400">Switch Workspace</div>
-                        <button onclick="setRole('patient')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center justify-between text-xs font-bold transition">
+                    <div id="portalDropdownMenu" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 py-2 z-50 text-gray-800">
+                        <div class="px-4 py-1.5 text-[10px] uppercase font-black text-gray-400">Switch Workspace</div>
+                        
+                        <button onclick="selectPortal('patient')" class="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center justify-between text-xs font-bold transition">
                             <span class="flex items-center gap-2"><i class="fa-solid fa-user text-emerald-600"></i> 1. Patient Portal</span>
-                            <span id="roleTagPatient" class="hidden text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black">Active</span>
+                            <span id="tagPortalPatient" class="text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-black">Active</span>
                         </button>
-                        <button onclick="setRole('caregiver')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center justify-between text-xs font-bold transition">
+                        
+                        <button onclick="selectPortal('caregiver')" class="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center justify-between text-xs font-bold transition">
                             <span class="flex items-center gap-2"><i class="fa-solid fa-house-chimney-user text-sky-600"></i> 2. Caregiver Portal</span>
-                            <span id="roleTagCaregiver" class="text-[9px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-black">Active</span>
+                            <span id="tagPortalCaregiver" class="hidden text-[9px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-black">Active</span>
                         </button>
-                        <button onclick="setRole('doctor')" class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center justify-between text-xs font-bold transition">
-                            <span class="flex items-center gap-2"><i class="fa-solid fa-user-doctor text-purple-700"></i> 3. Doctor/Clinician</span>
-                            <span id="roleTagDoctor" class="hidden text-[9px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-black">Active</span>
+
+                        <button onclick="selectPortal('doctor')" class="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center justify-between text-xs font-bold transition">
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-user-doctor text-purple-700"></i> 3. Doctor / Clinician</span>
+                            <span id="tagPortalDoctor" class="hidden text-[9px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-black">Active</span>
                         </button>
                     </div>
                 </div>
@@ -128,7 +115,7 @@
         </div>
     </header>
 
-    <!-- MAIN BODY CONTAINER -->
+    <!-- MAIN BODY -->
     <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
 
         <!-- ========================================================================= -->
@@ -150,7 +137,7 @@
 
                     <!-- Greeting Heading & Default Wake Up Subtitle -->
                     <h2 class="text-3xl md:text-[34px] font-black text-[#1b2e2b] tracking-tight leading-tight" id="heroGreetingName">
-                        Good Day, Meera (Caregiver)
+                        Good Day, John
                     </h2>
                     <p class="text-xs sm:text-[13px] text-[#4f6761] mt-1 font-medium">
                         Default Wake-up set to <strong class="text-[#1b2e2b] font-bold" id="defaultWakeTimeText">08:00 AM</strong>. Custom times automatically adjust your sequence.
@@ -159,13 +146,11 @@
 
                 <!-- Right Action Buttons (Adjust Wake Time & Read Aloud) -->
                 <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto mt-2 lg:mt-0">
-                    <!-- Adjust Wake Time -->
                     <button onclick="openWakeTimeModal()" class="px-4 py-2.5 bg-[#f6f0e4] hover:bg-[#ede3d4] text-[#433221] font-bold text-xs sm:text-[13px] rounded-2xl flex items-center gap-2 border border-[#e8ded0] transition shadow-sm">
                         <i class="fa-regular fa-clock text-[#d97706] text-sm"></i>
                         <span>Adjust Wake Time</span>
                     </button>
 
-                    <!-- Read Aloud Button -->
                     <button onclick="readScheduleAloud()" class="px-4 py-2.5 bg-[#f7fbf9] hover:bg-[#ebf4f0] text-[#24423b] font-bold text-xs sm:text-[13px] rounded-2xl flex items-center gap-2 border border-[#dcebe4] transition shadow-sm">
                         <i class="fa-solid fa-volume-high text-[#345c52] text-sm"></i>
                         <span>Read Aloud</span>
@@ -223,8 +208,8 @@
                         <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black text-[#6d28d9] bg-[#f3e8ff]">
                             Clinical & Self Progress
                         </span>
-                        <span class="text-xs font-bold text-[#627771]">
-                            UID: HC-CG-4102
+                        <span class="text-xs font-bold text-[#627771]" id="displayUID">
+                            UID: HC-PT-1049
                         </span>
                     </div>
 
@@ -257,9 +242,9 @@
                 <div class="bg-[#f0fbf5] rounded-2xl p-4 sm:p-5 border border-[#c7ebd7] flex flex-col justify-between">
                     <div>
                         <span class="text-[10px] font-black uppercase tracking-wider text-[#1d8753] block">COMPLETION RATE</span>
-                        <div class="text-2xl sm:text-3xl font-black text-[#14663e] mt-1">75%</div>
+                        <div class="text-2xl sm:text-3xl font-black text-[#14663e] mt-1" id="statCompletionPct">75%</div>
                     </div>
-                    <span class="text-[11px] font-bold text-[#1d8753] mt-3">3 of 4 core tasks done</span>
+                    <span class="text-[11px] font-bold text-[#1d8753] mt-3" id="statCoreTasksText">3 of 4 core tasks done</span>
                 </div>
 
                 <!-- 2. Initiation Latency -->
@@ -282,37 +267,42 @@
 
                 <!-- 4. Hydration Target -->
                 <div class="bg-[#faf5ff] rounded-2xl p-4 sm:p-5 border border-[#ebd5ff] flex flex-col justify-between">
-                    <div>
-                        <span class="text-[10px] font-black uppercase tracking-wider text-[#7e22ce] block">HYDRATION TARGET</span>
-                        <div class="text-2xl sm:text-3xl font-black text-[#581c87] mt-1">5 / 7 Glasses</div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-black uppercase tracking-wider text-[#7e22ce] block">HYDRATION TARGET</span>
+                            <div class="text-2xl sm:text-3xl font-black text-[#581c87] mt-1" id="statHydrationText">5 / 7 Glasses</div>
+                        </div>
+                        <div class="flex gap-1">
+                            <button onclick="changeHydration(-1)" class="w-6 h-6 rounded bg-[#ebd5ff] text-[#581c87] font-bold text-xs flex items-center justify-center">-</button>
+                            <button onclick="changeHydration(1)" class="w-6 h-6 rounded bg-[#7e22ce] text-white font-bold text-xs flex items-center justify-center">+</button>
+                        </div>
                     </div>
                     <span class="text-[11px] font-bold text-[#7e22ce] mt-3">Steady gut motility</span>
                 </div>
             </div>
 
-            <!-- VIEW A: DAILY LOG TIMELINE CONTAINER -->
+            <!-- VIEW A: DAILY LOG TIMELINE CONTAINER (Matches Screenshot 2 Exactly) -->
             <div id="viewTimeframeDaily" class="space-y-4 pt-4 border-t border-[#eee8db]">
                 <div class="flex items-center justify-between">
                     <h4 class="font-extrabold text-sm sm:text-base text-[#1b2e2b] flex items-center gap-2">
                         <i class="fa-solid fa-clock-rotate-left text-[#3d635a]"></i>
                         <span>Today's Coordinated Timeline</span>
                     </h4>
-                    <span class="text-xs text-[#527068] font-bold">Tap any row to preview chime or toggle status</span>
+                    <span class="text-xs text-[#527068] font-bold">Tap any row to toggle Done / Pending & sound chime</span>
                 </div>
 
-                <!-- Dynamic Timeline List -->
+                <!-- Timeline Rows -->
                 <div id="coordinatedTimelineList" class="space-y-2.5">
-                    <!-- Injected dynamically in JavaScript with exact Screenshot 2 pills & strikethroughs -->
+                    <!-- Populated dynamically with exact styling -->
                 </div>
             </div>
 
-            <!-- VIEW B: WEEKLY BARS (Hidden by default) -->
+            <!-- VIEW B: WEEKLY BARS -->
             <div id="viewTimeframeWeekly" class="hidden space-y-4 pt-4 border-t border-[#eee8db]">
                 <div class="flex justify-between items-center">
                     <h4 class="font-extrabold text-sm sm:text-base text-[#1b2e2b]">Weekly Routine Adherence & Delay Frequency</h4>
                     <span class="text-xs bg-[#e8f6ee] text-[#1e8353] px-2.5 py-1 rounded-full font-bold">89% Weekly Adherence</span>
                 </div>
-                <!-- Mon - Sun Columns -->
                 <div class="grid grid-cols-7 gap-3 pt-4 text-center">
                     <div>
                         <div class="h-32 bg-[#f6f2e9] rounded-xl flex items-end justify-center p-1.5">
@@ -366,141 +356,448 @@
                 </div>
             </div>
 
-            <!-- VIEW C: MONTHLY HEATMAP (Hidden by default) -->
+            <!-- VIEW C: MONTHLY HEATMAP -->
             <div id="viewTimeframeMonthly" class="hidden space-y-4 pt-4 border-t border-[#eee8db]">
                 <div class="flex justify-between items-center">
                     <h4 class="font-extrabold text-sm sm:text-base text-[#1b2e2b]">Monthly Stability Heatmap (September 2026)</h4>
-                    <span class="text-xs text-[#527068] font-bold">Darker green = Smooth coordination</span>
+                    <span class="text-xs text-[#527068] font-bold">Dark green indicates high coordination consistency</span>
                 </div>
-                <div id="monthlyHeatmapContainer" class="grid grid-cols-7 gap-2 pt-2">
-                    <!-- Populated by JS -->
+                <div id="monthlyHeatmapGrid" class="grid grid-cols-7 gap-2 pt-2">
+                    <!-- Injected by JS -->
                 </div>
             </div>
         </section>
 
         <!-- ========================================================================= -->
-        <!-- ROLE-SPECIFIC SECTIONS: CAREGIVER / DOCTOR / PATIENT                      -->
+        <!-- SITE 1: PATIENT PORTAL INTERFACE                                          -->
+        <!-- Restores full tabs: Daily Tasks, Mind Games, Movement, Diet, Holistic, Faces -->
         <!-- ========================================================================= -->
-
-        <!-- 2. CAREGIVER DEDICATED MANAGEMENT TOOLS (Visible when Caregiver active) -->
-        <section id="sectionCaregiverTools" class="bg-white rounded-[28px] p-6 md:p-8 calm-shadow border border-[#ece8de] space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#eee8db] pb-4">
-                <div>
-                    <span class="text-[11px] font-black uppercase tracking-wider text-[#0284c7] bg-[#e0f2fe] px-2.5 py-1 rounded-full">
-                        Caregiver Toolkit
-                    </span>
-                    <h3 class="text-xl font-black text-[#1b2e2b] mt-1.5">Manage Routines, Alerts, People & Doctor Notes</h3>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="openAddRoutineModal()" class="px-3.5 py-2 bg-[#0284c7] hover:bg-[#0369a1] text-white rounded-xl text-xs font-bold shadow flex items-center gap-1.5">
-                        <i class="fa-solid fa-plus"></i> Create Routine / Med
+        <section id="site-patient" class="space-y-6">
+            <!-- Patient Sub-navigation bar -->
+            <nav class="bg-[#e9ede8] border border-[#d6ddd4] rounded-2xl p-1.5 shadow-sm">
+                <div class="flex overflow-x-auto no-scrollbar gap-2 text-xs sm:text-[13px] font-bold">
+                    <button onclick="switchPatientSection('tasks')" id="ptab-tasks" class="px-4 py-2.5 rounded-xl bg-[#20a76a] text-white shadow transition whitespace-nowrap flex items-center gap-2">
+                        <i class="fa-solid fa-list-check"></i> Daily Tasks & Focus
                     </button>
-                    <button onclick="openAddPersonModal()" class="px-3.5 py-2 bg-[#20a76a] hover:bg-[#15803d] text-white rounded-xl text-xs font-bold shadow flex items-center gap-1.5">
-                        <i class="fa-solid fa-user-plus"></i> Add Familiar Person
+                    <button onclick="switchPatientSection('games')" id="ptab-games" class="px-4 py-2.5 rounded-xl text-[#354f52] hover:bg-[#d8e0d6] transition whitespace-nowrap flex items-center gap-2">
+                        <i class="fa-solid fa-puzzle-piece"></i> Mind Games
+                    </button>
+                    <button onclick="switchPatientSection('exercise')" id="ptab-exercise" class="px-4 py-2.5 rounded-xl text-[#354f52] hover:bg-[#d8e0d6] transition whitespace-nowrap flex items-center gap-2">
+                        <i class="fa-solid fa-person-walking"></i> Movement & Speech
+                    </button>
+                    <button onclick="switchPatientSection('diet')" id="ptab-diet" class="px-4 py-2.5 rounded-xl text-[#354f52] hover:bg-[#d8e0d6] transition whitespace-nowrap flex items-center gap-2">
+                        <i class="fa-solid fa-apple-whole"></i> Nutrition Guide
+                    </button>
+                    <button onclick="switchPatientSection('remedies')" id="ptab-remedies" class="px-4 py-2.5 rounded-xl text-[#354f52] hover:bg-[#d8e0d6] transition whitespace-nowrap flex items-center gap-2">
+                        <i class="fa-solid fa-spa"></i> Holistic Care
+                    </button>
+                    <button onclick="switchPatientSection('faces')" id="ptab-faces" class="px-4 py-2.5 rounded-xl text-[#354f52] hover:bg-[#d8e0d6] transition whitespace-nowrap flex items-center gap-2">
+                        <i class="fa-solid fa-id-badge"></i> Familiar Faces Recall
                     </button>
                 </div>
-            </div>
+            </nav>
 
-            <!-- 4 Caregiver Feature Cards -->
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- A. Set Medication Reminders & Activity Status -->
-                <div class="bg-[#fbf9f4] p-5 rounded-2xl border border-[#ede5d8] space-y-3">
-                    <h4 class="font-bold text-sm text-[#1b2e2b] flex items-center gap-2">
-                        <i class="fa-solid fa-pills text-[#e11d48]"></i>
-                        <span>Medication Reminders & Alerts</span>
-                    </h4>
-                    <p class="text-xs text-[#527068]">Alerts generated if medication is delayed by more than 15 minutes.</p>
-                    <div id="caregiverAlertsFeed" class="space-y-2 pt-1">
-                        <!-- Populated by JS -->
+            <!-- 1. DAILY TASKS & ONE-TASK FOCUS CARD -->
+            <div id="psec-tasks" class="space-y-6">
+                <!-- Focus View vs All View Switcher -->
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#e5dfd3] pb-3">
+                    <div class="flex gap-2">
+                        <button onclick="setFocusMode('single')" id="mode-single" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-[#2e5248] text-white shadow-sm flex items-center gap-2">
+                            <i class="fa-solid fa-bullseye"></i> One Task Focus (Anti-Overwhelm)
+                        </button>
+                        <button onclick="setFocusMode('all')" id="mode-all" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-[#f0ebd9] hover:bg-[#e4dec8] text-[#2e5248] transition flex items-center gap-2">
+                            <i class="fa-solid fa-list-ul"></i> All Tasks List
+                        </button>
+                    </div>
+                    <button onclick="openAddTaskModal()" class="px-4 py-2 bg-[#20a76a] hover:bg-[#15803d] text-white font-bold text-xs sm:text-sm rounded-xl shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i> Add New Task
+                    </button>
+                </div>
+
+                <!-- Single Focus Card -->
+                <div id="view-single-task" class="space-y-4">
+                    <div id="singleTaskCard" class="bg-white rounded-3xl p-8 md:p-12 calm-shadow border-2 border-[#e3dccf] text-center animate-gentle-pulse flex flex-col items-center justify-center min-h-[300px]">
+                        <!-- Rendered by JS -->
                     </div>
                 </div>
 
-                <!-- B. Add Notes for Doctor -->
+                <!-- All Tasks List -->
+                <div id="view-all-tasks" class="hidden space-y-3">
+                    <div id="allTasksContainer" class="space-y-3"></div>
+                </div>
+
+                <!-- Memory Notes Scratchpad on main task view -->
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-[#ece8de] space-y-4">
+                    <div class="flex justify-between items-center border-b border-[#eee8db] pb-3">
+                        <h4 class="font-extrabold text-base text-[#1b2e2b] flex items-center gap-2">
+                            <i class="fa-solid fa-book-journal-whills text-[#d97706]"></i>
+                            <span>Memory Notes & Doctor Questions</span>
+                        </h4>
+                        <button onclick="savePatientNote()" class="px-4 py-1.5 bg-[#243c36] text-white rounded-xl text-xs font-bold shadow">
+                            Save Note (+15 XP)
+                        </button>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="space-y-2">
+                            <input type="text" id="patNoteTitle" placeholder="Title (e.g. Afternoon Hand Tremor)" class="w-full p-2 border rounded-xl text-xs">
+                            <textarea id="patNoteBody" rows="3" placeholder="What happened or what do you want to ask Dr. Sharma?..." class="w-full p-2 border rounded-xl text-xs"></textarea>
+                        </div>
+                        <div class="md:col-span-2 space-y-2 max-h-48 overflow-y-auto" id="patNotesLog">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. MIND GAMES PORTAL -->
+            <div id="psec-games" class="hidden space-y-6">
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-[#ece8de]">
+                    <div class="flex justify-between items-center flex-wrap gap-2">
+                        <div>
+                            <h3 class="text-xl font-black text-[#1b2e2b]">Cognitive Stability & Calm Mind Games</h3>
+                            <p class="text-xs text-[#527068]">Low-stress puzzles designed to enhance memory, sequencing, and rhythm.</p>
+                        </div>
+                        <span class="px-3 py-1 bg-[#fef3c7] text-[#92400e] text-xs font-bold rounded-xl border border-[#fde68a]">+50 XP per Game</span>
+                    </div>
+                    <div class="flex gap-2 border-b border-[#eee8db] py-3 overflow-x-auto no-scrollbar">
+                        <button onclick="loadMindGame('sequencing')" id="mgtab-sequencing" class="px-4 py-2 text-xs font-bold rounded-xl bg-[#20a76a] text-white shadow whitespace-nowrap">
+                            <i class="fa-solid fa-arrow-down-1-9 mr-1"></i> Real-Life Sequencing
+                        </button>
+                        <button onclick="loadMindGame('memory')" id="mgtab-memory" class="px-4 py-2 text-xs font-bold rounded-xl bg-[#f6f0e4] text-[#433221] whitespace-nowrap">
+                            <i class="fa-solid fa-shapes mr-1"></i> Pattern Memory
+                        </button>
+                        <button onclick="loadMindGame('word')" id="mgtab-word" class="px-4 py-2 text-xs font-bold rounded-xl bg-[#f6f0e4] text-[#433221] whitespace-nowrap">
+                            <i class="fa-solid fa-font mr-1"></i> Word Association
+                        </button>
+                        <button onclick="loadMindGame('tap')" id="mgtab-tap" class="px-4 py-2 text-xs font-bold rounded-xl bg-[#f6f0e4] text-[#433221] whitespace-nowrap">
+                            <i class="fa-solid fa-hand-pointer mr-1"></i> Gentle Tap Rhythm
+                        </button>
+                    </div>
+
+                    <!-- Game 1: Sequencing -->
+                    <div id="game-sequencing-container" class="space-y-4 pt-4">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-sm text-[#1b2e2b]">Scenario: Preparing for a Doctor's Clinic Visit</h4>
+                            <button onclick="resetSequencingPuzzle()" class="px-3 py-1 bg-gray-100 rounded-lg text-xs font-bold text-gray-700">Restart Order</button>
+                        </div>
+                        <div id="seqCardsGrid" class="grid sm:grid-cols-2 md:grid-cols-3 gap-2.5"></div>
+                        <div class="p-3 bg-[#fdfaf2] rounded-xl border border-[#f5ebd7] min-h-[44px]">
+                            <span class="text-[11px] font-bold uppercase text-[#92400e] block mb-1">Placed Order:</span>
+                            <div id="seqPlacedRow" class="flex flex-wrap gap-2"></div>
+                        </div>
+                        <div id="seqOutcomeMsg" class="text-center font-bold text-xs min-h-[18px]"></div>
+                    </div>
+
+                    <!-- Game 2: Memory -->
+                    <div id="game-memory-container" class="hidden space-y-4 pt-4">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-sm text-[#1b2e2b]">Gentle Nature Matching</h4>
+                            <button onclick="resetMemoryMatch()" class="px-3 py-1 bg-gray-100 rounded-lg text-xs font-bold text-gray-700">New Board</button>
+                        </div>
+                        <div id="memoryGridBox" class="grid grid-cols-4 gap-3 max-w-sm mx-auto"></div>
+                        <div id="memoryResultText" class="text-center font-bold text-sm text-[#1e8353]"></div>
+                    </div>
+
+                    <!-- Game 3: Word -->
+                    <div id="game-word-container" class="hidden text-center space-y-4 pt-4 max-w-md mx-auto">
+                        <span class="text-xs uppercase font-bold text-gray-400">Concept Association</span>
+                        <div id="targetWordCard" class="text-2xl font-black text-[#1b2e2b] bg-[#fbf8f2] p-4 rounded-2xl border border-[#eee7da]">MORNING</div>
+                        <div id="wordChoicesGrid" class="grid grid-cols-2 gap-3"></div>
+                        <div id="wordResultMsg" class="text-xs font-bold min-h-[16px]"></div>
+                    </div>
+
+                    <!-- Game 4: Tap Rhythm -->
+                    <div id="game-tap-container" class="hidden text-center space-y-4 pt-4">
+                        <h4 class="font-bold text-sm text-[#1b2e2b]">Motor Rhythm & Timing</h4>
+                        <div class="py-6 flex justify-center">
+                            <button id="tapRhythmOrb" onclick="handleTapRhythm()" class="w-32 h-32 rounded-full bg-[#38bdf8] text-white font-bold text-sm calm-shadow border-4 border-[#e0f2fe] flex items-center justify-center transition transform active:scale-95">
+                                Tap Here
+                            </button>
+                        </div>
+                        <div id="tapCountLabel" class="text-xs font-bold text-[#1b2e2b]">Smooth Taps: 0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. MOVEMENT & SPEECH PORTAL -->
+            <div id="psec-exercise" class="hidden space-y-6">
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-[#ece8de] flex justify-between items-center">
+                    <div>
+                        <h3 class="text-xl font-black text-[#1b2e2b]">Movement, Balance & Speech Mobility</h3>
+                        <p class="text-xs text-[#527068]">High amplitude physical stretches to overcome Parkinsonian motor rigidity.</p>
+                    </div>
+                    <button onclick="toggleMetronomeBeep()" id="btnMetronomeBeep" class="px-4 py-2 bg-[#f6f0e4] hover:bg-[#ede5d6] text-[#433221] rounded-xl text-xs font-bold border border-[#e8ded0]">
+                        <i class="fa-solid fa-drum text-[#d97706] mr-1"></i> 100 BPM Metronome
+                    </button>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-3xl overflow-hidden calm-shadow border border-[#ece8de]">
+                        <div class="relative bg-black aspect-video flex items-center justify-center">
+                            <video id="vidMove1" class="w-full h-full object-cover" loop muted playsinline poster="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80">
+                                <source src="https://assets.mixkit.co/videos/preview/mixkit-senior-woman-practicing-yoga-with-arms-raised-41484-large.mp4" type="video/mp4">
+                            </video>
+                            <button onclick="toggleVideoPlayback('vidMove1', 'btnPlayMove1')" id="btnPlayMove1" class="absolute w-12 h-12 rounded-full bg-[#20a76a] text-white flex items-center justify-center text-lg shadow">
+                                <i class="fa-solid fa-play"></i>
+                            </button>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h4 class="font-bold text-sm text-[#1b2e2b]">Big Reach Sweeps</h4>
+                            <p class="text-xs text-[#527068]">Sit tall. Open both arms wide like a warm embrace, then sweep high over head.</p>
+                            <button onclick="startExerciseTimer('Big Reach Sweeps', 30)" class="w-full py-2.5 bg-[#243c36] text-white rounded-xl font-bold text-xs shadow">
+                                Start Guided 30s Pace (+30 XP)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl overflow-hidden calm-shadow border border-[#ece8de]">
+                        <div class="relative bg-black aspect-video flex items-center justify-center">
+                            <video id="vidMove2" class="w-full h-full object-cover" loop muted playsinline poster="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80">
+                                <source src="https://assets.mixkit.co/videos/preview/mixkit-elderly-woman-smiling-outdoors-41489-large.mp4" type="video/mp4">
+                            </video>
+                            <button onclick="toggleVideoPlayback('vidMove2', 'btnPlayMove2')" id="btnPlayMove2" class="absolute w-12 h-12 rounded-full bg-[#20a76a] text-white flex items-center justify-center text-lg shadow">
+                                <i class="fa-solid fa-play"></i>
+                            </button>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h4 class="font-bold text-sm text-[#1b2e2b]">Facial & Vocal Projection (AHHH)</h4>
+                            <p class="text-xs text-[#527068]">Exaggerate facial movements while speaking loud, clear vowel sounds.</p>
+                            <button onclick="startExerciseTimer('Vocal Warmup', 20)" class="w-full py-2.5 bg-[#243c36] text-white rounded-xl font-bold text-xs shadow">
+                                Start Guided 20s Pace (+30 XP)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. NUTRITION GUIDE -->
+            <div id="psec-diet" class="hidden space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-3xl p-6 calm-shadow border border-[#c7ebd7] space-y-3">
+                        <h4 class="font-bold text-base text-[#14663e] flex items-center gap-2">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            <span>5 Foods That Support Dopamine & Brain Health</span>
+                        </h4>
+                        <ul class="text-xs text-[#1b2e2b] space-y-2">
+                            <li class="p-2 bg-[#f0fbf5] rounded-xl"><strong>1. Berries & Antioxidant Fruits:</strong> Guard against neural cellular fatigue.</li>
+                            <li class="p-2 bg-[#f0fbf5] rounded-xl"><strong>2. Leafy Greens (Spinach & Kale):</strong> Rich in folate for digestion.</li>
+                            <li class="p-2 bg-[#f0fbf5] rounded-xl"><strong>3. Omega-3 Fish & Walnuts:</strong> Bolster myelin neural insulation.</li>
+                            <li class="p-2 bg-[#f0fbf5] rounded-xl"><strong>4. Fava Beans:</strong> Natural botanical source containing levodopa compounds.</li>
+                            <li class="p-2 bg-[#f0fbf5] rounded-xl"><strong>5. Probiotic Yogurt:</strong> Supports the gut-brain axis for medicine absorption.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 calm-shadow border border-[#fae8be] space-y-3">
+                        <h4 class="font-bold text-base text-[#92400e] flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Medication Timing & Meal Considerations</span>
+                        </h4>
+                        <div class="text-xs text-[#1b2e2b] space-y-2">
+                            <div class="p-2.5 bg-[#fdfaf2] rounded-xl">
+                                <strong>Heavy Protein Separation:</strong> Dietary proteins compete with Levodopa. Space protein 45 minutes after medicine.
+                            </div>
+                            <div class="p-2.5 bg-[#fdfaf2] rounded-xl">
+                                <strong>Late Afternoon Caffeine:</strong> Can exaggerate tremor and disturb peaceful sleep.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. HOLISTIC CARE & AYURVEDA -->
+            <div id="psec-remedies" class="hidden space-y-6">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-3xl p-5 calm-shadow border border-[#ece8de] space-y-2">
+                        <h4 class="font-bold text-sm text-[#1b2e2b]">Warm Self-Massage (Abhyanga)</h4>
+                        <p class="text-xs text-[#527068]">Warm sesame oil applied gently to joints eases morning stiffness and calms the nervous system.</p>
+                        <span class="inline-block px-2 py-0.5 bg-[#f0fbf5] text-[#14663e] text-[10px] rounded font-bold">Nervous Grounding</span>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-5 calm-shadow border border-[#ece8de] space-y-2">
+                        <h4 class="font-bold text-sm text-[#1b2e2b]">Calming Botanical Teas</h4>
+                        <p class="text-xs text-[#527068]">Warm Chamomile or Ashwagandha infusion late in the afternoon promotes smooth muscle relaxation.</p>
+                        <span class="inline-block px-2 py-0.5 bg-[#f0fbf5] text-[#14663e] text-[10px] rounded font-bold">Mind Tranquility</span>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-5 calm-shadow border border-[#ece8de] space-y-2">
+                        <h4 class="font-bold text-sm text-[#1b2e2b]">Rhythmic 4-7-8 Breathing</h4>
+                        <p class="text-xs text-[#527068]">Quickly reset when overwhelmed to steady hands and center your focus.</p>
+                        <button onclick="triggerOverwhelmResetModal()" class="w-full py-2 bg-[#20a76a] text-white rounded-xl text-xs font-bold shadow">
+                            Start Calm Breathing
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. FAMILIAR FACES RECALL & QUIZ -->
+            <div id="psec-faces" class="hidden space-y-6">
+                <div class="bg-white rounded-3xl p-6 calm-shadow border border-[#ece8de] space-y-4">
+                    <div class="flex justify-between items-center border-b border-[#eee8db] pb-3">
+                        <div>
+                            <h4 class="font-black text-base text-[#1b2e2b]">Familiar Faces & Loved Ones Recall</h4>
+                            <p class="text-xs text-[#527068]">Gentle memory prompts to remember relatives and friends without embarrassment.</p>
+                        </div>
+                        <button onclick="nextPatientFaceCard()" class="px-3.5 py-1.5 bg-[#243c36] text-white rounded-xl text-xs font-bold">
+                            Next Face <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-6 bg-[#fbf8f2] p-5 rounded-2xl border border-[#eee7da]">
+                        <img id="patFacePhoto" src="" class="w-36 h-36 rounded-2xl object-cover border-4 border-white shadow">
+                        <div class="space-y-2 flex-1 text-center sm:text-left">
+                            <span class="text-[10px] font-black uppercase text-[#92400e] bg-[#fef3c7] px-2.5 py-0.5 rounded-full">Memory Prompt</span>
+                            <h5 class="text-base font-black text-[#1b2e2b]" id="patFaceClueText"></h5>
+                            <button onclick="speakFacePrompt()" class="px-3 py-1 bg-white border border-[#e4dcce] rounded-lg text-xs font-bold text-[#44635b]">
+                                <i class="fa-solid fa-volume-high mr-1"></i> Hear Clue Aloud
+                            </button>
+                            <button onclick="revealFaceRelation()" class="text-xs font-bold text-[#0284c7] underline block pt-1">
+                                Need a hint? Tap for relation
+                            </button>
+                            <div id="patFaceRevealBox" class="hidden text-xs font-bold bg-[#e0f2fe] text-[#0369a1] p-2 rounded-lg"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-xs font-bold text-gray-600 mb-2">Select the person's name:</div>
+                        <div id="patFaceOptionsGrid" class="grid grid-cols-2 gap-3"></div>
+                        <div id="patFaceFeedback" class="text-center font-bold text-xs mt-2 min-h-[16px]"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- SITE 2: CAREGIVER PORTAL (MEERA) - ALL 6 REQUESTED FEATURES                -->
+        <!-- 1. Create/edit routine                                                    -->
+        <!-- 2. Set medication reminders                                               -->
+        <!-- 3. Add familiar people                                                    -->
+        <!-- 4. See completed/missed activities                                        -->
+        <!-- 5. Receive alerts                                                         -->
+        <!-- 6. Add notes for doctor                                                   -->
+        <!-- ========================================================================= -->
+        <section id="site-caregiver" class="hidden space-y-6">
+            <div class="bg-white rounded-[28px] p-6 calm-shadow border border-[#ece8de] space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#eee8db] pb-4">
+                    <div>
+                        <span class="px-2.5 py-0.5 bg-[#e0f2fe] text-[#0369a1] rounded-full text-[10px] font-black uppercase">Caregiver Oversight</span>
+                        <h3 class="text-xl font-black text-[#1b2e2b] mt-1">Meera's Caregiver Administration Dashboard</h3>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="openAddTaskModal()" class="px-3.5 py-2 bg-[#0284c7] hover:bg-[#0369a1] text-white rounded-xl text-xs font-bold shadow">
+                            <i class="fa-solid fa-plus mr-1"></i> Create / Edit Routine & Med
+                        </button>
+                        <button onclick="openAddPersonModal()" class="px-3.5 py-2 bg-[#20a76a] hover:bg-[#15803d] text-white rounded-xl text-xs font-bold shadow">
+                            <i class="fa-solid fa-user-plus mr-1"></i> Add Familiar Person
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- 4. See completed/missed activities -->
+                    <div class="bg-[#fbf9f4] p-5 rounded-2xl border border-[#ede5d8] space-y-3">
+                        <h4 class="font-bold text-sm text-[#1b2e2b] flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-[#0284c7]"></i>
+                            <span>Completed & Missed Activities Audit</span>
+                        </h4>
+                        <div id="cgActivityAuditList" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
+                    </div>
+
+                    <!-- 5. Receive alerts -->
+                    <div class="bg-[#fbf9f4] p-5 rounded-2xl border border-rose-200 space-y-3">
+                        <h4 class="font-bold text-sm text-rose-900 flex items-center gap-2">
+                            <i class="fa-solid fa-bell text-rose-600 animate-bounce"></i>
+                            <span>Real-Time Alerts & Hesitation Warnings</span>
+                        </h4>
+                        <div id="cgAlertsFeed" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+
+                <!-- 6. Add notes for doctor -->
                 <div class="bg-[#fbf9f4] p-5 rounded-2xl border border-[#ede5d8] space-y-3">
                     <h4 class="font-bold text-sm text-[#1b2e2b] flex items-center gap-2">
                         <i class="fa-solid fa-notes-medical text-[#7c3aed]"></i>
-                        <span>Caregiver Notes for Doctor</span>
+                        <span>Add Clinical Notes for Dr. Sharma</span>
                     </h4>
-                    <p class="text-xs text-[#527068]">Directly transmitted to Dr. Sharma's clinical portal for next consultation.</p>
-                    <div class="space-y-2">
-                        <input type="text" id="inCaregiverNoteTitle" placeholder="Topic (e.g. Freezing of gait before lunch)" class="w-full px-3 py-2 text-xs border border-[#d8d0c2] rounded-xl">
-                        <textarea id="inCaregiverNoteText" rows="2" placeholder="Clinical observation (e.g. Levodopa took 30 mins to kick in today)..." class="w-full p-2.5 text-xs border border-[#d8d0c2] rounded-xl"></textarea>
-                        <button onclick="submitCaregiverNoteForDoctor()" class="w-full py-2 bg-[#334e4a] hover:bg-[#233834] text-white rounded-xl font-bold text-xs shadow">
-                            Save & Send to Doctor Portal
-                        </button>
+                    <div class="grid md:grid-cols-3 gap-3">
+                        <div class="space-y-2">
+                            <input type="text" id="cgDoctorNoteTitle" placeholder="Topic (e.g. Freezing of gait before 2 PM dose)" class="w-full p-2 border rounded-xl text-xs">
+                            <textarea id="cgDoctorNoteBody" rows="3" placeholder="Clinical observation (e.g. Tremor in thumb, dressing latency was 19 mins)..." class="w-full p-2 border rounded-xl text-xs"></textarea>
+                            <button onclick="saveCaregiverDoctorNote()" class="w-full py-2 bg-[#243c36] text-white rounded-xl font-bold text-xs shadow">
+                                Submit to Doctor Portal
+                            </button>
+                        </div>
+                        <div class="md:col-span-2 space-y-2 max-h-44 overflow-y-auto" id="cgSubmittedDoctorNotes"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. DOCTOR / CLINICIAN TOOLS (Visible when Doctor active) -->
-        <section id="sectionDoctorTools" class="hidden bg-white rounded-[28px] p-6 md:p-8 calm-shadow border-2 border-[#e9d5ff] space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#f3e8ff] pb-4">
-                <div>
-                    <span class="text-[11px] font-black uppercase tracking-wider text-[#6b21a8] bg-[#f3e8ff] px-2.5 py-1 rounded-full">
-                        Neurology & Motor Disorders Clinic
-                    </span>
-                    <h3 class="text-xl font-black text-[#1b2e2b] mt-1.5">Dr. Sharma Consultation & Diagnostic Review</h3>
+        <!-- ========================================================================= -->
+        <!-- SITE 3: DOCTOR / CLINICIAN PORTAL (DR. SHARMA) - ALL 5 REQUESTED FEATURES  -->
+        <!-- 1. View patient-provided activity history                                 -->
+        <!-- 2. View caregiver notes                                                   -->
+        <!-- 3. View trends                                                            -->
+        <!-- 4. Export report                                                          -->
+        <!-- 5. Add professional notes                                                 -->
+        <!-- ========================================================================= -->
+        <section id="site-doctor" class="hidden space-y-6">
+            <div class="bg-white rounded-[28px] p-6 calm-shadow border-2 border-[#e9d5ff] space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#f3e8ff] pb-4">
+                    <div>
+                        <span class="px-2.5 py-0.5 bg-[#f3e8ff] text-[#6b21a8] rounded-full text-[10px] font-black uppercase">Neurology Consultation</span>
+                        <h3 class="text-xl font-black text-[#1b2e2b] mt-1">Dr. Sharma - Patient Clinical History & Directives</h3>
+                    </div>
+                    <!-- 4. Export report -->
+                    <button onclick="exportClinicalReport()" class="px-4 py-2 bg-[#6b21a8] hover:bg-[#581c87] text-white font-bold text-xs rounded-xl shadow flex items-center gap-2">
+                        <i class="fa-solid fa-file-arrow-down"></i> Export Official Report (.txt)
+                    </button>
                 </div>
-                <button onclick="exportClinicalSummaryReport()" class="px-4 py-2.5 bg-[#6b21a8] hover:bg-[#581c87] text-white rounded-xl text-xs font-bold shadow flex items-center gap-2 transition">
-                    <i class="fa-solid fa-file-arrow-down"></i>
-                    <span>Export Report (.txt)</span>
-                </button>
-            </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Caregiver Notes for Doctor -->
-                <div class="p-5 bg-[#faf5ff] rounded-2xl border border-[#e9d5ff] space-y-3">
-                    <h4 class="font-bold text-sm text-[#581c87] flex items-center gap-2">
-                        <i class="fa-solid fa-clipboard-list"></i>
-                        <span>Caregiver Submissions for Doctor</span>
-                    </h4>
-                    <div id="doctorCaregiverNotesReview" class="space-y-2 max-h-48 overflow-y-auto">
-                        <!-- Populated by JS -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- 1. View patient-provided activity history -->
+                    <div class="p-5 bg-[#faf5ff] rounded-2xl border border-[#e9d5ff] space-y-2">
+                        <h4 class="font-bold text-xs text-[#581c87] uppercase tracking-wider">1. Patient-Provided Activity History</h4>
+                        <div id="docPatientHistoryList" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
+                    </div>
+
+                    <!-- 2. View caregiver notes -->
+                    <div class="p-5 bg-[#faf5ff] rounded-2xl border border-[#e9d5ff] space-y-2">
+                        <h4 class="font-bold text-xs text-[#581c87] uppercase tracking-wider">2. Caregiver Logged Notes (Meera)</h4>
+                        <div id="docCaregiverNotesList" class="space-y-1.5 max-h-48 overflow-y-auto"></div>
                     </div>
                 </div>
 
-                <!-- Add Professional Directives -->
-                <div class="p-5 bg-[#faf5ff] rounded-2xl border border-[#e9d5ff] space-y-3">
-                    <h4 class="font-bold text-sm text-[#581c87] flex items-center gap-2">
-                        <i class="fa-solid fa-user-doctor"></i>
-                        <span>Add Professional Directives</span>
-                    </h4>
-                    <div class="space-y-2">
-                        <input type="text" id="inDoctorDirectiveTitle" placeholder="Title (e.g. Levodopa Absorption & Protein Timing)" class="w-full px-3 py-2 text-xs border border-[#d8b4fe] rounded-xl">
-                        <textarea id="inDoctorDirectiveBody" rows="2" placeholder="Clinical instructions for Meera & John..." class="w-full p-2.5 text-xs border border-[#d8b4fe] rounded-xl"></textarea>
-                        <button onclick="saveDoctorDirective()" class="w-full py-2 bg-[#6b21a8] text-white rounded-xl font-bold text-xs shadow">
-                            Record Professional Directive
+                <!-- 3. View trends & 5. Add professional notes -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-5 bg-white rounded-2xl border border-[#eee8db] space-y-3">
+                        <h4 class="font-bold text-xs text-[#1b2e2b] uppercase tracking-wider">3. Longitudinal Coordination & Latency Trends</h4>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between"><span>Task Initiation Latency</span><strong class="text-emerald-700">3.4s (Consistent)</strong></div>
+                            <div class="flex justify-between"><span>Fine Motor Apraxia (Dressing)</span><strong class="text-rose-700">19 min latency / 2 snoozes</strong></div>
+                            <div class="flex justify-between"><span>Levodopa On-Schedule Rate</span><strong class="text-emerald-700">96% On-Time</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Add professional notes -->
+                    <div class="p-5 bg-[#faf5ff] rounded-2xl border border-[#e9d5ff] space-y-2">
+                        <h4 class="font-bold text-xs text-[#581c87] uppercase tracking-wider">5. Add Professional Notes & Directives</h4>
+                        <input type="text" id="docProTitle" placeholder="Title (e.g. Dietary Protein Spacing Protocol)" class="w-full p-2 border rounded-xl text-xs">
+                        <textarea id="docProText" rows="2" placeholder="Clinical instructions for Meera & John..." class="w-full p-2 border rounded-xl text-xs"></textarea>
+                        <button onclick="saveDoctorDirective()" class="w-full py-2 bg-[#6b21a8] text-white rounded-xl text-xs font-bold shadow">
+                            Save Directive to Chart
                         </button>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- FAMILIAR FACES DIRECTORY & MEMORY QUIZ MODAL -->
-        <section class="bg-white rounded-[28px] p-6 md:p-8 calm-shadow border border-[#ece8de] space-y-4">
-            <div class="flex justify-between items-center border-b border-[#eee8db] pb-3">
-                <div>
-                    <h4 class="font-black text-lg text-[#1b2e2b] flex items-center gap-2">
-                        <i class="fa-solid fa-address-book text-[#0284c7]"></i>
-                        <span>Familiar Faces & Loved Ones Memory Directory</span>
-                    </h4>
-                    <p class="text-xs text-[#527068]">Helps overcome memory fading when meeting family or neighbors after long intervals.</p>
-                </div>
-                <button onclick="testFaceRecallQuiz()" class="px-3 py-1.5 bg-[#f6f0e4] hover:bg-[#ede5d6] text-[#433221] rounded-xl text-xs font-bold border border-[#e8ded0]">
-                    Take Face Quiz (+50 XP)
-                </button>
-            </div>
-            <div id="facesCardsGrid" class="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <!-- Populated by JS -->
             </div>
         </section>
 
     </main>
 
     <!-- ========================================================================= -->
-    <!-- MODAL: ADJUST WAKE TIME (SCREENSHOT 1)                                    -->
+    <!-- MODALS: WAKE TIME, ADD TASK, ADD PERSON, OVERWHELM BREATHING, ALARM       -->
     <!-- ========================================================================= -->
+
+    <!-- ADJUST WAKE TIME (Matches Screenshot 1 button) -->
     <div id="modalAdjustWakeTime" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl p-6 max-w-sm w-full calm-shadow space-y-4 border border-[#e0d9cb]">
             <div class="flex justify-between items-center">
@@ -508,11 +805,9 @@
                 <button onclick="closeWakeTimeModal()" class="text-gray-400 hover:text-gray-700 p-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <p class="text-xs text-[#527068]">
-                Going out early or woke up later? Enter new time and all remaining activities adjust automatically.
+                Going out early or woke up later? Enter new time and all remaining routines shift automatically.
             </p>
-            <div>
-                <input type="time" id="inputNewWakeTime" value="08:00" class="w-full p-3 border border-gray-300 rounded-xl text-sm font-bold">
-            </div>
+            <input type="time" id="inputNewWakeTime" value="08:00" class="w-full p-3 border rounded-xl text-sm font-bold">
             <div class="grid grid-cols-2 gap-2 pt-2">
                 <button onclick="closeWakeTimeModal()" class="py-2.5 bg-gray-100 rounded-xl text-xs font-bold text-gray-700">Cancel</button>
                 <button onclick="saveNewWakeTime()" class="py-2.5 bg-[#20a76a] text-white rounded-xl text-xs font-bold shadow">Apply Time</button>
@@ -520,95 +815,82 @@
         </div>
     </div>
 
-    <!-- MODAL: ALARM CHIME & SNOOZE (5 / 15 MINS) -->
-    <div id="modalAlarmAlert" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl p-8 max-w-md w-full calm-shadow text-center space-y-5 border-4 border-rose-500 animate-alarm-pulse">
-            <div class="w-16 h-16 rounded-full bg-rose-100 text-rose-600 mx-auto flex items-center justify-center text-3xl">
-                <i class="fa-solid fa-bell animate-bounce"></i>
-            </div>
-            <div>
-                <span id="alarmCatBadge" class="px-3 py-1 bg-rose-100 text-rose-800 text-xs font-black uppercase rounded-full">Medication Reminder</span>
-                <h3 id="alarmTaskTitle" class="text-xl font-black text-[#1b2e2b] mt-2">Morning Levodopa Dose</h3>
-                <p id="alarmTaskTime" class="text-xs text-gray-500 mt-1">Scheduled for 08:30 AM</p>
-            </div>
-            <p class="text-xs text-gray-600 bg-[#fbf9f4] p-3 rounded-2xl border border-[#eee5d8]">
-                Take your time. There is no rush, but please complete this step to keep coordination steady.
-            </p>
-            <div class="space-y-2.5">
-                <button onclick="confirmTaskCompletionFromAlarm()" class="w-full py-3.5 bg-[#20a76a] hover:bg-[#15803d] text-white font-black text-sm rounded-2xl shadow flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-circle-check text-lg"></i> Complete Task (+25 XP)
-                </button>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="snoozeCurrentAlarm(5)" class="py-2.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs rounded-xl border border-amber-300">
-                        <i class="fa-solid fa-clock mr-1"></i> Snooze 5 Mins
-                    </button>
-                    <button onclick="snoozeCurrentAlarm(15)" class="py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs rounded-xl border border-gray-300">
-                        <i class="fa-solid fa-clock mr-1"></i> Snooze 15 Mins
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD CUSTOM ROUTINE -->
-    <div id="modalAddRoutine" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <!-- ADD TASK MODAL -->
+    <div id="modalAddTask" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl p-6 max-w-md w-full calm-shadow space-y-4 border border-[#e0d9cb]">
             <div class="flex justify-between items-center">
-                <h4 class="font-bold text-base text-[#1b2e2b]">Add New Schedule Routine</h4>
-                <button onclick="closeAddRoutineModal()" class="text-gray-400 hover:text-gray-700 p-2"><i class="fa-solid fa-xmark"></i></button>
+                <h4 class="font-bold text-base text-[#1b2e2b]">Add Routine or Medication</h4>
+                <button onclick="closeAddTaskModal()" class="text-gray-400 hover:text-gray-700 p-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-600 mb-1">Routine Description</label>
-                <input type="text" id="inRoutineTitle" placeholder="e.g. Evening Herbal Tea & Relax" class="w-full px-3 py-2 border rounded-xl text-xs sm:text-sm">
-            </div>
+            <input type="text" id="newTaskTitle" placeholder="Description (e.g. Afternoon Levodopa 100mg)" class="w-full p-2.5 border rounded-xl text-xs sm:text-sm">
             <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 mb-1">Time</label>
-                    <input type="time" id="inRoutineTime" value="19:00" class="w-full px-3 py-2 border rounded-xl text-xs sm:text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 mb-1">Category & Sound</label>
-                    <select id="inRoutineCategory" class="w-full px-3 py-2 border rounded-xl text-xs sm:text-sm">
-                        <option value="Medication">💊 Medication Dose</option>
-                        <option value="Food">🍲 Food / Drink</option>
-                        <option value="Exercise">🏃 Movement / Speech</option>
-                        <option value="Routine">🏠 Daily Routine</option>
-                    </select>
-                </div>
+                <input type="time" id="newTaskTime" value="14:00" class="w-full p-2 border rounded-xl text-xs sm:text-sm">
+                <select id="newTaskCat" class="w-full p-2 border rounded-xl text-xs sm:text-sm">
+                    <option value="Medication">💊 Medication</option>
+                    <option value="Food">🍲 Food / Drink</option>
+                    <option value="Exercise">🏃 Movement / Speech</option>
+                    <option value="Routine">🏠 Daily Routine</option>
+                </select>
             </div>
             <div class="flex justify-end gap-2 pt-2">
-                <button onclick="closeAddRoutineModal()" class="px-4 py-2 text-xs font-bold text-gray-600">Cancel</button>
-                <button onclick="saveNewRoutine()" class="px-5 py-2 text-xs font-bold bg-[#20a76a] text-white rounded-xl shadow">Save</button>
+                <button onclick="closeAddTaskModal()" class="px-4 py-2 text-xs font-bold text-gray-600">Cancel</button>
+                <button onclick="saveNewTask()" class="px-5 py-2 text-xs font-bold bg-[#20a76a] text-white rounded-xl shadow">Save Task</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: ADD FAMILIAR PERSON -->
-    <div id="modalAddPersonCard" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <!-- ADD FAMILIAR PERSON MODAL -->
+    <div id="modalAddPerson" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl p-6 max-w-md w-full calm-shadow space-y-4 border border-[#e0d9cb]">
             <div class="flex justify-between items-center">
-                <h4 class="font-bold text-base text-[#1b2e2b]">Add Familiar Person</h4>
+                <h4 class="font-bold text-base text-[#1b2e2b]">Add Familiar Person Card</h4>
                 <button onclick="closeAddPersonModal()" class="text-gray-400 hover:text-gray-700 p-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <input type="text" id="inPersonName" placeholder="Name (e.g. Leo)" class="w-full px-3 py-2 border rounded-xl text-xs">
-            <input type="text" id="inPersonRelation" placeholder="Relationship (e.g. Grandson)" class="w-full px-3 py-2 border rounded-xl text-xs">
-            <input type="text" id="inPersonClue" placeholder="Voice Memory Clue (e.g. Plays basketball with orange ball)" class="w-full px-3 py-2 border rounded-xl text-xs">
+            <input type="text" id="inPersonName" placeholder="Full Name (e.g. Leo)" class="w-full p-2 border rounded-xl text-xs">
+            <input type="text" id="inPersonRelation" placeholder="Relationship (e.g. Grandson)" class="w-full p-2 border rounded-xl text-xs">
+            <input type="text" id="inPersonClue" placeholder="Voice Memory Clue (e.g. Plays basketball with orange ball)" class="w-full p-2 border rounded-xl text-xs">
             <div class="flex justify-end gap-2 pt-2">
                 <button onclick="closeAddPersonModal()" class="px-4 py-2 text-xs font-bold text-gray-600">Cancel</button>
-                <button onclick="savePersonCard()" class="px-5 py-2 text-xs font-bold bg-[#0284c7] text-white rounded-xl shadow">Save Person</button>
+                <button onclick="saveNewPersonCard()" class="px-5 py-2 text-xs font-bold bg-[#0284c7] text-white rounded-xl shadow">Save</button>
             </div>
         </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- APPLICATION JAVASCRIPT STATE & SOUND ENGINE                               -->
-    <!-- ========================================================================= -->
+    <!-- GUIDED TIMER MODAL -->
+    <div id="modalGuidedTimer" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-8 max-w-xs w-full calm-shadow text-center space-y-4 border border-[#e0d9cb]">
+            <h4 id="guidedTimerHeading" class="font-bold text-base text-[#1b2e2b]">Movement Drill</h4>
+            <div id="guidedTimerCount" class="text-6xl font-black text-[#1b2e2b] my-4">30</div>
+            <p class="text-xs text-[#527068]">Breathe deeply and move with large amplitude.</p>
+            <button onclick="stopExerciseTimer()" class="w-full py-2.5 bg-[#243c36] text-white font-bold rounded-xl text-xs shadow">
+                Done / Finish Drill
+            </button>
+        </div>
+    </div>
+
+    <!-- OVERWHELM BREATHING RESET MODAL -->
+    <div id="modalOverwhelmBreath" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-8 max-w-xs w-full calm-shadow text-center space-y-5 border border-[#e0d9cb]">
+            <h4 class="font-black text-xl text-[#1b2e2b]">Take a Calm Breath</h4>
+            <div class="relative flex items-center justify-center my-6">
+                <div id="bCircle" class="w-36 h-36 rounded-full bg-[#e0f2fe] border-4 border-[#38bdf8] flex items-center justify-center transition-all duration-1000">
+                    <span id="bTxt" class="text-base font-bold text-[#1b2e2b]">Inhale...</span>
+                </div>
+            </div>
+            <p class="text-xs text-[#527068]">Focus on this circle expanding and settling. You are safe.</p>
+            <button onclick="closeOverwhelmResetModal()" class="w-full py-3 bg-[#243c36] text-white font-bold rounded-xl text-xs shadow">
+                I Feel Grounded
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT STATE ENGINE -->
     <script>
         /* =========================================================================
-         * 1. WEB AUDIO SYNTHESIZERS (Distinct Sound Chimes for Each Category)
+         * 1. AUDIO CHIMES & METRONOME (Procedural Web Audio Engine)
          * ========================================================================= */
         let audioCtx = null;
-        function getAudioContext() {
+        function getCtx() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
@@ -618,13 +900,12 @@
             return audioCtx;
         }
 
-        function playCategorySound(category) {
+        function playCategorySound(cat) {
             try {
-                const ctx = getAudioContext();
+                const ctx = getCtx();
                 const now = ctx.currentTime;
-
-                if (category === 'Medication') {
-                    // Uplifting double bell
+                if (cat === 'Medication') {
+                    // Double chime
                     const o1 = ctx.createOscillator();
                     const o2 = ctx.createOscillator();
                     const g = ctx.createGain();
@@ -636,8 +917,8 @@
                     o1.connect(g); o2.connect(g); g.connect(ctx.destination);
                     o1.start(now); o2.start(now + 0.15);
                     o1.stop(now + 1.2); o2.stop(now + 1.2);
-                } else if (category === 'Food') {
-                    // Soft warm triad
+                } else if (cat === 'Food') {
+                    // Triad chord
                     [261.63, 329.63, 392.00].forEach(f => {
                         const o = ctx.createOscillator();
                         const g = ctx.createGain();
@@ -648,8 +929,8 @@
                         o.connect(g); g.connect(ctx.destination);
                         o.start(now); o.stop(now + 0.9);
                     });
-                } else if (category === 'Exercise') {
-                    // Rhythmic arpeggio
+                } else if (cat === 'Exercise') {
+                    // Arpeggio
                     [440, 554.37, 659.25].forEach((f, i) => {
                         const o = ctx.createOscillator();
                         const g = ctx.createGain();
@@ -660,7 +941,7 @@
                         o.start(now + (i * 0.08)); o.stop(now + (i * 0.08) + 0.5);
                     });
                 } else {
-                    // Grounding woodblock note
+                    // Woodblock
                     const o = ctx.createOscillator();
                     const g = ctx.createGain();
                     o.frequency.setValueAtTime(320, now);
@@ -671,7 +952,35 @@
                     o.start(now); o.stop(now + 0.25);
                 }
             } catch(e) {
-                console.log("Audio awaiting touch interaction");
+                console.log("Audio waiting for user gesture");
+            }
+        }
+
+        // Metronome 100 BPM
+        let metroInterval = null;
+        let isMetroActive = false;
+        function toggleMetronomeBeep() {
+            const btn = document.getElementById('btnMetronomeBeep');
+            if (isMetroActive) {
+                clearInterval(metroInterval);
+                isMetroActive = false;
+                btn.classList.remove('bg-amber-500', 'text-white');
+                btn.innerHTML = `<i class="fa-solid fa-drum text-[#d97706] mr-1"></i> 100 BPM Metronome`;
+            } else {
+                isMetroActive = true;
+                btn.classList.add('bg-amber-500', 'text-white');
+                btn.innerHTML = `<i class="fa-solid fa-stop text-white mr-1"></i> Stop Metronome`;
+                metroInterval = setInterval(() => {
+                    const ctx = getCtx();
+                    const now = ctx.currentTime;
+                    const osc = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    osc.frequency.setValueAtTime(800, now);
+                    g.gain.setValueAtTime(0.2, now);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.connect(g); g.connect(ctx.destination);
+                    osc.start(now); osc.stop(now + 0.05);
+                }, 600);
             }
         }
 
@@ -686,17 +995,19 @@
         }
 
         /* =========================================================================
-         * 2. DATA STATE MATCHING SCREENSHOTS 1 & 2
+         * 2. CENTRAL DATA STATE (Exactly Matching Screenshots 1 & 2)
          * ========================================================================= */
         const AppState = {
-            currentRole: 'caregiver', // 'caregiver' | 'doctor' | 'patient'
+            currentRole: 'patient', // 'patient' | 'caregiver' | 'doctor'
+            focusMode: 'single', // 'single' | 'all'
             user: {
-                name: 'Meera (Caregiver)',
+                name: 'John',
                 wakeTime: '08:00 AM',
-                xp: 1575,
                 streak: 5,
+                xp: 1575,
+                hydration: 5
             },
-            // Exactly matching Screenshot 2 items
+            // Exact Screenshot 2 tasks[cite: 3]
             tasks: [
                 { id: 't1', time: '08:00', title: 'Gentle Wake-up & Warm Hydration', category: 'Routine', completed: true, snoozes: 0 },
                 { id: 't2', time: '08:30', title: 'Morning Levodopa Dose (Before Food)', category: 'Medication', completed: true, snoozes: 0 },
@@ -706,14 +1017,14 @@
                 { id: 't6', time: '18:30', title: 'Dinner with Mindful Protein Balance', category: 'Food', completed: false, snoozes: 0 }
             ],
             familiarPeople: [
-                { name: 'Sarah', relation: 'Daughter', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80', clue: 'She brought you fresh homemade apples and visited last Sunday.' },
-                { name: 'Leo', relation: 'Grandson', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80', clue: 'He is in high school and plays basketball with the bright orange ball.' },
-                { name: 'Dr. Sharma', relation: 'Neurologist', photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80', clue: 'The physician who checks your movement, gait, and medication every 3 months.' },
-                { name: 'Mary', relation: 'Spouse', photo: 'https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?auto=format&fit=crop&w=300&q=80', clue: 'Your lifelong partner who shares morning chamomile tea by the window.' }
+                { name: 'Sarah', relation: 'Daughter', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80', clue: 'She brought you fresh homemade apples and visited last Sunday.', options: ['Sarah (Daughter)', 'Nurse Emily', 'Mary (Sister)', 'Pharmacist'] },
+                { name: 'Leo', relation: 'Grandson', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80', clue: 'He is in high school and plays basketball with the bright orange ball.', options: ['Leo (Grandson)', 'Robert (Neighbor)', 'Sarah (Daughter)', 'Physical Therapist'] },
+                { name: 'Dr. Sharma', relation: 'Neurologist', photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80', clue: 'The physician who checks your coordination and medication every 3 months.', options: ['Dr. Sharma (Neurologist)', 'Leo (Grandson)', 'Uncle Joe', 'Eye Doctor'] },
+                { name: 'Mary', relation: 'Spouse', photo: 'https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?auto=format&fit=crop&w=300&q=80', clue: 'Your lifelong partner who shares morning chamomile tea by the window.', options: ['Mary (Spouse)', 'Sarah (Daughter)', 'Aunt Helen', 'Caregiver'] }
             ],
             caregiverAlerts: [
-                { id: 'a1', time: '11:42 AM', text: 'Task "Buttoning Shirt" experienced 2 snoozes. Initiation latency was 19 mins.' },
-                { id: 'a2', time: '02:05 PM', text: 'Afternoon Levodopa dose snoozed for 5 minutes. Chime sounded.' }
+                { time: '11:42 AM', text: 'Task "Buttoning Shirt" experienced 2 snoozes. Initiation latency was 19 mins.' },
+                { time: '02:05 PM', text: 'Afternoon Levodopa dose snoozed for 5 minutes. Chime re-sounded.' }
             ],
             caregiverNotesForDoctor: [
                 { date: 'Sept 24', title: 'Pre-dose Tremor & Delay', text: 'Noticed slight tremor in right thumb prior to 2 PM Levodopa. Buttoning shirt took longer than usual today.' },
@@ -721,6 +1032,9 @@
             ],
             doctorDirectives: [
                 { date: 'Sept 20', title: 'Levodopa Timing Guidance', text: 'Maintain Levodopa at 8 AM, 2 PM, and 8 PM. Ensure dietary protein is taken 45 minutes after dose to avoid absorption competition.' }
+            ],
+            patientNotes: [
+                { date: 'Today, 1:45 PM', title: 'Hand Tremor', text: 'Noticed slight tremor before 2 PM Levodopa dose.' }
             ]
         };
 
@@ -735,18 +1049,21 @@
             const totalCount = AppState.tasks.length;
             const pct = Math.round((completedCount / totalCount) * 100);
 
-            // Update Screenshot 1 banner stats[cite: 2]
+            // Screenshot 1 Hero Banner updates[cite: 2]
             document.getElementById('heroCompletedFraction').innerText = `${completedCount} of ${totalCount} Completed (${pct}%)`;
             document.getElementById('heroProgressBar').style.width = `${pct}%`;
             document.getElementById('heroXPText').innerText = `${AppState.user.xp} XP`;
             document.getElementById('heroStreakText').innerText = `${AppState.user.streak} Days`;
             document.getElementById('defaultWakeTimeText').innerText = AppState.user.wakeTime;
 
-            // Render Screenshot 2 task rows[cite: 3]
+            // Screenshot 2 Metrics updates[cite: 3]
+            document.getElementById('statCompletionPct').innerText = `${pct}%`;
+            document.getElementById('statCoreTasksText').innerText = `${completedCount} of ${totalCount} core tasks done`;
+
+            // Screenshot 2 Dynamic Rows[cite: 3]
             AppState.tasks.forEach(t => {
                 const row = document.createElement('div');
-                // Exact styling from screenshot: light green border, rounded-2xl, background #ffffff or #fafffd
-                row.className = `p-3.5 sm:p-4 rounded-2xl border ${t.completed ? 'border-[#d3ecd9] bg-[#ffffff]' : 'border-[#e4ded2] bg-[#ffffff]'} flex items-center justify-between gap-3 transition hover:shadow-sm cursor-pointer`;
+                row.className = `p-3.5 sm:p-4 rounded-2xl border ${t.completed ? 'border-[#d3ecd9] bg-white' : 'border-[#e4ded2] bg-white'} flex items-center justify-between gap-3 transition hover:shadow-sm cursor-pointer`;
                 row.onclick = () => toggleTaskDone(t.id);
 
                 row.innerHTML = `
@@ -765,6 +1082,11 @@
                 `;
                 container.appendChild(row);
             });
+
+            renderSingleTaskFocus();
+            renderAllTasksList();
+            renderCaregiverSiteViews();
+            renderDoctorSiteViews();
         }
 
         function toggleTaskDone(id) {
@@ -792,7 +1114,461 @@
         }
 
         /* =========================================================================
-         * 4. WAKE TIME ADJUSTMENT & READ ALOUD (SCREENSHOT 1 BUTTONS)
+         * 4. PORTAL SELECTION (Patient vs Caregiver vs Doctor)
+         * ========================================================================= */
+        function togglePortalDropdown() {
+            document.getElementById('portalDropdownMenu').classList.toggle('hidden');
+        }
+
+        function selectPortal(role) {
+            AppState.currentRole = role;
+            document.getElementById('portalDropdownMenu').classList.add('hidden');
+
+            const sPat = document.getElementById('site-patient');
+            const sCg = document.getElementById('site-caregiver');
+            const sDoc = document.getElementById('site-doctor');
+
+            const badge = document.getElementById('globalPortalBadge');
+            const label = document.getElementById('portalHeaderLabel');
+            const icon = document.getElementById('portalHeaderIcon');
+            const greeting = document.getElementById('heroGreetingName');
+            const uid = document.getElementById('displayUID');
+
+            document.getElementById('tagPortalPatient').classList.add('hidden');
+            document.getElementById('tagPortalCaregiver').classList.add('hidden');
+            document.getElementById('tagPortalDoctor').classList.add('hidden');
+
+            if (role === 'patient') {
+                sPat.classList.remove('hidden');
+                sCg.classList.add('hidden');
+                sDoc.classList.add('hidden');
+
+                badge.className = "px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#20a76a] text-white";
+                badge.innerText = "Patient Portal";
+                label.innerText = "1. Patient (John)";
+                icon.className = "fa-solid fa-user text-emerald-400";
+                greeting.innerText = "Good Day, John";
+                uid.innerText = "UID: HC-PT-1049";
+                document.getElementById('tagPortalPatient').classList.remove('hidden');
+            } else if (role === 'caregiver') {
+                sPat.classList.add('hidden');
+                sCg.classList.remove('hidden');
+                sDoc.classList.add('hidden');
+
+                badge.className = "px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#0284c7] text-white";
+                badge.innerText = "Caregiver Portal";
+                label.innerText = "2. Caregiver (Meera)";
+                icon.className = "fa-solid fa-house-chimney-user text-sky-400";
+                greeting.innerText = "Good Day, Meera (Caregiver)";
+                uid.innerText = "UID: HC-CG-4102";
+                document.getElementById('tagPortalCaregiver').classList.remove('hidden');
+            } else {
+                sPat.classList.add('hidden');
+                sCg.classList.add('hidden');
+                sDoc.classList.remove('hidden');
+
+                badge.className = "px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#6b21a8] text-white";
+                badge.innerText = "Doctor / Clinician";
+                label.innerText = "3. Doctor (Dr. Sharma)";
+                icon.className = "fa-solid fa-user-doctor text-purple-400";
+                greeting.innerText = "Clinical Consultation: John Doe";
+                uid.innerText = "UID: HC-DOC-8021";
+                document.getElementById('tagPortalDoctor').classList.remove('hidden');
+            }
+            renderTimeline();
+        }
+
+        /* =========================================================================
+         * 5. PATIENT SUB-TABS & ANTI-OVERWHELM CONTROLS
+         * ========================================================================= */
+        function switchPatientSection(tab) {
+            ['tasks', 'games', 'exercise', 'diet', 'remedies', 'faces'].forEach(t => {
+                document.getElementById(`psec-${t}`).classList.toggle('hidden', t !== tab);
+                const btn = document.getElementById(`ptab-${t}`);
+                if (t === tab) {
+                    btn.className = "px-4 py-2.5 rounded-xl bg-[#20a76a] text-white shadow transition whitespace-nowrap flex items-center gap-2";
+                } else {
+                    btn.className = "px-4 py-2.5 rounded-xl text-[#354f52] hover:bg-[#d8e0d6] transition whitespace-nowrap flex items-center gap-2";
+                }
+            });
+
+            if (tab === 'faces') loadPatientFace(patFaceIdx);
+            if (tab === 'games') resetSequencingPuzzle();
+        }
+
+        function setFocusMode(mode) {
+            AppState.focusMode = mode;
+            if (mode === 'single') {
+                document.getElementById('mode-single').className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-[#2e5248] text-white shadow-sm flex items-center gap-2";
+                document.getElementById('mode-all').className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-[#f0ebd9] hover:bg-[#e4dec8] text-[#2e5248] transition flex items-center gap-2";
+                document.getElementById('view-single-task').classList.remove('hidden');
+                document.getElementById('view-all-tasks').classList.add('hidden');
+            } else {
+                document.getElementById('mode-all').className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-[#2e5248] text-white shadow-sm flex items-center gap-2";
+                document.getElementById('mode-single').className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl bg-[#f0ebd9] hover:bg-[#e4dec8] text-[#2e5248] transition flex items-center gap-2";
+                document.getElementById('view-single-task').classList.add('hidden');
+                document.getElementById('view-all-tasks').classList.remove('hidden');
+            }
+        }
+
+        function renderSingleTaskFocus() {
+            const pending = AppState.tasks.filter(t => !t.completed);
+            const card = document.getElementById('singleTaskCard');
+            if (pending.length === 0) {
+                card.innerHTML = `
+                    <div class="w-16 h-16 rounded-full bg-[#daf5e6] text-[#1e8353] flex items-center justify-center text-3xl mb-3">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h4 class="text-2xl font-black text-[#1b2e2b]">All Scheduled Tasks Completed!</h4>
+                    <p class="text-xs text-[#527068] mt-1 max-w-sm">Great job keeping your coordination steady today.</p>
+                `;
+            } else {
+                const cur = pending[0];
+                card.innerHTML = `
+                    <span class="px-3 py-1 bg-[#fbf8f2] text-[#1b2e2b] text-xs font-bold rounded-full border border-[#eee7da] mb-4">
+                        ${cur.time} - ${cur.category} Focus
+                    </span>
+                    <h3 class="text-2xl md:text-3xl font-black text-[#1b2e2b] max-w-lg mb-6 leading-tight">${cur.title}</h3>
+                    <div class="flex flex-wrap items-center justify-center gap-3">
+                        <button onclick="toggleTaskDone('${cur.id}')" class="px-8 py-3.5 bg-[#20a76a] hover:bg-[#15803d] text-white font-black text-sm rounded-2xl shadow-lg transition transform active:scale-95 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-lg"></i> Complete Task (+25 XP)
+                        </button>
+                        <button onclick="playCategorySound('${cur.category}')" class="px-4 py-3.5 bg-[#f6f0e4] hover:bg-[#ede5d6] text-[#433221] rounded-2xl text-xs font-bold border border-[#e8ded0]">
+                            <i class="fa-solid fa-music mr-1"></i> Chime
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderAllTasksList() {
+            const container = document.getElementById('allTasksContainer');
+            container.innerHTML = '';
+            AppState.tasks.forEach(t => {
+                const row = document.createElement('div');
+                row.className = `p-3.5 rounded-2xl border ${t.completed ? 'bg-[#daf5e6]/30 border-[#b8eac8]' : 'bg-white border-[#e4ded2]'} flex items-center justify-between gap-3`;
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleTaskDone('${t.id}')" class="w-8 h-8 rounded-xl border-2 ${t.completed ? 'bg-[#20a76a] border-[#20a76a] text-white' : 'border-gray-300'} flex items-center justify-center font-bold">
+                            ${t.completed ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                        </button>
+                        <span class="text-xs sm:text-sm font-bold ${t.completed ? 'line-through text-gray-400' : 'text-[#1b2e2b]'}">${t.time} - ${t.title}</span>
+                    </div>
+                    <button onclick="deleteTaskItem('${t.id}')" class="text-gray-400 hover:text-rose-600 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function deleteTaskItem(id) {
+            AppState.tasks = AppState.tasks.filter(x => x.id !== id);
+            renderTimeline();
+        }
+
+        /* =========================================================================
+         * 6. MIND GAMES ENGINE (Sequencing, Memory, Word, Tap)
+         * ========================================================================= */
+        function loadMindGame(g) {
+            ['sequencing', 'memory', 'word', 'tap'].forEach(gm => {
+                document.getElementById(`game-${gm}-container`).classList.toggle('hidden', gm !== g);
+                const btn = document.getElementById(`mgtab-${gm}`);
+                if (gm === g) {
+                    btn.className = "px-4 py-2 text-xs font-bold rounded-xl bg-[#20a76a] text-white shadow whitespace-nowrap";
+                } else {
+                    btn.className = "px-4 py-2 text-xs font-bold rounded-xl bg-[#f6f0e4] text-[#433221] whitespace-nowrap";
+                }
+            });
+
+            if (g === 'sequencing') resetSequencingPuzzle();
+            if (g === 'memory') resetMemoryMatch();
+            if (g === 'word') loadWordAssociation();
+        }
+
+        const CLINIC_STEPS = [
+            "Gather prescription & health ID card",
+            "Place glasses and house keys in pocket",
+            "Put on comfortable walking shoes",
+            "Step outside and lock front door",
+            "Arrive at clinic reception desk 10 mins early"
+        ];
+        let seqPlaced = [];
+
+        function resetSequencingPuzzle() {
+            seqPlaced = [];
+            document.getElementById('seqOutcomeMsg').innerText = '';
+            const grid = document.getElementById('seqCardsGrid');
+            grid.innerHTML = '';
+            document.getElementById('seqPlacedRow').innerHTML = '<span class="text-xs text-gray-400 italic">Tap cards above in the logical order...</span>';
+
+            const shuffled = [...CLINIC_STEPS].sort(() => Math.random() - 0.5);
+            shuffled.forEach(step => {
+                const btn = document.createElement('button');
+                btn.className = "p-2.5 bg-[#fbf8f2] hover:bg-[#f6f0e4] border border-[#eee7da] rounded-xl text-left text-xs font-bold text-[#1b2e2b] transition";
+                btn.innerText = step;
+                btn.onclick = () => {
+                    if (btn.disabled) return;
+                    btn.disabled = true;
+                    btn.classList.add('opacity-40');
+                    seqPlaced.push(step);
+                    const row = document.getElementById('seqPlacedRow');
+                    if (seqPlaced.length === 1) row.innerHTML = '';
+                    const tag = document.createElement('span');
+                    tag.className = "px-2.5 py-1 bg-[#20a76a] text-white rounded-lg text-xs font-bold";
+                    tag.innerText = `${seqPlaced.length}. ${step}`;
+                    row.appendChild(tag);
+
+                    if (seqPlaced.length === CLINIC_STEPS.length) {
+                        const correct = seqPlaced.every((v, i) => v === CLINIC_STEPS[i]);
+                        const msg = document.getElementById('seqOutcomeMsg');
+                        if (correct) {
+                            AppState.user.xp += 50;
+                            playCategorySound('Exercise');
+                            msg.className = "text-center font-black text-xs text-[#1e8353]";
+                            msg.innerText = "⭐ Perfect Coordination! Steps ordered correctly. +50 XP";
+                        } else {
+                            msg.className = "text-center font-bold text-xs text-amber-700";
+                            msg.innerText = "One or more steps were out of order. Tap 'Restart Order' to practice.";
+                        }
+                    }
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        // Memory game
+        const MEM_ICONS = ['fa-leaf', 'fa-sun', 'fa-heart', 'fa-cloud', 'fa-seedling', 'fa-apple-whole'];
+        let memFlipped = [];
+        let memMatched = 0;
+        function resetMemoryMatch() {
+            memMatched = 0;
+            memFlipped = [];
+            document.getElementById('memoryResultText').innerText = '';
+            const deck = [...MEM_ICONS, ...MEM_ICONS].sort(() => Math.random() - 0.5);
+            const grid = document.getElementById('memoryGridBox');
+            grid.innerHTML = '';
+            deck.forEach(icon => {
+                const b = document.createElement('button');
+                b.className = "h-14 bg-[#fbf8f2] hover:bg-[#f6f0e4] rounded-xl border border-[#eee7da] flex items-center justify-center text-lg text-gray-500 transition";
+                b.dataset.icon = icon;
+                b.innerHTML = `<i class="fa-solid fa-question text-gray-300"></i>`;
+                b.onclick = () => {
+                    if (memFlipped.length >= 2 || b.classList.contains('matched') || memFlipped.includes(b)) return;
+                    b.innerHTML = `<i class="fa-solid ${icon} text-[#20a76a]"></i>`;
+                    b.classList.add('bg-white', 'border-[#20a76a]');
+                    memFlipped.push(b);
+                    if (memFlipped.length === 2) {
+                        const [c1, c2] = memFlipped;
+                        if (c1.dataset.icon === c2.dataset.icon) {
+                            c1.classList.add('matched', 'bg-[#daf5e6]');
+                            c2.classList.add('matched', 'bg-[#daf5e6]');
+                            memFlipped = [];
+                            memMatched++;
+                            if (memMatched === MEM_ICONS.length) {
+                                AppState.user.xp += 50;
+                                document.getElementById('memoryResultText').innerText = "🎉 All pairs matched! +50 XP";
+                            }
+                        } else {
+                            setTimeout(() => {
+                                c1.innerHTML = `<i class="fa-solid fa-question text-gray-300"></i>`;
+                                c2.innerHTML = `<i class="fa-solid fa-question text-gray-300"></i>`;
+                                c1.classList.remove('bg-white', 'border-[#20a76a]');
+                                c2.classList.remove('bg-white', 'border-[#20a76a]');
+                                memFlipped = [];
+                            }, 800);
+                        }
+                    }
+                };
+                grid.appendChild(b);
+            });
+        }
+
+        // Word association
+        function loadWordAssociation() {
+            const choices = ['DAYLIGHT', 'ICE', 'MOONLIGHT', 'NIGHT'];
+            const grid = document.getElementById('wordChoicesGrid');
+            grid.innerHTML = '';
+            choices.sort(() => Math.random() - 0.5).forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = "p-3 bg-[#fbf8f2] hover:bg-[#f6f0e4] border border-[#eee7da] font-bold text-xs text-[#1b2e2b] rounded-xl";
+                btn.innerText = c;
+                btn.onclick = () => {
+                    if (c === 'DAYLIGHT') {
+                        btn.className = "p-3 bg-[#daf5e6] border-2 border-[#20a76a] font-bold text-xs text-[#1e8353] rounded-xl";
+                        document.getElementById('wordResultMsg').innerText = "Correct! Great association.";
+                        AppState.user.xp += 50;
+                    } else {
+                        btn.className = "p-3 bg-amber-50 text-amber-700 text-xs rounded-xl";
+                        document.getElementById('wordResultMsg').innerText = "Try another gentle guess.";
+                    }
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        // Tap Rhythm
+        let tapCount = 0;
+        function handleTapRhythm() {
+            tapCount++;
+            AppState.user.xp += 1;
+            playCategorySound('Exercise');
+            document.getElementById('tapCountLabel').innerText = `Smooth Taps: ${tapCount} (+1 XP)`;
+        }
+
+        /* =========================================================================
+         * 7. FAMILIAR FACES RECALL LOGIC
+         * ========================================================================= */
+        let patFaceIdx = 0;
+        function loadPatientFace(idx) {
+            patFaceIdx = idx % AppState.familiarPeople.length;
+            const p = AppState.familiarPeople[patFaceIdx];
+            document.getElementById('patFacePhoto').src = p.photo;
+            document.getElementById('patFaceClueText').innerText = `"${p.clue}"`;
+            document.getElementById('patFaceRevealBox').classList.add('hidden');
+            document.getElementById('patFaceFeedback').innerText = '';
+
+            const grid = document.getElementById('patFaceOptionsGrid');
+            grid.innerHTML = '';
+            (p.options || [p.name, 'Doctor', 'Neighbor', 'Caregiver']).forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-2.5 bg-[#fbf8f2] hover:bg-[#f6f0e4] border border-[#eee7da] rounded-xl text-xs font-bold text-[#1b2e2b]";
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if (opt.toLowerCase().includes(p.name.toLowerCase())) {
+                        btn.className = "p-2.5 bg-[#daf5e6] border-2 border-[#20a76a] text-[#1e8353] font-bold rounded-xl text-xs";
+                        document.getElementById('patFaceFeedback').innerText = `⭐ Yes! That is ${p.name} (${p.relation})! +50 XP`;
+                        AppState.user.xp += 50;
+                    } else {
+                        btn.className = "p-2.5 bg-rose-50 text-rose-700 text-xs";
+                        document.getElementById('patFaceFeedback').innerText = "Not quite. Listen to the voice clue!";
+                    }
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        function nextPatientFaceCard() { loadPatientFace(patFaceIdx + 1); }
+        function speakFacePrompt() { speakText(AppState.familiarPeople[patFaceIdx].clue); }
+        function revealFaceRelation() {
+            const p = AppState.familiarPeople[patFaceIdx];
+            const box = document.getElementById('patFaceRevealBox');
+            box.innerText = `This is your ${p.relation}, ${p.name}!`;
+            box.classList.toggle('hidden');
+        }
+
+        /* =========================================================================
+         * 8. CAREGIVER & DOCTOR PORTAL RENDERS (All Features Built-In)
+         * ========================================================================= */
+        function renderCaregiverSiteViews() {
+            // Audit List
+            const audit = document.getElementById('cgActivityAuditList');
+            audit.innerHTML = '';
+            AppState.tasks.forEach(t => {
+                const r = document.createElement('div');
+                r.className = `p-2.5 rounded-xl border flex items-center justify-between text-xs ${t.completed ? 'bg-[#daf5e6]/30 border-[#b8eac8]' : 'bg-white border-gray-200'}`;
+                r.innerHTML = `
+                    <span><strong>${t.time}:</strong> ${t.title}</span>
+                    <span class="font-bold ${t.completed ? 'text-emerald-700' : 'text-amber-700'}">${t.completed ? 'Completed' : 'Pending'}</span>
+                `;
+                audit.appendChild(r);
+            });
+
+            // Alerts Feed
+            const feed = document.getElementById('cgAlertsFeed');
+            feed.innerHTML = '';
+            AppState.caregiverAlerts.forEach(a => {
+                const r = document.createElement('div');
+                r.className = "p-2 bg-rose-50 rounded-lg text-xs text-rose-900 border border-rose-200";
+                r.innerHTML = `<strong>${a.time}:</strong> ${a.text}`;
+                feed.appendChild(r);
+            });
+
+            // Submitted Doctor notes
+            const notesBox = document.getElementById('cgSubmittedDoctorNotes');
+            notesBox.innerHTML = '';
+            AppState.caregiverNotesForDoctor.forEach(n => {
+                const c = document.createElement('div');
+                c.className = "p-2.5 bg-white rounded-xl border text-xs";
+                c.innerHTML = `<strong>${n.date} - ${n.title}:</strong> <p class="text-gray-600">${n.text}</p>`;
+                notesBox.appendChild(c);
+            });
+        }
+
+        function saveCaregiverDoctorNote() {
+            const t = document.getElementById('cgDoctorNoteTitle').value.trim();
+            const b = document.getElementById('cgDoctorNoteBody').value.trim();
+            if (t && b) {
+                AppState.caregiverNotesForDoctor.unshift({ date: 'Today', title: t, text: b });
+                renderCaregiverSiteViews();
+                renderDoctorSiteViews();
+                document.getElementById('cgDoctorNoteTitle').value = '';
+                document.getElementById('cgDoctorNoteBody').value = '';
+                alert("Note saved and submitted to Doctor/Clinician portal!");
+            }
+        }
+
+        function renderDoctorSiteViews() {
+            const hist = document.getElementById('docPatientHistoryList');
+            hist.innerHTML = '';
+            AppState.tasks.forEach(t => {
+                const r = document.createElement('div');
+                r.className = "p-2 bg-white rounded-lg border text-xs flex justify-between";
+                r.innerHTML = `<span>${t.time} - ${t.title}</span><strong class="${t.completed ? 'text-emerald-700' : 'text-gray-400'}">${t.completed ? 'Executed' : 'Unfinished'}</strong>`;
+                hist.appendChild(r);
+            });
+
+            const cgNotes = document.getElementById('docCaregiverNotesList');
+            cgNotes.innerHTML = '';
+            AppState.caregiverNotesForDoctor.forEach(n => {
+                const r = document.createElement('div');
+                r.className = "p-2 bg-white rounded-lg border text-xs";
+                r.innerHTML = `<strong>${n.date} (${n.title}):</strong> ${n.text}`;
+                cgNotes.appendChild(r);
+            });
+        }
+
+        function saveDoctorDirective() {
+            const t = document.getElementById('docProTitle').value.trim();
+            const b = document.getElementById('docProText').value.trim();
+            if (t && b) {
+                AppState.doctorDirectives.unshift({ date: 'Today', title: t, text: b });
+                document.getElementById('docProTitle').value = '';
+                document.getElementById('docProText').value = '';
+                alert("Clinical directive recorded into patient record!");
+            }
+        }
+
+        function exportClinicalReport() {
+            const content = `
+===================================================================
+HARMONYCARE CLINICAL PROGRESSION SUMMARY
+Patient: John Doe | UID: HC-PT-1049
+Attending Physician: Dr. Sharma, MD
+Date: ${new Date().toLocaleDateString()}
+===================================================================
+
+1. EXECUTIVE COORDINATION & TASK ADHERENCE
+- Completed Tasks: ${AppState.tasks.filter(t => t.completed).length} of ${AppState.tasks.length}
+- Consistency Streak: ${AppState.user.streak} Days
+- Initiation Latency: 3.4 seconds average
+
+2. CAREGIVER LOGBOOK (Meera):
+${AppState.caregiverNotesForDoctor.map(n => `- [${n.date}] ${n.title}:${n.text}`).join('\n')}
+
+3. CLINICAL DIRECTIVES:
+${AppState.doctorDirectives.map(d => `- [${d.date}] ${d.title}:${d.text}`).join('\n')}
+
+===================================================================
+            `;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "Clinical_Report_John_Doe.txt";
+            a.click();
+        }
+
+        /* =========================================================================
+         * 9. TIMERS, WAKE TIME & MODALS
          * ========================================================================= */
         function openWakeTimeModal() { document.getElementById('modalAdjustWakeTime').classList.remove('hidden'); }
         function closeWakeTimeModal() { document.getElementById('modalAdjustWakeTime').classList.add('hidden'); }
@@ -803,12 +1579,10 @@
                 const ampm = h >= 12 ? 'PM' : 'AM';
                 const formatted = `${String(h % 12 || 12).padStart(2, '0')}:${m} ${ampm}`;
                 AppState.user.wakeTime = formatted;
-                
-                // Adjust first task
                 AppState.tasks[0].time = val;
                 renderTimeline();
                 closeWakeTimeModal();
-                alert(`Wake time adjusted to ${formatted}. Sequence updated!`);
+                alert(`Wake time set to ${formatted}. Sequence updated!`);
             }
         }
 
@@ -821,216 +1595,141 @@
             }
         }
 
-        /* =========================================================================
-         * 5. ROLE SELECTOR LOGIC (Caregiver, Doctor, Patient)
-         * ========================================================================= */
-        function toggleRoleDropdown() {
-            document.getElementById('roleDropdown').classList.toggle('hidden');
-        }
-
-        function setRole(role) {
-            AppState.currentRole = role;
-            document.getElementById('roleDropdown').classList.add('hidden');
-
-            const badge = document.getElementById('globalRoleBadge');
-            const label = document.getElementById('roleLabel');
-            const icon = document.getElementById('roleIcon');
-            const cgTools = document.getElementById('sectionCaregiverTools');
-            const docTools = document.getElementById('sectionDoctorTools');
-
-            document.getElementById('roleTagPatient').classList.add('hidden');
-            document.getElementById('roleTagCaregiver').classList.add('hidden');
-            document.getElementById('roleTagDoctor').classList.add('hidden');
-
-            if (role === 'caregiver') {
-                badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#0284c7] text-white";
-                badge.innerText = "Caregiver Portal";
-                label.innerText = "2. Caregiver (Meera)";
-                icon.className = "fa-solid fa-house-chimney-user text-sky-400";
-                document.getElementById('heroGreetingName').innerText = "Good Day, Meera (Caregiver)";
-                document.getElementById('roleTagCaregiver').classList.remove('hidden');
-                cgTools.classList.remove('hidden');
-                docTools.classList.add('hidden');
-            } else if (role === 'doctor') {
-                badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#7c3aed] text-white";
-                badge.innerText = "Doctor / Clinician";
-                label.innerText = "3. Doctor (Dr. Sharma)";
-                icon.className = "fa-solid fa-user-doctor text-purple-400";
-                document.getElementById('heroGreetingName').innerText = "Clinical Consultation: John Doe";
-                document.getElementById('roleTagDoctor').classList.remove('hidden');
-                cgTools.classList.add('hidden');
-                docTools.classList.remove('hidden');
-            } else {
-                badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#20a76a] text-white";
-                badge.innerText = "Patient Portal";
-                label.innerText = "1. Patient (John)";
-                icon.className = "fa-solid fa-user text-emerald-400";
-                document.getElementById('heroGreetingName').innerText = "Good Day, John!";
-                document.getElementById('roleTagPatient').classList.remove('hidden');
-                cgTools.classList.add('hidden');
-                docTools.classList.add('hidden');
-            }
-        }
-
-        /* =========================================================================
-         * 6. CAREGIVER & DOCTOR TOOLS LOGIC
-         * ========================================================================= */
-        function openAddRoutineModal() { document.getElementById('modalAddRoutine').classList.remove('hidden'); }
-        function closeAddRoutineModal() { document.getElementById('modalAddRoutine').classList.add('hidden'); }
-        function saveNewRoutine() {
-            const title = document.getElementById('inRoutineTitle').value.trim();
-            const time = document.getElementById('inRoutineTime').value;
-            const category = document.getElementById('inRoutineCategory').value;
-            if (title) {
-                AppState.tasks.push({
-                    id: 't_' + Date.now(),
-                    title,
-                    time,
-                    category,
-                    completed: false,
-                    snoozes: 0
-                });
+        function openAddTaskModal() { document.getElementById('modalAddTask').classList.remove('hidden'); }
+        function closeAddTaskModal() { document.getElementById('modalAddTask').classList.add('hidden'); }
+        function saveNewTask() {
+            const t = document.getElementById('newTaskTitle').value.trim();
+            const tm = document.getElementById('newTaskTime').value;
+            const c = document.getElementById('newTaskCat').value;
+            if (t) {
+                AppState.tasks.push({ id: 't_' + Date.now(), title: t, time: tm, category: c, completed: false, snoozes: 0 });
                 AppState.tasks.sort((a,b) => a.time.localeCompare(b.time));
                 renderTimeline();
-                closeAddRoutineModal();
-                document.getElementById('inRoutineTitle').value = '';
+                closeAddTaskModal();
+                document.getElementById('newTaskTitle').value = '';
             }
         }
 
-        function openAddPersonModal() { document.getElementById('modalAddPersonCard').classList.remove('hidden'); }
-        function closeAddPersonModal() { document.getElementById('modalAddPersonCard').classList.add('hidden'); }
-        function savePersonCard() {
-            const name = document.getElementById('inPersonName').value.trim();
-            const relation = document.getElementById('inPersonRelation').value.trim();
-            const clue = document.getElementById('inPersonClue').value.trim();
-            if (name && relation) {
+        function openAddPersonModal() { document.getElementById('modalAddPerson').classList.remove('hidden'); }
+        function closeAddPersonModal() { document.getElementById('modalAddPerson').classList.add('hidden'); }
+        function saveNewPersonCard() {
+            const n = document.getElementById('inPersonName').value.trim();
+            const r = document.getElementById('inPersonRelation').value.trim();
+            const c = document.getElementById('inPersonClue').value.trim();
+            if (n && r) {
                 AppState.familiarPeople.push({
-                    name,
-                    relation,
-                    photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-                    clue: clue || 'Visits often with warm smiles.'
+                    name: n, relation: r, photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80', clue: c || 'A valued person in your life.'
                 });
-                renderFacesDirectory();
                 closeAddPersonModal();
+                alert("Familiar person added to memory directory!");
             }
         }
 
-        function renderFacesDirectory() {
-            const grid = document.getElementById('facesCardsGrid');
-            grid.innerHTML = '';
-            AppState.familiarPeople.forEach(p => {
-                const card = document.createElement('div');
-                card.className = "bg-[#fbf9f4] p-3 rounded-2xl border border-[#ede5d8] text-center space-y-2";
-                card.innerHTML = `
-                    <img src="${p.photo}" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-white shadow">
-                    <div>
-                        <h5 class="font-black text-xs text-[#1b2e2b]">${p.name} (${p.relation})</h5>
-                        <p class="text-[10px] text-[#527068] mt-1">${p.clue}</p>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function renderCaregiverAlerts() {
-            const feed = document.getElementById('caregiverAlertsFeed');
-            feed.innerHTML = '';
-            AppState.caregiverAlerts.forEach(a => {
-                const row = document.createElement('div');
-                row.className = "p-2.5 bg-rose-50 rounded-xl border border-rose-200 text-xs text-rose-900";
-                row.innerHTML = `<strong>${a.time}:</strong> ${a.text}`;
-                feed.appendChild(row);
-            });
-        }
-
-        function submitCaregiverNoteForDoctor() {
-            const title = document.getElementById('inCaregiverNoteTitle').value.trim();
-            const text = document.getElementById('inCaregiverNoteText').value.trim();
-            if (title && text) {
-                AppState.caregiverNotesForDoctor.unshift({
-                    date: 'Today',
-                    title,
-                    text
-                });
-                renderDoctorNotesReview();
-                document.getElementById('inCaregiverNoteTitle').value = '';
-                document.getElementById('inCaregiverNoteText').value = '';
-                alert("Note saved and sent to Doctor portal!");
+        function savePatientNote() {
+            const t = document.getElementById('patNoteTitle').value.trim();
+            const b = document.getElementById('patNoteBody').value.trim();
+            if (t && b) {
+                AppState.patientNotes.unshift({ date: 'Just now', title: t, text: b });
+                AppState.user.xp += 15;
+                renderPatientNotes();
+                document.getElementById('patNoteTitle').value = '';
+                document.getElementById('patNoteBody').value = '';
+                alert("Note saved! +15 XP");
             }
         }
 
-        function renderDoctorNotesReview() {
-            const box = document.getElementById('doctorCaregiverNotesReview');
+        function renderPatientNotes() {
+            const box = document.getElementById('patNotesLog');
             box.innerHTML = '';
-            AppState.caregiverNotesForDoctor.forEach(n => {
-                const card = document.createElement('div');
-                card.className = "p-2.5 bg-white rounded-xl border border-purple-200 text-xs";
-                card.innerHTML = `<strong>${n.date} - ${n.title}:</strong> <p class="text-gray-600 mt-0.5">${n.text}</p>`;
-                box.appendChild(card);
+            AppState.patientNotes.forEach(n => {
+                const c = document.createElement('div');
+                c.className = "p-2 bg-[#fdfaf2] rounded-xl border text-xs";
+                c.innerHTML = `<strong>${n.title}:</strong> <span class="text-gray-600">${n.text}</span>`;
+                box.appendChild(c);
             });
         }
 
-        function saveDoctorDirective() {
-            const title = document.getElementById('inDoctorDirectiveTitle').value.trim();
-            const text = document.getElementById('inDoctorDirectiveBody').value.trim();
-            if (title && text) {
-                AppState.doctorDirectives.unshift({
-                    date: 'Today',
-                    title,
-                    text
-                });
-                document.getElementById('inDoctorDirectiveTitle').value = '';
-                document.getElementById('inDoctorDirectiveBody').value = '';
-                alert("Professional directive recorded.");
+        function changeHydration(delta) {
+            AppState.user.hydration = Math.max(0, Math.min(12, AppState.user.hydration + delta));
+            document.getElementById('statHydrationText').innerText = `${AppState.user.hydration} / 7 Glasses`;
+        }
+
+        let exTimerInt = null;
+        function startExerciseTimer(title, sec) {
+            document.getElementById('modalGuidedTimer').classList.remove('hidden');
+            document.getElementById('guidedTimerHeading').innerText = title;
+            let left = sec;
+            document.getElementById('guidedTimerCount').innerText = left;
+            clearInterval(exTimerInt);
+            exTimerInt = setInterval(() => {
+                left--;
+                document.getElementById('guidedTimerCount').innerText = left;
+                if (left <= 0) {
+                    clearInterval(exTimerInt);
+                    AppState.user.xp += 30;
+                    playCategorySound('Medication');
+                    document.getElementById('guidedTimerCount').innerText = "Done!";
+                    speakText(`Great job finishing ${title}!`);
+                }
+            }, 1000);
+        }
+        function stopExerciseTimer() {
+            clearInterval(exTimerInt);
+            document.getElementById('modalGuidedTimer').classList.add('hidden');
+        }
+
+        function toggleVideoPlayback(vidId, btnId) {
+            const v = document.getElementById(vidId);
+            const b = document.getElementById(btnId);
+            if (v.paused) {
+                v.play();
+                b.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+                b.classList.add('opacity-0');
+            } else {
+                v.pause();
+                b.innerHTML = `<i class="fa-solid fa-play"></i>`;
+                b.classList.remove('opacity-0');
             }
         }
 
-        function exportClinicalSummaryReport() {
-            const content = `
-HARMONYCARE CLINICAL SUMMARY
-Patient: John Doe | UID: HC-CG-4102
-Caregiver: Meera | Date: ${new Date().toLocaleDateString()}
-
-1. ADHERENCE & LATENCY
-- Completed Routines: ${AppState.tasks.filter(t => t.completed).length} of ${AppState.tasks.length}
-- Current Streak: ${AppState.user.streak} Days
-- Average Initiation Latency: 3.4 seconds
-
-2. CAREGIVER LOGBOOK:
-${AppState.caregiverNotesForDoctor.map(n => `- [${n.date}] ${n.title}:${n.text}`).join('\n')}
-
-3. DOCTOR DIRECTIVES:
-${AppState.doctorDirectives.map(d => `- [${d.date}] ${d.title}:${d.text}`).join('\n')}
-            `;
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "Clinical_Report_John_Doe.txt";
-            a.click();
+        let bInt = null;
+        function triggerOverwhelmResetModal() {
+            document.getElementById('modalOverwhelmBreath').classList.remove('hidden');
+            const circle = document.getElementById('bCircle');
+            const txt = document.getElementById('bTxt');
+            let phase = 0;
+            const cycle = () => {
+                if (phase === 0) {
+                    circle.className = "w-44 h-44 rounded-full bg-[#e0f2fe] border-4 border-[#38bdf8] flex items-center justify-center transition-all duration-[4000ms]";
+                    txt.innerText = "Inhale (4s)";
+                    phase = 1;
+                } else if (phase === 1) {
+                    circle.className = "w-44 h-44 rounded-full bg-[#fef3c7] border-4 border-[#f59e0b] flex items-center justify-center transition-all duration-[3000ms]";
+                    txt.innerText = "Hold (3s)";
+                    phase = 2;
+                } else {
+                    circle.className = "w-32 h-32 rounded-full bg-[#daf5e6] border-4 border-[#20a76a] flex items-center justify-center transition-all duration-[5000ms]";
+                    txt.innerText = "Exhale (5s)";
+                    phase = 0;
+                }
+            };
+            cycle();
+            bInt = setInterval(cycle, 4000);
+        }
+        function closeOverwhelmResetModal() {
+            clearInterval(bInt);
+            document.getElementById('modalOverwhelmBreath').classList.add('hidden');
         }
 
         function triggerEmergencySOS() {
             playCategorySound('Medication');
-            speakText("Emergency SOS activated. Contacting primary family responder.");
-            alert("🚨 EMERGENCY SOS ACTIVATED!\nContacting Primary Caregiver: Meera (+1 555-234-8901)");
+            speakText("Emergency SOS activated. Dialing primary contact.");
+            alert("🚨 EMERGENCY SOS ACTIVATED!\nDialing Primary Caregiver: Meera (+1 555-234-8901)");
         }
 
-        function testFaceRecallQuiz() {
-            const p = AppState.familiarPeople[0];
-            const answer = prompt(`Memory Quiz:\n"${p.clue}"\n\nWho is this? (Sarah, Leo, Dr. Sharma, Mary)`);
-            if (answer && answer.toLowerCase().includes(p.name.toLowerCase())) {
-                AppState.user.xp += 50;
-                renderTimeline();
-                alert(`⭐ Correct! That is your daughter, ${p.name}! +50 XP awarded!`);
-            } else if (answer) {
-                alert(`Almost! That was your daughter, ${p.name}. Keep practicing!`);
-            }
-        }
-
-        function renderHeatmap() {
-            const c = document.getElementById('monthlyHeatmapContainer');
-            c.innerHTML = '';
+        function renderHeatmapGrid() {
+            const g = document.getElementById('monthlyHeatmapGrid');
+            g.innerHTML = '';
             for (let i = 1; i <= 30; i++) {
                 const cell = document.createElement('div');
                 let clr = "bg-[#20a76a]";
@@ -1039,22 +1738,21 @@ ${AppState.doctorDirectives.map(d => `- [${d.date}] ${d.title}:${d.text}`).join(
                 else if (i % 4 === 0) clr = "bg-[#86efac]";
                 cell.className = `h-7 rounded-lg ${clr} flex items-center justify-center text-[10px] font-bold text-[#1b2e2b]`;
                 cell.innerText = i;
-                c.appendChild(cell);
+                g.appendChild(cell);
             }
         }
 
-        function setFontSize(sz) {
+        function setFontScale(sz) {
             document.documentElement.style.fontSize = sz === 'normal' ? '16px' : '18.5px';
-            document.getElementById('btnFontNormal').classList.toggle('bg-[#2e8b68]', sz === 'normal');
-            document.getElementById('btnFontLarge').classList.toggle('bg-[#2e8b68]', sz !== 'normal');
+            document.getElementById('btnFontNormal').classList.toggle('bg-[#20a76a]', sz === 'normal');
+            document.getElementById('btnFontLarge').classList.toggle('bg-[#20a76a]', sz !== 'normal');
         }
 
         window.onload = function() {
             renderTimeline();
-            renderFacesDirectory();
-            renderCaregiverAlerts();
-            renderDoctorNotesReview();
-            renderHeatmap();
+            renderPatientNotes();
+            renderHeatmapGrid();
+            loadPatientFace(0);
         };
     </script>
 </body>
