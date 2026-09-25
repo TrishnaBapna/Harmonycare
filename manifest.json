@@ -1,0 +1,18 @@
+{
+  "name": "Saksham - Cognitive Wellness & Routine Studio",
+  "short_name": "Saksham",
+  "description": "Empowering cognitive wellness, anti-overwhelm routine support, and clinical telemetry for individuals, caregivers, and clinicians.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F9F8F5",
+  "theme_color": "#0D9488",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230D9488'/><path d='M50 20 C35 20 25 32 25 45 C25 62 45 78 50 82 C55 78 75 62 75 45 C75 32 65 20 50 20 Z' fill='white'/><circle cx='50' cy='45' r='10' fill='%23F59E0B'/></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["medical", "health", "lifestyle"]
+}
