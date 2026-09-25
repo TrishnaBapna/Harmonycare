@@ -28,36 +28,18 @@
         extend: {
           colors: {
             brand: {
-              50: '#F0FDFA',
-              100: '#CCFBF1',
-              200: '#99F6E4',
-              300: '#5EEAD4',
-              400: '#2DD4BF',
-              500: '#14B8A6',
-              600: '#0D9488',
-              700: '#0F766E',
-              800: '#115E59',
-              900: '#134E4A',
+              50: '#F0FDFA', 100: '#CCFBF1', 200: '#99F6E4', 300: '#5EEAD4',
+              400: '#2DD4BF', 500: '#14B8A6', 600: '#0D9488', 700: '#0F766E',
+              800: '#115E59', 900: '#134E4A',
             },
             accent: {
-              50: '#EEF2FF',
-              100: '#E0E7FF',
-              200: '#C7D2FE',
-              300: '#A5B4FC',
-              400: '#818CF8',
-              500: '#6366F1',
-              600: '#4F46E5',
-              700: '#4338CA',
-              800: '#3730A3',
-              900: '#312E81',
+              50: '#EEF2FF', 100: '#E0E7FF', 200: '#C7D2FE', 300: '#A5B4FC',
+              400: '#818CF8', 500: '#6366F1', 600: '#4F46E5', 700: '#4338CA',
+              800: '#3730A3', 900: '#312E81',
             },
             vibe: {
-              amber: '#F59E0B',
-              coral: '#F97316',
-              rose: '#F43F5E',
-              sky: '#0284C7',
-              emerald: '#10B981',
-              purple: '#8B5CF6'
+              amber: '#F59E0B', coral: '#F97316', rose: '#F43F5E',
+              sky: '#0284C7', emerald: '#10B981', purple: '#8B5CF6'
             }
           },
           fontFamily: {
@@ -82,47 +64,24 @@
       font-family: 'Outfit', sans-serif;
     }
 
-    ::-webkit-scrollbar {
-      width: 7px;
-      height: 7px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #F1F5F9;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #CBD5E1;
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94A3B8;
-    }
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
     /* 3D Tumbling Cube */
-    .scene-dice {
-      width: 82px;
-      height: 82px;
-      perspective: 450px;
-    }
+    .scene-dice { width: 82px; height: 82px; perspective: 450px; }
     .cube {
-      width: 100%;
-      height: 100%;
-      position: relative;
+      width: 100%; height: 100%; position: relative;
       transform-style: preserve-3d;
       transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .cube-face {
-      position: absolute;
-      width: 82px;
-      height: 82px;
+      position: absolute; width: 82px; height: 82px;
       background: linear-gradient(135deg, #0D9488, #4F46E5);
-      border: 2px solid #FFFFFF;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      font-weight: 800;
-      color: white;
+      border: 2px solid #FFFFFF; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 800; color: white;
       box-shadow: inset 0 0 12px rgba(255,255,255,0.3), 0 8px 18px rgba(79, 70, 229, 0.35);
     }
     .cube-face-1 { transform: rotateY(0deg) translateZ(41px); }
@@ -136,41 +95,24 @@
       0%, 100% { box-shadow: 0 0 20px rgba(13, 148, 136, 0.35); border-color: #14B8A6; }
       50% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.5); border-color: #6366F1; }
     }
-    .animate-gentle-alert {
-      animation: softGlow 1.4s infinite;
-    }
+    .animate-gentle-alert { animation: softGlow 1.4s infinite; }
 
-    @keyframes soundWave {
-      0%, 100% { height: 6px; }
-      50% { height: 20px; }
-    }
+    @keyframes soundWave { 0%, 100% { height: 6px; } 50% { height: 20px; } }
     .wave-bar:nth-child(1) { animation: soundWave 0.8s ease-in-out infinite; }
     .wave-bar:nth-child(2) { animation: soundWave 0.8s ease-in-out infinite 0.2s; }
     .wave-bar:nth-child(3) { animation: soundWave 0.8s ease-in-out infinite 0.4s; }
     .wave-bar:nth-child(4) { animation: soundWave 0.8s ease-in-out infinite 0.1s; }
 
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Glass card modern aesthetic */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(226, 232, 240, 0.8);
-    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
+    body { top: 0px !important; }
   </style>
 </head>
 
 <body class="min-h-screen flex flex-col antialiased">
 
-  <!-- ========================================================================= -->
-  <!-- TOP GLOBAL HEADER (Vibrant Gradient & Action Center)                       -->
-  <!-- ========================================================================= -->
+  <!-- ==================== TOP GLOBAL HEADER ==================== -->
   <header class="sticky top-0 z-50 bg-gradient-to-r from-slate-900 via-teal-950 to-indigo-950 text-white border-b border-teal-500/20 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-3">
       
@@ -186,61 +128,74 @@
             </h1>
             <span id="headerRoleBadge" class="text-[11px] px-3 py-0.5 rounded-full bg-teal-500/20 text-teal-300 font-extrabold uppercase tracking-wider border border-teal-400/40 backdrop-blur-xs flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
-              <span id="txtHeaderRoleName">Patient Portal</span>
+              <span id="txtHeaderRoleName" data-i18n="portal_patient">Patient Portal</span>
             </span>
           </div>
-          <p class="text-xs font-medium text-slate-300 hidden sm:block">
+          <p class="text-xs font-medium text-slate-300 hidden sm:block" data-i18n="tagline">
             Cognitive Wellness, Real-Time Coordination & Intelligent Assistant
           </p>
         </div>
       </div>
 
       <!-- Quick Action Utilities -->
-      <div class="flex items-center flex-wrap gap-2 sm:gap-3">
+      <div class="flex items-center flex-wrap gap-2 sm:gap-2.5">
         
-        <!-- Emergency SOS Button (Direct WhatsApp / Phone) -->
-        <button onclick="openEmergencyModal()" class="px-3.5 py-1.5 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-xl text-xs font-bold shadow-lg shadow-rose-500/30 transition-all transform active:scale-95 flex items-center gap-1.5 ring-1 ring-white/20">
+        <!-- Multilingual Language Selector (India & Global) -->
+        <div class="flex items-center bg-slate-800/90 rounded-xl px-2 py-1 border border-slate-700 text-xs">
+          <i class="fa-solid fa-language text-teal-400 mr-1.5"></i>
+          <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-transparent text-white font-bold text-xs focus:outline-hidden cursor-pointer">
+            <option value="en" class="bg-slate-900 text-white">English</option>
+            <option value="hi" class="bg-slate-900 text-white">हिन्दी (Hindi)</option>
+            <option value="mr" class="bg-slate-900 text-white">मराठी (Marathi)</option>
+            <option value="ta" class="bg-slate-900 text-white">தமிழ் (Tamil)</option>
+            <option value="te" class="bg-slate-900 text-white">తెలుగు (Telugu)</option>
+            <option value="bn" class="bg-slate-900 text-white">বাংলা (Bengali)</option>
+            <option value="gu" class="bg-slate-900 text-white">ગુજરાતી (Gujarati)</option>
+            <option value="kn" class="bg-slate-900 text-white">ಕನ್ನಡ (Kannada)</option>
+          </select>
+        </div>
+
+        <!-- Emergency SOS Button -->
+        <button onclick="openEmergencyModal()" class="px-3.5 py-1.5 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-xl text-xs font-bold shadow-lg shadow-rose-500/30 transition-all flex items-center gap-1.5 ring-1 ring-white/20">
           <i class="fa-solid fa-phone-volume animate-bounce"></i>
-          <span>Emergency SOS</span>
+          <span data-i18n="emergency_sos">Emergency SOS</span>
         </button>
 
         <!-- AI Assistant Quick Trigger -->
-        <button onclick="toggleAiDrawer(true)" class="px-3.5 py-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-teal-400 hover:from-indigo-600 hover:to-teal-500 text-white rounded-xl text-xs font-extrabold shadow-md shadow-indigo-500/30 transition-all transform active:scale-95 flex items-center gap-1.5 ring-1 ring-white/30">
+        <button onclick="toggleAiDrawer(true)" class="px-3.5 py-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-teal-400 hover:from-indigo-600 text-white rounded-xl text-xs font-extrabold shadow-md transition-all flex items-center gap-1.5 ring-1 ring-white/30">
           <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
           <span>HarmonyAI</span>
-          <span class="text-[9px] bg-white/25 px-1.5 py-0.2 rounded-full font-black uppercase tracking-wider">Live</span>
         </button>
 
-        <!-- Global Text-to-Speech Controls -->
-        <div class="flex items-center bg-slate-800/80 backdrop-blur-xs rounded-xl p-1 border border-slate-700/80 text-xs">
-          <button onclick="speakPageSummary()" id="btnGlobalTts" class="px-2.5 py-1 rounded-lg bg-teal-600/80 hover:bg-teal-500 text-white font-bold transition flex items-center gap-1" title="Read current page aloud">
+        <!-- Text-to-Speech Controls -->
+        <div class="flex items-center bg-slate-800/80 rounded-xl p-1 border border-slate-700 text-xs">
+          <button onclick="speakPageSummary()" class="px-2.5 py-1 rounded-lg bg-teal-600/80 hover:bg-teal-500 text-white font-bold transition flex items-center gap-1" title="Read current page aloud">
             <i class="fa-solid fa-volume-high"></i>
-            <span class="hidden md:inline">Read Screen</span>
+            <span class="hidden md:inline" data-i18n="read_screen">Read</span>
           </button>
-          <button onclick="stopSpeaking()" class="px-2 py-1 text-slate-300 hover:text-white ml-1 font-bold" title="Stop Voice">
+          <button onclick="stopSpeaking()" class="px-2 py-1 text-slate-300 hover:text-white ml-0.5 font-bold" title="Stop Voice">
             <i class="fa-solid fa-stop"></i>
           </button>
-          <!-- Speech Speed Rate -->
-          <select id="ttsRateSelect" class="bg-transparent text-slate-300 text-[11px] font-bold focus:outline-hidden ml-1 border-l border-slate-600 pl-1.5 pr-1 cursor-pointer">
+          <select id="ttsRateSelect" class="bg-transparent text-slate-300 text-[11px] font-bold focus:outline-hidden ml-1 border-l border-slate-600 pl-1.5 pr-0.5 cursor-pointer">
             <option value="0.85" class="bg-slate-900 text-white">0.85x</option>
             <option value="1.0" class="bg-slate-900 text-white" selected>1.0x</option>
             <option value="1.15" class="bg-slate-900 text-white">1.15x</option>
           </select>
         </div>
 
-        <!-- Sensory Breath Pause -->
-        <button onclick="triggerOverwhelmReset()" class="px-3 py-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-slate-700 shadow-sm transition flex items-center gap-1.5" title="Take a deep calming breath">
+        <!-- Sensory Breath -->
+        <button onclick="triggerOverwhelmReset()" class="px-3 py-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700 transition flex items-center gap-1.5">
           <i class="fa-solid fa-wind text-teal-400"></i>
-          <span class="hidden md:inline">Breathe</span>
+          <span class="hidden lg:inline" data-i18n="breathe">Breathe</span>
         </button>
 
-        <!-- Text Scaler (Accessibility) -->
+        <!-- Text Scaler -->
         <div class="flex items-center bg-slate-800/80 rounded-xl p-0.5 border border-slate-700">
-          <button onclick="adjustFontSize(-1)" class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-black text-xs transition" title="Decrease Font Size">A-</button>
-          <button onclick="adjustFontSize(1)" class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-black text-xs transition ml-0.5" title="Increase Font Size">A+</button>
+          <button onclick="adjustFontSize(-1)" class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-black text-xs transition">A-</button>
+          <button onclick="adjustFontSize(1)" class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-black text-xs transition ml-0.5">A+</button>
         </div>
 
-        <!-- Switch Persona / User Login Trigger -->
+        <!-- Persona Switcher -->
         <button onclick="openAuthModal()" class="px-3.5 py-1.5 bg-white hover:bg-slate-100 text-slate-900 rounded-xl text-xs font-extrabold shadow-sm transition flex items-center gap-2 ring-2 ring-teal-400/40">
           <span id="userAvatarDot" class="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
           <span id="lblAuthUser">Eleanor Vance</span>
@@ -251,9 +206,7 @@
     </div>
   </header>
 
-  <!-- ========================================================================= -->
-  <!-- SPEECH SPEAKING INDICATOR BAR (FLOATING BANNER WHEN ACTIVE)                -->
-  <!-- ========================================================================= -->
+  <!-- TTS Speaking Banner -->
   <div id="ttsSpeakingBanner" class="hidden bg-gradient-to-r from-teal-600 to-indigo-600 text-white py-1.5 px-4 text-xs font-bold shadow-inner">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <div class="flex items-center space-x-3">
@@ -266,37 +219,75 @@
         <span id="ttsSpeakingText">Reading aloud...</span>
       </div>
       <button onclick="stopSpeaking()" class="px-2 py-0.5 bg-white/20 hover:bg-white/30 rounded-md text-[11px] font-extrabold uppercase">
-        <i class="fa-solid fa-xmark mr-1"></i> Dismiss Audio
+        <i class="fa-solid fa-xmark mr-1"></i> Dismiss
       </button>
     </div>
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- DEDICATED NAVIGATION BARS (STRICT ROLE ISOLATION)                          -->
-  <!-- ========================================================================= -->
+  <!-- ==================== UNIFIED REAL CALENDAR & TIMEFRAME BAR (DAILY / WEEKLY / MONTHLY) ==================== -->
+  <div class="bg-white border-b border-slate-200/90 shadow-2xs py-2.5 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+      
+      <!-- Real Calendar Date Selector -->
+      <div class="flex items-center space-x-2.5 w-full md:w-auto">
+        <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-xs border border-teal-200">
+          <i class="fa-regular fa-calendar-days"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider" data-i18n="calendar_date">Selected Date (Real Calendar)</span>
+          <input type="date" id="globalCalendarPicker" onchange="onCalendarDateChanged(this.value)" class="block text-xs font-bold text-slate-800 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 focus:outline-hidden focus:ring-1 focus:ring-teal-500 cursor-pointer">
+        </div>
+      </div>
+
+      <!-- Timeframe Toggle: Daily vs. Weekly vs. Monthly -->
+      <div class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200 w-full md:w-auto justify-center">
+        <button onclick="setTimeframeMode('daily')" id="tf-btn-daily" class="tf-btn px-4 py-1.5 rounded-xl text-xs font-black bg-white text-teal-800 shadow-xs transition flex items-center gap-1.5">
+          <i class="fa-solid fa-sun text-amber-500"></i>
+          <span data-i18n="timeframe_daily">Daily Tasks & Latency</span>
+        </button>
+        <button onclick="setTimeframeMode('weekly')" id="tf-btn-weekly" class="tf-btn px-4 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-chart-simple text-indigo-500"></i>
+          <span data-i18n="timeframe_weekly">Weekly Progress</span>
+        </button>
+        <button onclick="setTimeframeMode('monthly')" id="tf-btn-monthly" class="tf-btn px-4 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-calendar-check text-rose-500"></i>
+          <span data-i18n="timeframe_monthly">Monthly Overview</span>
+        </button>
+      </div>
+
+      <!-- Quick Date Status Badge -->
+      <div class="hidden lg:flex items-center gap-2 text-xs font-bold text-slate-500">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span id="txtCalendarFriendlyLabel">Today: Friday, Sept 25, 2026</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== NAVIGATION BARS (ROLE ISOLATED) ==================== -->
   
-  <!-- 1. PATIENT NAVIGATION BAR (EXCLUSIVELY FOR PATIENT - ZERO CAREGIVER/DOC TABS) -->
+  <!-- 1. PATIENT NAV -->
   <nav id="nav-patient" class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-[57px] z-40 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto no-scrollbar py-2.5 gap-2 text-slate-700">
       <button onclick="switchTab('routine')" id="tab-routine" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md shadow-teal-600/20 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-list-check"></i> 1. Daily Routine & Cues
+        <i class="fa-solid fa-list-check"></i> <span data-i18n="nav_routine">1. Daily Routine & Cues</span>
       </button>
       <button onclick="switchTab('games')" id="tab-games" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-puzzle-piece text-indigo-500"></i> 2. Mind Clinic Games
+        <i class="fa-solid fa-puzzle-piece text-indigo-500"></i> <span data-i18n="nav_games">2. Mind Clinic Games</span>
       </button>
       <button onclick="switchTab('vault')" id="tab-vault" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-heart text-rose-500"></i> 3. Loved Ones & Face Recall
+        <i class="fa-solid fa-heart text-rose-500"></i> <span data-i18n="nav_vault">3. Loved Ones & Face Recall</span>
       </button>
       <button onclick="switchTab('movement')" id="tab-movement" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-person-walking text-teal-600"></i> 4. Movement & Speech
+        <i class="fa-solid fa-person-walking text-teal-600"></i> <span data-i18n="nav_movement">4. Movement & Speech</span>
       </button>
       <button onclick="switchTab('nutrition')" id="tab-nutrition" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-apple-whole text-amber-500"></i> 5. Nutrition & Hydration
+        <i class="fa-solid fa-apple-whole text-amber-500"></i> <span data-i18n="nav_nutrition">5. Nutrition & Hydration</span>
       </button>
     </div>
   </nav>
 
-  <!-- 2. CAREGIVER NAVIGATION BAR (EXCLUSIVELY FOR CAREGIVER) -->
+  <!-- 2. CAREGIVER NAV -->
   <nav id="nav-caregiver" class="hidden bg-slate-900 border-b border-indigo-500/30 sticky top-[57px] z-40 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto no-scrollbar py-2.5 gap-2 text-slate-300">
       <button onclick="switchCaregiverSubTab('cg-overview')" id="tab-cg-overview" class="cg-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-600/25 flex items-center gap-2 whitespace-nowrap">
@@ -306,7 +297,7 @@
         <i class="fa-solid fa-bell text-amber-400"></i> Real-Time Alerts & WhatsApp
       </button>
       <button onclick="switchCaregiverSubTab('cg-schedule')" id="tab-cg-schedule" class="cg-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-calendar-plus text-teal-400"></i> Patient Routine & Medication Manager
+        <i class="fa-solid fa-calendar-plus text-teal-400"></i> Routine & Medication Manager
       </button>
       <button onclick="switchCaregiverSubTab('cg-notes')" id="tab-cg-notes" class="cg-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-envelope-open-text text-rose-400"></i> Clinical Notes & Email Doctor
@@ -314,11 +305,11 @@
     </div>
   </nav>
 
-  <!-- 3. DOCTOR / CLINICIAN NAVIGATION BAR (EXCLUSIVELY FOR DOCTOR) -->
+  <!-- 3. DOCTOR NAV -->
   <nav id="nav-doctor" class="hidden bg-slate-950 border-b border-sky-500/30 sticky top-[57px] z-40 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto no-scrollbar py-2.5 gap-2 text-slate-300">
       <button onclick="switchDoctorSubTab('doc-telemetry')" id="tab-doc-telemetry" class="doc-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-sky-600 to-teal-600 text-white shadow-md shadow-sky-600/25 flex items-center gap-2 whitespace-nowrap">
-        <i class="fa-solid fa-stethoscope"></i> Neurological Telemetry & Motor Metrics
+        <i class="fa-solid fa-stethoscope"></i> Neurological Telemetry & Clinical Charts
       </button>
       <button onclick="switchDoctorSubTab('doc-directives')" id="tab-doc-directives" class="doc-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-900 hover:bg-slate-800 text-slate-300 flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-prescription-bottle-medical text-amber-400"></i> Clinical Directives & Rx Spacing
@@ -329,10 +320,13 @@
     </div>
   </nav>
 
-  <!-- ========================================================================= -->
-  <!-- MAIN APPLICATION BODY                                                     -->
-  <!-- ========================================================================= -->
+  <!-- ==================== MAIN APPLICATION CONTENT ==================== -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- REAL TIMEFRAME INSIGHTS CARD (DAILY, WEEKLY, MONTHLY) - ADAPTED TO ALL ROLES -->
+    <div id="timeframe-display-container" class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+      <!-- Populated dynamically based on daily/weekly/monthly mode -->
+    </div>
 
     <!-- ======================================================================= -->
     <!-- PORTAL 1: PATIENT PORTAL VIEWS                                          -->
@@ -342,14 +336,13 @@
       <!-- ==================== TAB 1: DAILY ROUTINE & CUES ==================== -->
       <section id="view-routine" class="tab-view space-y-6">
         
-        <!-- Vibrant Inspiration Banner -->
+        <!-- Inspiration Banner -->
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-teal-700 via-emerald-600 to-indigo-700 text-white p-6 sm:p-8 shadow-xl shadow-teal-900/10">
-          <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
           <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
             <div>
               <div class="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold text-teal-100 mb-2.5 border border-white/25">
                 <i class="fa-regular fa-sun text-amber-300"></i>
-                <span>Daily Routine & Cognitive Coordination</span>
+                <span data-i18n="banner_badge">Daily Routine & Cognitive Coordination</span>
               </div>
               <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight font-heading" id="lblGreeting">
                 Good Morning, Eleanor! 🌿
@@ -359,7 +352,6 @@
               </p>
             </div>
 
-            <!-- Streak & Brain Points High Contrast Badges -->
             <div class="flex items-center space-x-3 bg-slate-900/50 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 shadow-lg">
               <div class="text-center px-3 border-r border-white/20">
                 <p class="text-[10px] uppercase tracking-wider font-extrabold text-teal-200">Consistency</p>
@@ -375,29 +367,33 @@
           </div>
         </div>
 
-        <!-- MINI-TABS SELECTION: CUES & MEMORY QUIZ (FIRST) vs. DIRECT TO-DO LIST -->
+        <!-- Routine Mini-Tabs: Cues (First) vs Direct Checklist -->
         <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-2">
           <button onclick="switchRoutineMiniTab('cues')" id="mini-tab-cues" class="flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md shadow-teal-600/20 flex items-center justify-center gap-2 transition-all">
-            <i class="fa-solid fa-lightbulb text-amber-300"></i> 1. Memory Cues for Every Task (Earn +25 XP)
+            <i class="fa-solid fa-lightbulb text-amber-300"></i> <span data-i18n="mini_cues_tab">1. Memory Cues for Every Task (3 Chances + Hint)</span>
           </button>
           <button onclick="switchRoutineMiniTab('direct')" id="mini-tab-direct" class="flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center justify-center gap-2 transition-all">
-            <i class="fa-solid fa-list-check text-indigo-500"></i> 2. Direct Schedule Checklist
+            <i class="fa-solid fa-list-check text-indigo-500"></i> <span data-i18n="mini_direct_tab">2. Direct Schedule Checklist</span>
           </button>
         </div>
 
-        <!-- MINI-VIEW A: MEMORY CUES & QUIZ FOR EVERY ACTIVITY (FIRST VIEW) -->
+        <!-- MINI-VIEW A: 3-CHANCE PROGRESSIVE CUES & MEMORY QUIZ -->
         <div id="routine-miniview-cues" class="space-y-4">
           <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-5">
             <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-100 pb-4">
               <div>
                 <span class="text-xs font-black text-teal-600 uppercase tracking-wider">Step-by-Step Task Initiation</span>
-                <h3 class="text-lg sm:text-xl font-black text-slate-900 mt-0.5 font-heading">Interactive Activity Cues</h3>
+                <h3 class="text-lg sm:text-xl font-black text-slate-900 mt-0.5 font-heading">Interactive Activity Cues (3-Chance Assisted Recall)</h3>
               </div>
               <div class="flex items-center gap-2">
                 <button onclick="speakCurrentCue()" class="px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-700 rounded-xl text-xs font-bold border border-teal-200 transition flex items-center gap-1.5">
                   <i class="fa-solid fa-volume-high"></i> Read Question
                 </button>
-                <span class="text-xs text-slate-500 font-medium">Test recall first, then complete</span>
+                <!-- Visual Hearts / Chances Remaining -->
+                <div id="cueChancesBadge" class="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-xs font-extrabold flex items-center gap-1">
+                  <span>Chances:</span>
+                  <span id="cueHeartsDisplay">❤️❤️❤️ (3 Left)</span>
+                </div>
               </div>
             </div>
 
@@ -417,7 +413,7 @@
           </div>
         </div>
 
-        <!-- MINI-VIEW B: DIRECT TO-DO SCHEDULE (ACCESSED VIA MINI-TAB) -->
+        <!-- MINI-VIEW B: DIRECT TO-DO SCHEDULE -->
         <div id="routine-miniview-direct" class="hidden space-y-4">
           <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
@@ -440,11 +436,10 @@
           </div>
         </div>
 
-        <!-- 3D TUMBLING CUBE FOR DAILY SENSORY HOBBY -->
+        <!-- 3D Tumbling Cube Challenge -->
         <div class="bg-gradient-to-r from-amber-500/10 via-teal-500/10 to-indigo-500/10 rounded-3xl p-6 sm:p-7 border border-amber-200/80 shadow-md">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="flex items-center space-x-6">
-              <!-- 3D Cube Scene -->
               <div class="scene-dice cursor-pointer shrink-0" onclick="roll3DCubeAndHobby()" title="Click to Roll the 3D Cube!">
                 <div id="cube3D" class="cube">
                   <div class="cube-face cube-face-1"><i class="fa-solid fa-seedling"></i></div>
@@ -457,7 +452,7 @@
               </div>
 
               <div>
-                <span class="text-[11px] font-black uppercase text-amber-700 tracking-wider bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300">Tactile 3D Cube Motor Challenge (Tap Cube to Roll)</span>
+                <span class="text-[11px] font-black uppercase text-amber-700 tracking-wider bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300">Tactile 3D Cube Motor Challenge (Tap to Roll)</span>
                 <h3 class="text-lg sm:text-xl font-black text-slate-900 mt-1 font-heading" id="hobbyTitle">Pick One Flower from the Garden Bowl</h3>
                 <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-xl font-medium" id="hobbyDesc">
                   Take a mixed bowl with colorful flowers or soft balls. Gently pick up one flower with your fingers, place it into a fresh cup of water, and enjoy its soothing scent.
@@ -470,7 +465,7 @@
                 <i class="fa-solid fa-dice text-indigo-600"></i>
                 <span>Roll 3D Cube</span>
               </button>
-              <button onclick="completeHobbyChallenge()" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-xl shadow-md shadow-orange-500/25 flex items-center gap-1.5 transition">
+              <button onclick="completeHobbyChallenge()" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 text-white font-black text-xs rounded-xl shadow-md shadow-orange-500/25 flex items-center gap-1.5 transition">
                 <i class="fa-solid fa-gift"></i>
                 <span>Claim +60 XP Reward</span>
               </button>
@@ -482,7 +477,6 @@
 
       <!-- ==================== TAB 2: MIND CLINIC GAMES ==================== -->
       <section id="view-games" class="tab-view hidden space-y-6">
-        
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <span class="text-xs font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">Cognitive Neuro-Preservation</span>
@@ -490,7 +484,7 @@
             <p class="text-xs sm:text-sm text-slate-600 font-medium">Select any exercise from the 8 categories below or click Random Game (+50 XP each).</p>
           </div>
           <div>
-            <button onclick="pickRandomMiniGame()" class="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-extrabold text-xs rounded-2xl shadow-lg shadow-indigo-600/25 transition flex items-center gap-2">
+            <button onclick="pickRandomMiniGame()" class="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center gap-2">
               <i class="fa-solid fa-dice text-amber-300"></i> 🎲 Pick a Game For Me
             </button>
           </div>
@@ -498,36 +492,19 @@
 
         <!-- 8 Mini-Tabs Selector -->
         <div class="flex overflow-x-auto no-scrollbar gap-2 pb-2">
-          <button onclick="switchMiniGame(1)" id="minigame-tab-1" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-md shadow-indigo-600/20 whitespace-nowrap">
-            1. Color Sequence
-          </button>
-          <button onclick="switchMiniGame(2)" id="minigame-tab-2" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
-            2. Shape Match
-          </button>
-          <button onclick="switchMiniGame(3)" id="minigame-tab-3" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
-            3. Finger Tap
-          </button>
-          <button onclick="switchMiniGame(4)" id="minigame-tab-4" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
-            4. Target Catch (5x)
-          </button>
-          <button onclick="switchMiniGame(5)" id="minigame-tab-5" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
-            5. Mini Maze
-          </button>
-          <button onclick="switchMiniGame(6)" id="minigame-tab-6" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
-            6. Word Unscramble
-          </button>
-          <button onclick="switchMiniGame(7)" id="minigame-tab-7" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
-            7. Melody Recall
-          </button>
-          <button onclick="switchMiniGame(8)" id="minigame-tab-8" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">
-            8. Math Sprint
-          </button>
+          <button onclick="switchMiniGame(1)" id="minigame-tab-1" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-md whitespace-nowrap">1. Color Sequence</button>
+          <button onclick="switchMiniGame(2)" id="minigame-tab-2" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">2. Shape Match</button>
+          <button onclick="switchMiniGame(3)" id="minigame-tab-3" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">3. Finger Tap</button>
+          <button onclick="switchMiniGame(4)" id="minigame-tab-4" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">4. Target Catch</button>
+          <button onclick="switchMiniGame(5)" id="minigame-tab-5" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">5. Mini Maze</button>
+          <button onclick="switchMiniGame(6)" id="minigame-tab-6" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">6. Word Unscramble</button>
+          <button onclick="switchMiniGame(7)" id="minigame-tab-7" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">7. Melody Recall</button>
+          <button onclick="switchMiniGame(8)" id="minigame-tab-8" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">8. Math Sprint</button>
         </div>
 
         <!-- ACTIVE MINI-GAME CARD CONTAINER -->
         <div id="miniGameCardContainer" class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md max-w-2xl mx-auto">
-          
-          <!-- Game 1: Color Memory Pulse -->
+          <!-- Game 1 -->
           <div id="mg-view-1" class="mg-view space-y-4">
             <div class="flex justify-between items-center">
               <div>
@@ -539,21 +516,17 @@
               </button>
             </div>
             <p class="text-xs text-slate-600">Watch the sequence of 3 gentle colored pulses, then tap the pads in exact order.</p>
-            <div id="game1Display" class="h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-sm font-black text-slate-800 border border-slate-200 shadow-inner">
-              Press "Start Sequence Pulse"
-            </div>
+            <div id="game1Display" class="h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-sm font-black text-slate-800 border border-slate-200 shadow-inner">Press "Start Sequence Pulse"</div>
             <div class="grid grid-cols-4 gap-2">
-              <button onclick="pressColorSequence(0)" class="h-16 rounded-2xl bg-rose-500 hover:bg-rose-600 active:scale-95 transition shadow-md shadow-rose-500/20"></button>
-              <button onclick="pressColorSequence(1)" class="h-16 rounded-2xl bg-sky-500 hover:bg-sky-600 active:scale-95 transition shadow-md shadow-sky-500/20"></button>
-              <button onclick="pressColorSequence(2)" class="h-16 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 transition shadow-md shadow-emerald-500/20"></button>
-              <button onclick="pressColorSequence(3)" class="h-16 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 transition shadow-md shadow-amber-500/20"></button>
+              <button onclick="pressColorSequence(0)" class="h-16 rounded-2xl bg-rose-500 hover:bg-rose-600 active:scale-95 transition shadow-md"></button>
+              <button onclick="pressColorSequence(1)" class="h-16 rounded-2xl bg-sky-500 hover:bg-sky-600 active:scale-95 transition shadow-md"></button>
+              <button onclick="pressColorSequence(2)" class="h-16 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 transition shadow-md"></button>
+              <button onclick="pressColorSequence(3)" class="h-16 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 transition shadow-md"></button>
             </div>
-            <button onclick="startColorSequenceGame()" class="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-black text-xs rounded-xl shadow-md shadow-teal-600/25 transition">
-              Start Sequence Pulse
-            </button>
+            <button onclick="startColorSequenceGame()" class="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-black text-xs rounded-xl shadow-md transition">Start Sequence Pulse</button>
           </div>
 
-          <!-- Game 2: Dual N-Back Shape Focus -->
+          <!-- Game 2 -->
           <div id="mg-view-2" class="mg-view hidden space-y-4">
             <div class="flex justify-between items-center">
               <div>
@@ -563,20 +536,14 @@
               <i class="fa-solid fa-shapes text-sky-600 text-2xl"></i>
             </div>
             <p class="text-xs text-slate-600">Tap 'Match!' if current symbol equals the one right before it!</p>
-            <div id="game2Box" class="h-24 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-4xl font-black text-sky-600 shadow-inner">
-              ❓
-            </div>
+            <div id="game2Box" class="h-24 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-4xl font-black text-sky-600 shadow-inner">❓</div>
             <div class="grid grid-cols-2 gap-3">
-              <button onclick="checkGame2Match(true)" class="py-3 bg-sky-600 hover:bg-sky-700 text-white font-black text-xs rounded-xl shadow-md shadow-sky-600/25 transition">
-                Match!
-              </button>
-              <button onclick="nextGame2Shape()" class="py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-black text-xs rounded-xl transition">
-                Next Shape ➔
-              </button>
+              <button onclick="checkGame2Match(true)" class="py-3 bg-sky-600 hover:bg-sky-700 text-white font-black text-xs rounded-xl shadow-md transition">Match!</button>
+              <button onclick="nextGame2Shape()" class="py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-black text-xs rounded-xl transition">Next Shape ➔</button>
             </div>
           </div>
 
-          <!-- Game 3: Precision Finger Tap -->
+          <!-- Game 3 -->
           <div id="mg-view-3" class="mg-view hidden space-y-4">
             <div class="flex justify-between items-center">
               <div>
@@ -586,20 +553,14 @@
               <i class="fa-solid fa-hand-pointer text-teal-600 text-2xl"></i>
             </div>
             <p class="text-xs text-slate-600">Tap alternating buttons 10 times with smooth cadence to steady motor pathways.</p>
-            <div class="text-center font-black text-sm text-teal-700 bg-teal-50 p-3.5 rounded-2xl border border-teal-200" id="game3Count">
-              Taps: 0 / 10
-            </div>
+            <div class="text-center font-black text-sm text-teal-700 bg-teal-50 p-3.5 rounded-2xl border border-teal-200" id="game3Count">Taps: 0 / 10</div>
             <div class="grid grid-cols-2 gap-3">
-              <button id="g3BtnA" onclick="tapGame3('A')" class="py-4 bg-teal-600 hover:bg-teal-700 text-white font-black rounded-2xl text-sm shadow-md shadow-teal-600/25 transition">
-                LEFT
-              </button>
-              <button id="g3BtnB" disabled onclick="tapGame3('B')" class="py-4 bg-slate-100 text-slate-400 font-black rounded-2xl text-sm transition">
-                RIGHT
-              </button>
+              <button id="g3BtnA" onclick="tapGame3('A')" class="py-4 bg-teal-600 hover:bg-teal-700 text-white font-black rounded-2xl text-sm shadow-md transition">LEFT</button>
+              <button id="g3BtnB" disabled onclick="tapGame3('B')" class="py-4 bg-slate-100 text-slate-400 font-black rounded-2xl text-sm transition">RIGHT</button>
             </div>
           </div>
 
-          <!-- Game 4: Target Catch (5x Round) -->
+          <!-- Game 4 -->
           <div id="mg-view-4" class="mg-view hidden space-y-4">
             <div class="flex justify-between items-center">
               <div>
@@ -610,17 +571,13 @@
             </div>
             <p class="text-xs text-slate-600">Catch the target 5 consecutive times as it gently repositions.</p>
             <div id="game4Canvas" class="h-32 bg-slate-50 border border-slate-200 rounded-2xl relative overflow-hidden flex items-center justify-center shadow-inner">
-              <button id="game4Target" onclick="hitTargetCatch()" class="hidden absolute w-12 h-12 bg-indigo-600 hover:bg-indigo-700 rounded-full border-2 border-white shadow-lg text-white font-black text-sm transform transition active:scale-90">
-                🎯
-              </button>
+              <button id="game4Target" onclick="hitTargetCatch()" class="hidden absolute w-12 h-12 bg-indigo-600 hover:bg-indigo-700 rounded-full border-2 border-white shadow-lg text-white font-black text-sm">🎯</button>
               <span id="game4Status" class="text-xs font-black text-indigo-600">Press Start to Play</span>
             </div>
-            <button onclick="startFiveTargetRound()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow-md shadow-indigo-600/25 transition">
-              Start 5-Catch Round
-            </button>
+            <button onclick="startFiveTargetRound()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow-md transition">Start 5-Catch Round</button>
           </div>
 
-          <!-- Game 5: Mini Maze -->
+          <!-- Game 5 -->
           <div id="mg-view-5" class="mg-view hidden space-y-4">
             <div class="flex justify-between items-center">
               <div>
@@ -629,19 +586,16 @@
               </div>
               <i class="fa-solid fa-compass text-orange-600 text-2xl"></i>
             </div>
-            <p class="text-xs text-slate-600">Use arrow buttons to navigate runner 🏃 to the home 🏡 node.</p>
             <div class="grid grid-cols-3 gap-2 bg-slate-100 p-2.5 rounded-2xl border border-slate-200" id="mazeGrid"></div>
             <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto">
-              <div></div>
-              <button onclick="moveMaze('up')" class="py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-black text-xs shadow">▲</button>
-              <div></div>
+              <div></div><button onclick="moveMaze('up')" class="py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-black text-xs shadow">▲</button><div></div>
               <button onclick="moveMaze('left')" class="py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-black text-xs shadow">◀</button>
               <button onclick="moveMaze('down')" class="py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-black text-xs shadow">▼</button>
               <button onclick="moveMaze('right')" class="py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-black text-xs shadow">▶</button>
             </div>
           </div>
 
-          <!-- Game 6: Word Unscramble -->
+          <!-- Game 6 -->
           <div id="mg-view-6" class="mg-view hidden space-y-4">
             <div class="flex justify-between items-center">
               <div>
@@ -650,17 +604,14 @@
               </div>
               <i class="fa-solid fa-spell-check text-emerald-600 text-2xl"></i>
             </div>
-            <p class="text-xs text-slate-600">Unscramble the healthy wellness concept below!</p>
             <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 text-center">
               <span id="g6Scrambled" class="text-2xl font-black tracking-widest text-emerald-800 font-heading">S M I L E</span>
             </div>
-            <input type="text" id="g6Input" placeholder="Type answer here..." class="w-full p-3 text-xs font-bold rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:outline-hidden">
-            <button onclick="checkGame6Word()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md shadow-emerald-600/25 transition">
-              Check Word
-            </button>
+            <input type="text" id="g6Input" placeholder="Type answer here..." class="w-full p-3 text-xs font-bold rounded-xl border border-slate-200">
+            <button onclick="checkGame6Word()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md transition">Check Word</button>
           </div>
 
-          <!-- Game 7: Melody Recall -->
+          <!-- Game 7 -->
           <div id="mg-view-7" class="mg-view hidden space-y-4">
             <div class="flex justify-between items-center">
               <div>
@@ -669,22 +620,17 @@
               </div>
               <i class="fa-solid fa-music text-purple-600 text-2xl"></i>
             </div>
-            <p class="text-xs text-slate-600">Click "Play Target Melody", listen carefully, then repeat notes by ear.</p>
-            <div id="melodyStatusBox" class="text-xs font-bold text-center text-purple-800 bg-purple-50 p-3.5 rounded-2xl border border-purple-200">
-              Tap "Play Target Melody" to listen
-            </div>
+            <div id="melodyStatusBox" class="text-xs font-bold text-center text-purple-800 bg-purple-50 p-3.5 rounded-2xl border border-purple-200">Tap "Play Target Melody" to listen</div>
             <div class="grid grid-cols-4 gap-2">
-              <button onclick="userTapMelodyNote(261.63, 'C')" class="py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-black text-xs shadow-md shadow-purple-600/25">C (Do)</button>
-              <button onclick="userTapMelodyNote(329.63, 'E')" class="py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-black text-xs shadow-md shadow-purple-600/25">E (Mi)</button>
-              <button onclick="userTapMelodyNote(392.00, 'G')" class="py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-black text-xs shadow-md shadow-purple-600/25">G (Sol)</button>
-              <button onclick="userTapMelodyNote(523.25, 'C2')" class="py-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-black text-xs shadow-md shadow-purple-600/25">C2 (High Do)</button>
+              <button onclick="userTapMelodyNote(261.63, 'C')" class="py-3.5 bg-purple-600 text-white rounded-xl font-black text-xs shadow-md">C</button>
+              <button onclick="userTapMelodyNote(329.63, 'E')" class="py-3.5 bg-purple-600 text-white rounded-xl font-black text-xs shadow-md">E</button>
+              <button onclick="userTapMelodyNote(392.00, 'G')" class="py-3.5 bg-purple-600 text-white rounded-xl font-black text-xs shadow-md">G</button>
+              <button onclick="userTapMelodyNote(523.25, 'C2')" class="py-3.5 bg-purple-600 text-white rounded-xl font-black text-xs shadow-md">C2</button>
             </div>
-            <button onclick="playAudibleMelodySequence()" class="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-black text-xs rounded-xl shadow-md shadow-teal-600/25 transition">
-              Play Target Melody
-            </button>
+            <button onclick="playAudibleMelodySequence()" class="w-full py-3 bg-teal-600 text-white font-black text-xs rounded-xl shadow-md transition">Play Target Melody</button>
           </div>
 
-          <!-- Game 8: Continuous Math Sprint -->
+          <!-- Game 8 -->
           <div id="mg-view-8" class="mg-view hidden space-y-4">
             <div class="flex justify-between items-center">
               <div>
@@ -693,32 +639,25 @@
               </div>
               <i class="fa-solid fa-calculator text-teal-600 text-2xl"></i>
             </div>
-            <p class="text-xs text-slate-600">Solve continuous gentle calculations at your own pace.</p>
             <div class="flex justify-between items-center text-xs font-bold text-slate-700">
               <span>Score: <strong id="mathScoreTxt" class="text-teal-600">0</strong></span>
               <span id="mathRoundTxt" class="bg-slate-100 px-2.5 py-1 rounded-lg">Round 1</span>
             </div>
-            <div id="g8Eq" class="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-center text-2xl font-black text-slate-800 font-heading">
-              12 + 15 = ?
-            </div>
+            <div id="g8Eq" class="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-center text-2xl font-black text-slate-800 font-heading">12 + 15 = ?</div>
             <div class="grid grid-cols-3 gap-2" id="g8Options"></div>
           </div>
-
         </div>
       </section>
 
       <!-- ==================== TAB 3: LOVED ONES VAULT & RECALL ==================== -->
       <section id="view-vault" class="tab-view hidden space-y-6">
-        
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-6 max-w-3xl mx-auto">
           <div class="flex justify-between items-center border-b border-slate-100 pb-4">
             <div>
               <span class="text-xs font-black uppercase tracking-wider text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">Family Memory Recall</span>
               <h2 class="text-2xl font-black text-slate-900 mt-1 font-heading">Loved Ones Memory Flashcards</h2>
             </div>
-            <button onclick="nextFaceQuizCard()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs rounded-xl shadow-md shadow-rose-600/25 transition">
-              Next Face ➔
-            </button>
+            <button onclick="nextFaceQuizCard()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs rounded-xl shadow-md transition">Next Face ➔</button>
           </div>
 
           <div class="flex flex-col sm:flex-row items-center gap-6 bg-gradient-to-br from-rose-50/50 via-slate-50 to-teal-50/30 p-6 rounded-3xl border border-rose-100 shadow-inner">
@@ -730,9 +669,7 @@
                 <button onclick="speakFaceClue()" class="px-3.5 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 shadow-xs flex items-center gap-1.5 transition">
                   <i class="fa-solid fa-volume-high text-teal-600"></i> Read Clue Aloud
                 </button>
-                <button onclick="revealFaceRelation()" class="text-xs font-bold text-indigo-600 hover:underline">
-                  Need a hint? Tap for relation
-                </button>
+                <button onclick="revealFaceRelation()" class="text-xs font-bold text-indigo-600 hover:underline">Need a hint? Tap for relation</button>
               </div>
               <div id="faceRevealBox" class="hidden text-xs font-bold bg-indigo-50 text-indigo-800 p-2.5 rounded-xl mt-2 border border-indigo-200"></div>
             </div>
@@ -745,12 +682,10 @@
           </div>
 
           <div class="pt-4 border-t border-slate-100 flex flex-wrap justify-between items-center gap-2">
-            <button onclick="openLiveFaceScanModal()" class="px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-black text-xs rounded-xl shadow-md shadow-teal-600/25 flex items-center gap-1.5 transition">
+            <button onclick="openLiveFaceScanModal()" class="px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-black text-xs rounded-xl shadow-md flex items-center gap-1.5 transition">
               <i class="fa-solid fa-camera"></i> Live Webcam Visitor Scan
             </button>
-            <button onclick="addLovedOnePrompt()" class="px-4 py-2.5 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl shadow-sm transition">
-              + Add Family Card
-            </button>
+            <button onclick="addLovedOnePrompt()" class="px-4 py-2.5 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl shadow-sm transition">+ Add Family Card</button>
           </div>
         </div>
 
@@ -762,8 +697,6 @@
 
       <!-- ==================== TAB 4: MOVEMENT & SPEECH MOBILITY ==================== -->
       <section id="view-movement" class="tab-view hidden space-y-6">
-        
-        <!-- Speech Meter & Walk Tracker -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200 shadow-md flex flex-col justify-between">
             <div>
@@ -778,11 +711,11 @@
                   <span id="speechDbText" class="text-rose-600 font-mono text-sm">0 dB</span>
                 </div>
                 <div class="w-full bg-slate-200 h-6 rounded-full overflow-hidden p-1 shadow-inner">
-                  <div id="speechMeterBar" class="bg-gradient-to-r from-teal-500 via-amber-500 to-rose-500 h-full rounded-full transition-all duration-100 shadow-sm" style="width: 10%;"></div>
+                  <div id="speechMeterBar" class="bg-gradient-to-r from-teal-500 via-amber-500 to-rose-500 h-full rounded-full transition-all duration-100" style="width: 10%;"></div>
                 </div>
               </div>
             </div>
-            <button onclick="toggleSpeechRecognition()" class="w-full py-3 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-black rounded-xl text-xs shadow-md shadow-rose-500/25 transition">
+            <button onclick="toggleSpeechRecognition()" class="w-full py-3 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 text-white font-black rounded-xl text-xs shadow-md transition">
               <i class="fa-solid fa-microphone mr-1"></i> Start Vocal Volume Practice
             </button>
           </div>
@@ -795,23 +728,16 @@
               </div>
               <p class="text-xs text-slate-600 mb-4">Steady auditory rhythm helps initiate steps smoothly without motor freezing.</p>
               <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex justify-between items-center mb-4 shadow-inner">
-                <div>
-                  <p class="text-xs text-slate-500 font-bold">Today's Walk</p>
-                  <p class="text-2xl font-black text-slate-900 font-heading">1.42 km</p>
-                </div>
-                <div class="text-right">
-                  <p class="text-xs text-slate-500 font-bold">Cadence</p>
-                  <p class="text-2xl font-black text-teal-600 font-heading">58 steps/min</p>
-                </div>
+                <div><p class="text-xs text-slate-500 font-bold">Today's Walk</p><p class="text-2xl font-black text-slate-900 font-heading">1.42 km</p></div>
+                <div class="text-right"><p class="text-xs text-slate-500 font-bold">Cadence</p><p class="text-2xl font-black text-teal-600 font-heading">58 steps/min</p></div>
               </div>
             </div>
-            <button onclick="toggleMetronomeBeep()" id="btnMetronomeBeep" class="w-full py-3 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-black rounded-xl text-xs shadow-md shadow-teal-600/25 transition">
+            <button onclick="toggleMetronomeBeep()" id="btnMetronomeBeep" class="w-full py-3 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 text-white font-black rounded-xl text-xs shadow-md transition">
               <i class="fa-solid fa-drum mr-1"></i> Start 100 BPM Metronome
             </button>
           </div>
         </div>
 
-        <!-- Video Movement Drills -->
         <div class="grid md:grid-cols-2 gap-6">
           <div class="bg-white rounded-3xl overflow-hidden shadow-md border border-slate-200">
             <div class="relative bg-black aspect-video flex items-center justify-center">
@@ -843,13 +769,10 @@
             </div>
           </div>
         </div>
-
       </section>
 
       <!-- ==================== TAB 5: NUTRITION & HYDRATION ==================== -->
       <section id="view-nutrition" class="tab-view hidden space-y-6">
-        
-        <!-- Hydration Target Calculator -->
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <div class="flex justify-between items-center border-b border-slate-100 pb-3">
             <div>
@@ -862,16 +785,14 @@
           <div class="grid md:grid-cols-3 gap-4 text-xs font-bold">
             <div>
               <label class="block text-slate-600 mb-1">Body Weight (kg)</label>
-              <input type="number" id="calcWeight" value="65" onchange="calculatePersonalWaterTarget()" class="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:outline-hidden">
+              <input type="number" id="calcWeight" value="65" onchange="calculatePersonalWaterTarget()" class="w-full p-2.5 border border-slate-200 rounded-xl">
             </div>
             <div>
               <label class="block text-slate-600 mb-1">Recommended Daily Target</label>
-              <div id="calcWaterTargetText" class="p-2.5 bg-sky-50 text-sky-800 rounded-xl border border-sky-200 font-black">
-                2.1 Liters (~8 Glasses)
-              </div>
+              <div id="calcWaterTargetText" class="p-2.5 bg-sky-50 text-sky-800 rounded-xl border border-sky-200 font-black">2.1 Liters (~8 Glasses)</div>
             </div>
             <div class="flex items-end gap-2">
-              <button onclick="logWaterGlass()" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl shadow-md shadow-sky-600/25 transition font-extrabold">+1 Glass Logged (+10 XP)</button>
+              <button onclick="logWaterGlass()" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl shadow-md transition font-extrabold">+1 Glass Logged (+10 XP)</button>
             </div>
           </div>
         </div>
@@ -888,17 +809,16 @@
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="articlesContainer"></div>
         </div>
-
       </section>
 
     </div>
 
     <!-- ======================================================================= -->
-    <!-- PORTAL 2: CAREGIVER PORTAL (COMPLETELY DEDICATED)                       -->
+    <!-- PORTAL 2: CAREGIVER PORTAL                                              -->
     <!-- ======================================================================= -->
     <div id="portal-caregiver-container" class="hidden space-y-6">
       
-      <!-- Caregiver Top Welcome Header with Quick Action Buttons -->
+      <!-- Caregiver Banner -->
       <div class="bg-gradient-to-r from-indigo-900 via-slate-900 to-purple-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-indigo-500/20">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -911,12 +831,11 @@
           </div>
 
           <div class="flex flex-wrap items-center gap-2">
-            <!-- Send WhatsApp Reminder directly to patient/family -->
-            <button onclick="sendCaregiverWhatsAppReminder()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center gap-2">
+            <button onclick="sendCaregiverWhatsAppReminder()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-lg transition flex items-center gap-2">
               <i class="fa-brands fa-whatsapp text-sm"></i>
               <span>WhatsApp Reminder</span>
             </button>
-            <button onclick="openAddTaskModal()" class="px-4 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-black text-xs rounded-xl shadow-lg shadow-teal-500/30 transition flex items-center gap-2">
+            <button onclick="openAddTaskModal()" class="px-4 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center gap-2">
               <i class="fa-solid fa-plus-circle"></i>
               <span>Add Routine / Med</span>
             </button>
@@ -924,9 +843,8 @@
         </div>
       </div>
 
-      <!-- CAREGIVER SUB-VIEW 1: OVERVIEW & TELEMETRY -->
+      <!-- CAREGIVER SUB-VIEW 1: OVERVIEW -->
       <div id="cg-subview-overview" class="space-y-6">
-        <!-- Ring Chart & Motor Trend -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md flex flex-col items-center">
             <div class="w-full flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
@@ -954,7 +872,7 @@
         </div>
       </div>
 
-      <!-- CAREGIVER SUB-VIEW 2: REAL-TIME ALERTS & WHATSAPP BROADCAST -->
+      <!-- CAREGIVER SUB-VIEW 2: ALERTS -->
       <div id="cg-subview-alerts" class="space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
@@ -974,7 +892,7 @@
         </div>
       </div>
 
-      <!-- CAREGIVER SUB-VIEW 3: SCHEDULE MANAGER -->
+      <!-- CAREGIVER SUB-VIEW 3: SCHEDULE -->
       <div id="cg-subview-schedule" class="space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <div class="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -990,7 +908,7 @@
         </div>
       </div>
 
-      <!-- CAREGIVER SUB-VIEW 4: CLINICAL NOTES & EMAIL DOCTOR VIA GMAIL -->
+      <!-- CAREGIVER SUB-VIEW 4: NOTES -->
       <div id="cg-subview-notes" class="space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
@@ -1006,9 +924,9 @@
 
           <div class="grid md:grid-cols-3 gap-4">
             <div class="space-y-3">
-              <input type="text" id="cgDoctorNoteTitle" placeholder="Topic (e.g. Tremor before 2 PM Levodopa)" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
-              <textarea id="cgDoctorNoteBody" rows="4" placeholder="Detailed behavioral or motor observations..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"></textarea>
-              <button onclick="saveCaregiverDoctorNote()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs shadow-md shadow-indigo-600/25 transition">
+              <input type="text" id="cgDoctorNoteTitle" placeholder="Topic (e.g. Tremor before 2 PM Levodopa)" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-bold">
+              <textarea id="cgDoctorNoteBody" rows="4" placeholder="Detailed behavioral or motor observations..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium"></textarea>
+              <button onclick="saveCaregiverDoctorNote()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs shadow-md transition">
                 Submit Note to Doctor Portal
               </button>
             </div>
@@ -1020,11 +938,11 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!-- PORTAL 3: DOCTOR / CLINICIAN PORTAL (COMPLETELY DEDICATED)              -->
+    <!-- PORTAL 3: DOCTOR / CLINICIAN PORTAL (NOW WITH PIE & BAR CHARTS!)        -->
     <!-- ======================================================================= -->
     <div id="portal-doctor-container" class="hidden space-y-6">
       
-      <!-- Doctor Top Banner -->
+      <!-- Doctor Banner -->
       <div class="bg-gradient-to-r from-slate-950 via-sky-950 to-teal-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-sky-500/20">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -1041,16 +959,17 @@
               <i class="fa-brands fa-whatsapp text-sm"></i>
               <span>WhatsApp Directive to Julian</span>
             </button>
-            <button onclick="exportDoctorReport()" class="px-4 py-2.5 bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-700 hover:to-teal-700 text-white font-black text-xs rounded-xl shadow-lg shadow-sky-600/30 transition flex items-center gap-2">
+            <button onclick="exportDoctorReport()" class="px-4 py-2.5 bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-700 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center gap-2">
               <i class="fa-solid fa-file-arrow-down"></i>
-              <span>Export Official Medical Summary</span>
+              <span>Export Official Summary</span>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- DOCTOR SUB-VIEW 1: TELEMETRY & KPIS -->
+      <!-- DOCTOR SUB-VIEW 1: TELEMETRY & CLINICAL CHARTS (PIE & BAR CHARTS!) -->
       <div id="doc-subview-telemetry" class="space-y-6">
+        
         <!-- Telemetry KPIs -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md text-center">
@@ -1072,6 +991,45 @@
           </div>
         </div>
 
+        <!-- NEW DOCTOR CHARTS: PIE CHART & BAR CHART -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Doctor Pie / Doughnut Chart: Motor State Distribution -->
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md flex flex-col items-center">
+            <div class="w-full flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
+              <div>
+                <h3 class="text-base font-black text-slate-900 font-heading">Clinical Motor State Distribution (Pie Chart)</h3>
+                <p class="text-[11px] text-slate-500">Hourly breakdown of ON/OFF dopamine response</p>
+              </div>
+              <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full">Clinical Data</span>
+            </div>
+            <div class="w-64 h-64 relative flex items-center justify-center">
+              <canvas id="doctorPieChart"></canvas>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 text-xs font-bold mt-2">
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span> Optimal ON (76%)</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Mild Tremor (14%)</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Mild Rigidity (6%)</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> OFF Window (4%)</span>
+            </div>
+          </div>
+
+          <!-- Doctor Bar Chart: Tremor Amplitude vs. Medication Doses -->
+          <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
+              <div>
+                <h3 class="text-base font-black text-slate-900 font-heading">Tremor Amplitude by Dose Window (Bar Chart)</h3>
+                <p class="text-[11px] text-slate-500">Pre-dose vs. Post-dose tremor amplitude (cm)</p>
+              </div>
+              <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-full">Daily Telemetry</span>
+            </div>
+            <div class="h-64">
+              <canvas id="doctorBarChart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
         <!-- Caregiver Feed Review -->
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <h3 class="text-lg font-black text-slate-900 font-heading">Reviewed Caregiver Submissions</h3>
@@ -1079,14 +1037,14 @@
         </div>
       </div>
 
-      <!-- DOCTOR SUB-VIEW 2: CLINICAL DIRECTIVES -->
+      <!-- DOCTOR SUB-VIEW 2: DIRECTIVES -->
       <div id="doc-subview-directives" class="space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <h3 class="text-lg font-black text-slate-900 font-heading">Issue Professional Neurological Directive</h3>
           <p class="text-xs text-slate-500">Recorded directives are immediately reflected in the Caregiver and Patient portals.</p>
           <div class="space-y-3">
-            <input type="text" id="docDirectiveTitle" placeholder="Title (e.g. Dietary Protein Spacing Protocol - 45 min interval)" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-sky-500 focus:outline-hidden">
-            <textarea id="docDirectiveBody" rows="3" placeholder="Clinical instructions for patient and caregiver..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-hidden"></textarea>
+            <input type="text" id="docDirectiveTitle" placeholder="Title (e.g. Dietary Protein Spacing Protocol - 45 min interval)" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-bold">
+            <textarea id="docDirectiveBody" rows="3" placeholder="Clinical instructions for patient and caregiver..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium"></textarea>
             <div class="flex flex-wrap gap-2">
               <button onclick="saveDoctorDirective()" class="px-5 py-2.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-black shadow-md transition">
                 Record Professional Directive
@@ -1103,7 +1061,7 @@
         </div>
       </div>
 
-      <!-- DOCTOR SUB-VIEW 3: REPORTS & GMAIL DISPATCH -->
+      <!-- DOCTOR SUB-VIEW 3: REPORTS -->
       <div id="doc-subview-reports" class="space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
@@ -1146,13 +1104,9 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
 
   </main>
 
-  <!-- ========================================================================= -->
-  <!-- REAL AI ASSISTANT: HARMONYAI DRAWER WIDGET (GEMINI + CONVERSATIONAL NLP)  -->
-  <!-- ========================================================================= -->
+  <!-- ==================== REAL AI ASSISTANT: HARMONYAI DRAWER WIDGET ==================== -->
   <div id="aiDrawerBackdrop" onclick="toggleAiDrawer(false)" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs hidden z-50 transition-opacity"></div>
   <div id="aiDrawer" class="fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200">
-    
-    <!-- AI Drawer Header -->
     <div class="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white p-4 flex justify-between items-center border-b border-indigo-400/20">
       <div class="flex items-center space-x-3">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-400 to-indigo-500 flex items-center justify-center text-slate-950 font-black shadow-md">
@@ -1176,7 +1130,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       </div>
     </div>
 
-    <!-- AI Suggestion Chips for Fast Interaction -->
+    <!-- AI Suggestion Chips -->
     <div class="p-3 bg-slate-50 border-b border-slate-200 overflow-x-auto no-scrollbar flex gap-2">
       <button onclick="sendQuickPrompt('Why is it vital to take Levodopa with water 30 mins before protein meals?')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 text-indigo-700 text-[11px] font-bold rounded-lg border border-slate-200 whitespace-nowrap shadow-2xs">
         💊 Levodopa & Protein
@@ -1187,21 +1141,17 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       <button onclick="sendQuickPrompt('What can I do right now if my gait freezes while walking?')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 text-indigo-700 text-[11px] font-bold rounded-lg border border-slate-200 whitespace-nowrap shadow-2xs">
         🚶 Unfreeze Gait
       </button>
-      <button onclick="sendQuickPrompt('Help me draft a concise medical observation note for the neurologist.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 text-indigo-700 text-[11px] font-bold rounded-lg border border-slate-200 whitespace-nowrap shadow-2xs">
-        📋 Clinical Note
-      </button>
     </div>
 
-    <!-- AI Chat Conversation Messages -->
+    <!-- AI Chat Messages -->
     <div id="aiChatMessages" class="flex-1 p-4 overflow-y-auto space-y-3.5 bg-slate-50/50">
-      <!-- Welcome message -->
       <div class="flex items-start space-x-2.5">
         <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center shrink-0 text-xs shadow">
           <i class="fa-solid fa-robot"></i>
         </div>
         <div class="bg-white p-3.5 rounded-2xl rounded-tl-xs border border-slate-200 text-xs text-slate-800 space-y-1.5 shadow-xs max-w-[85%]">
           <p class="font-bold text-indigo-900">Hello Eleanor and Care Team! 🌿</p>
-          <p>I am <strong>HarmonyAI</strong>, your cognitive wellness and Parkinson's routine specialist. You can ask me any question about daily medications, speech drills, tremor relaxation, or memory exercises.</p>
+          <p>I am <strong>HarmonyAI</strong>, your cognitive wellness and Parkinson's routine specialist. Ask me anything about daily routines, memory drills, speech exercises, or medication timing.</p>
           <div class="pt-1">
             <button onclick="speakText('Hello! I am HarmonyAI, your cognitive wellness specialist. Ask me anything.')" class="text-[11px] font-bold text-indigo-600 hover:underline flex items-center gap-1">
               <i class="fa-solid fa-volume-high"></i> Listen to introduction
@@ -1211,14 +1161,14 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       </div>
     </div>
 
-    <!-- AI Chat Input Bar with Speech-to-Text Microphone -->
+    <!-- AI Input -->
     <div class="p-3 bg-white border-t border-slate-200 space-y-2">
       <div class="flex items-center gap-2">
-        <button id="btnAiMic" onclick="toggleAiVoiceInput()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm transition" title="Speak your question">
+        <button id="btnAiMic" onclick="toggleAiVoiceInput()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm transition">
           <i class="fa-solid fa-microphone"></i>
         </button>
-        <input type="text" id="aiInputPrompt" onkeydown="if(event.key==='Enter') sendAiMessage()" placeholder="Ask HarmonyAI anything..." class="flex-1 px-3.5 py-2.5 text-xs font-medium rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
-        <button onclick="sendAiMessage()" class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white flex items-center justify-center text-sm shadow-md shadow-indigo-600/25 transition">
+        <input type="text" id="aiInputPrompt" onkeydown="if(event.key==='Enter') sendAiMessage()" placeholder="Ask HarmonyAI anything..." class="flex-1 px-3.5 py-2.5 text-xs font-medium rounded-xl border border-slate-200">
+        <button onclick="sendAiMessage()" class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white flex items-center justify-center text-sm shadow-md transition">
           <i class="fa-solid fa-paper-plane"></i>
         </button>
       </div>
@@ -1229,16 +1179,14 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     </div>
   </div>
 
-  <!-- FLOATING HARMONYAI TRIGGER BUTTON (BOTTOM RIGHT) -->
-  <button onclick="toggleAiDrawer(true)" class="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-indigo-600 via-purple-600 to-teal-500 text-white p-3.5 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl shadow-indigo-600/35 hover:scale-105 transition-all flex items-center gap-2.5 border border-white/30 group">
+  <!-- FLOATING TRIGGER -->
+  <button onclick="toggleAiDrawer(true)" class="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-indigo-600 via-purple-600 to-teal-500 text-white p-3.5 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl hover:scale-105 transition-all flex items-center gap-2.5 border border-white/30">
     <div class="w-3 h-3 rounded-full bg-teal-300 animate-ping"></div>
     <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-base"></i>
     <span class="font-extrabold text-xs tracking-wide hidden sm:inline font-heading">Ask HarmonyAI</span>
   </button>
 
-  <!-- ========================================================================= -->
-  <!-- MODALS & DIALOGS                                                          -->
-  <!-- ========================================================================= -->
+  <!-- ==================== MODALS ==================== -->
 
   <!-- AUTHENTICATION & ROLE SWITCHER MODAL -->
   <div id="authModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
@@ -1253,15 +1201,12 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
       </div>
 
-      <!-- Quick 1-Click Persona Cards -->
       <div class="space-y-2">
         <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Quick Switch Persona</p>
         
         <div onclick="selectQuickPersona('patient')" class="p-3 rounded-2xl border-2 border-teal-500 bg-teal-50/50 hover:bg-teal-50 cursor-pointer flex items-center justify-between transition">
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold text-sm shadow">
-              👵
-            </div>
+            <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold text-sm shadow">👵</div>
             <div>
               <p class="font-black text-xs text-slate-900">Eleanor Vance (Patient)</p>
               <p class="text-[11px] text-teal-700 font-medium">Daily cues, games, face recall, speech</p>
@@ -1272,9 +1217,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
 
         <div onclick="selectQuickPersona('caregiver')" class="p-3 rounded-2xl border-2 border-slate-200 hover:border-indigo-500 hover:bg-indigo-50/50 cursor-pointer flex items-center justify-between transition">
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow">
-              👨‍💼
-            </div>
+            <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow">👨‍💼</div>
             <div>
               <p class="font-black text-xs text-slate-900">Julian Vance (Caregiver)</p>
               <p class="text-[11px] text-indigo-700 font-medium">Telemetry charts, alerts, WhatsApp sync</p>
@@ -1285,35 +1228,31 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
 
         <div onclick="selectQuickPersona('doctor')" class="p-3 rounded-2xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50/50 cursor-pointer flex items-center justify-between transition">
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-sky-700 text-white flex items-center justify-center font-bold text-sm shadow">
-              🩺
-            </div>
+            <div class="w-10 h-10 rounded-xl bg-sky-700 text-white flex items-center justify-center font-bold text-sm shadow">🩺</div>
             <div>
               <p class="font-black text-xs text-slate-900">Dr. Marcus Vance (Neurologist)</p>
-              <p class="text-[11px] text-sky-700 font-medium">Clinical metrics, directives, Gmail summary</p>
+              <p class="text-[11px] text-sky-700 font-medium">Clinical pie & bar charts, directives, Gmail summary</p>
             </div>
           </div>
           <span class="text-xs font-bold text-sky-700">Enter ➔</span>
         </div>
       </div>
 
-      <!-- Divider -->
       <div class="relative flex py-1 items-center">
         <div class="grow border-t border-slate-200"></div>
         <span class="shrink mx-3 text-slate-400 text-[11px] uppercase font-bold">Or Manual Login</span>
         <div class="grow border-t border-slate-200"></div>
       </div>
 
-      <!-- Auth Form Fields -->
       <div class="space-y-2.5">
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">Email / Health ID</label>
-          <input type="text" id="authInputEmail" placeholder="user@harmonycare.com" class="w-full px-3 py-2 text-xs font-bold rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-hidden">
+          <input type="text" id="authInputEmail" placeholder="user@harmonycare.com" class="w-full px-3 py-2 text-xs font-bold rounded-xl border border-slate-200">
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">Select Role Portal</label>
-          <select id="authInputRole" class="w-full px-3 py-2 text-xs font-bold rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-hidden cursor-pointer">
+          <select id="authInputRole" class="w-full px-3 py-2 text-xs font-bold rounded-xl border border-slate-200 cursor-pointer">
             <option value="patient">Patient Portal</option>
             <option value="caregiver">Caregiver Portal</option>
             <option value="doctor">Doctor / Clinician Portal</option>
@@ -1321,13 +1260,13 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         </div>
       </div>
 
-      <button onclick="handleAuthSubmit()" class="w-full py-3 bg-gradient-to-r from-teal-600 to-indigo-600 hover:from-teal-700 hover:to-indigo-700 text-white font-black text-xs rounded-xl shadow-md transition">
+      <button onclick="handleAuthSubmit()" class="w-full py-3 bg-gradient-to-r from-teal-600 to-indigo-600 hover:from-teal-700 text-white font-black text-xs rounded-xl shadow-md transition">
         Enter Selected Workspace
       </button>
     </div>
   </div>
 
-  <!-- EMERGENCY SOS MODAL (REAL WHATSAPP & PHONE CALL) -->
+  <!-- EMERGENCY SOS MODAL -->
   <div id="emergencyModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
     <div class="bg-white max-w-sm w-full rounded-3xl border-4 border-rose-500 p-6 shadow-2xl space-y-4 text-center">
       <div class="w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-3xl mx-auto shadow-inner animate-pulse">
@@ -1339,47 +1278,36 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       </div>
 
       <div class="space-y-2.5 text-left">
-        <!-- Direct Phone Julian -->
         <a href="tel:15552348901" class="p-3 bg-rose-50 hover:bg-rose-100 rounded-2xl border border-rose-200 flex justify-between items-center transition">
           <div>
             <p class="font-black text-xs text-rose-800">Julian Vance (Son / Caregiver)</p>
             <p class="text-[11px] text-rose-600 font-medium">+1 (555) 234-8901</p>
           </div>
-          <span class="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold text-xs shadow">
-            <i class="fa-solid fa-phone"></i>
-          </span>
+          <span class="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold text-xs shadow"><i class="fa-solid fa-phone"></i></span>
         </a>
 
-        <!-- WhatsApp Emergency SOS to Julian -->
         <button onclick="sendWhatsAppSosToJulian()" class="w-full p-3 bg-emerald-50 hover:bg-emerald-100 rounded-2xl border border-emerald-200 flex justify-between items-center transition">
           <div class="text-left">
             <p class="font-black text-xs text-emerald-800">Send WhatsApp SOS Alert</p>
             <p class="text-[11px] text-emerald-600 font-medium">Sends urgent message to Julian Vance</p>
           </div>
-          <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow">
-            <i class="fa-brands fa-whatsapp"></i>
-          </span>
+          <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow"><i class="fa-brands fa-whatsapp"></i></span>
         </button>
 
-        <!-- Neurology Clinic Call -->
         <a href="tel:15559012345" class="p-3 bg-slate-100 hover:bg-slate-200 rounded-2xl border border-slate-200 flex justify-between items-center transition">
           <div>
             <p class="font-black text-xs text-slate-900">Dr. Marcus Vance (Neurology Clinic)</p>
             <p class="text-[11px] text-slate-500 font-medium">+1 (555) 901-2345</p>
           </div>
-          <span class="w-8 h-8 rounded-xl bg-slate-800 text-white flex items-center justify-center font-bold text-xs shadow">
-            <i class="fa-solid fa-hospital"></i>
-          </span>
+          <span class="w-8 h-8 rounded-xl bg-slate-800 text-white flex items-center justify-center font-bold text-xs shadow"><i class="fa-solid fa-hospital"></i></span>
         </a>
       </div>
 
-      <button onclick="closeEmergencyModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
-        Close Dialog
-      </button>
+      <button onclick="closeEmergencyModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">Close Dialog</button>
     </div>
   </div>
 
-  <!-- AI SETTINGS MODAL (GEMINI API KEY CONFIGURATION) -->
+  <!-- AI SETTINGS MODAL -->
   <div id="aiSettingsModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
     <div class="bg-white max-w-md w-full rounded-3xl border border-slate-200 p-6 shadow-2xl space-y-4">
       <div class="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -1390,23 +1318,13 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         <button onclick="closeAiSettingsModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
       </div>
 
-      <p class="text-xs text-slate-600">
-        HarmonyAI includes a full built-in neural NLP system. To enable <strong>Live Google Gemini 1.5 Real-Time Intelligence</strong>, paste your free Google AI Studio Gemini API Key below.
-      </p>
-
-      <div class="space-y-1">
+      <p class="text-xs text-slate-600">HarmonyAI has built-in neural NLP. To enable <strong>Live Google Gemini 1.5 Real-Time Intelligence</strong>, paste your free Gemini API Key below.</p>
+      <div>
         <label class="block text-xs font-bold text-slate-700">Google Gemini API Key</label>
-        <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
-        <p class="text-[10px] text-slate-400">Stored safely only in your browser's local storage.</p>
+        <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-mono">
       </div>
-
-      <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 text-[11px] text-indigo-800 space-y-1">
-        <p class="font-bold">Need a free Gemini key?</p>
-        <p>Get one free at <a href="https://aistudio.google.com/app/apikey" target="_blank" class="underline font-bold text-indigo-900">aistudio.google.com</a> in 30 seconds.</p>
-      </div>
-
       <div class="flex justify-end gap-2 pt-2">
-        <button onclick="clearGeminiApiKey()" class="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700">Clear Key</button>
+        <button onclick="clearGeminiApiKey()" class="px-4 py-2 text-xs font-bold text-slate-500">Clear Key</button>
         <button onclick="saveGeminiApiKey()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow">Save Configuration</button>
       </div>
     </div>
@@ -1430,12 +1348,8 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       </div>
       <p class="text-xs text-slate-500" id="scanStatusTxt">Point camera towards visitor to check memory records.</p>
       <div class="grid grid-cols-2 gap-2">
-        <button onclick="runFaceRecognitionCheck()" class="py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow">
-          Recognize Visitor
-        </button>
-        <button onclick="addCurrentScanAsNewMember()" class="py-2.5 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl shadow">
-          Save as New Member
-        </button>
+        <button onclick="runFaceRecognitionCheck()" class="py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow">Recognize Visitor</button>
+        <button onclick="addCurrentScanAsNewMember()" class="py-2.5 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl shadow">Save as New Member</button>
       </div>
     </div>
   </div>
@@ -1472,7 +1386,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         <h3 class="font-black text-base text-slate-900 font-heading">Add New Routine Activity</h3>
         <button onclick="closeAddTaskModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold">&times;</button>
       </div>
-      <input type="text" id="newTaskTitle" placeholder="Activity Title (e.g. Afternoon Water & Stretch)" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-teal-500 focus:outline-hidden">
+      <input type="text" id="newTaskTitle" placeholder="Activity Title (e.g. Afternoon Water & Stretch)" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-bold">
       <div class="grid grid-cols-2 gap-2">
         <input type="time" id="newTaskTime" value="14:00" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-bold">
         <select id="newTaskCat" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-bold">
@@ -1522,20 +1436,197 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     </div>
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- JAVASCRIPT APPLICATION CORE                                               -->
-  <!-- ========================================================================= -->
+  <!-- ==================== JAVASCRIPT APPLICATION CORE ==================== -->
   <script>
+    /* ==================== MULTILINGUAL TRANSLATION DICTIONARY (INDIAN & GLOBAL) ==================== */
+    const I18N_DICTIONARY = {
+      en: {
+        portal_patient: "Patient Portal",
+        tagline: "Cognitive Wellness, Real-Time Coordination & Intelligent Assistant",
+        emergency_sos: "Emergency SOS",
+        read_screen: "Read",
+        breathe: "Breathe",
+        calendar_date: "Selected Date (Real Calendar)",
+        timeframe_daily: "Daily Tasks & Latency",
+        timeframe_weekly: "Weekly Progress",
+        timeframe_monthly: "Monthly Overview",
+        nav_routine: "1. Daily Routine & Cues",
+        nav_games: "2. Mind Clinic Games",
+        nav_vault: "3. Loved Ones & Face Recall",
+        nav_movement: "4. Movement & Speech",
+        nav_nutrition: "5. Nutrition & Hydration",
+        banner_badge: "Daily Routine & Cognitive Coordination",
+        mini_cues_tab: "1. Memory Cues for Every Task (3 Chances + Hint)",
+        mini_direct_tab: "2. Direct Schedule Checklist"
+      },
+      hi: {
+        portal_patient: "मरीज़ पोर्टल (Patient Portal)",
+        tagline: "संज्ञानात्मक स्वास्थ्य, वास्तविक समय समन्वय और बुद्धिमान सहायक",
+        emergency_sos: "आपातकालीन SOS",
+        read_screen: "स्क्रीन पढ़ें",
+        breathe: "गहरी सांस लें",
+        calendar_date: "चुनी गई तारीख (वास्तविक कैलेंडर)",
+        timeframe_daily: "दैनिक कार्य और विलंबता",
+        timeframe_weekly: "साप्ताहिक प्रगति",
+        timeframe_monthly: "मासिक अवलोकन",
+        nav_routine: "1. दैनिक दिनचर्या और संकेत",
+        nav_games: "2. माइंड क्लिनिक गेम्स",
+        nav_vault: "3. प्रियजन और चेहरे की पहचान",
+        nav_movement: "4. शारीरिक गति और वाणी",
+        nav_nutrition: "5. पोषण और जलयोजन",
+        banner_badge: "दैनिक दिनचर्या और संज्ञानात्मक समन्वय",
+        mini_cues_tab: "1. स्मृति संकेत (3 मौके + संकेत)",
+        mini_direct_tab: "2. सीधी कार्य अनुसूची"
+      },
+      mr: {
+        portal_patient: "रुग्ण पोर्टल (Patient Portal)",
+        tagline: "संज्ञानात्मक कल्याण, दैनंदिन सुसंवाद आणि AI सहाय्यक",
+        emergency_sos: "आपत्कालीन SOS",
+        read_screen: "स्क्रीन वाचा",
+        breathe: "दीर्घ श्वास घ्या",
+        calendar_date: "निवडलेली तारीख (दिनदर्शिका)",
+        timeframe_daily: "दैनिक कार्ये आणि वेळ",
+        timeframe_weekly: "साप्ताहिक प्रगती",
+        timeframe_monthly: "मासिक आढावा",
+        nav_routine: "1. दैनंदिन दिनचर्या आणि संकेत",
+        nav_games: "2. माइंड क्लिनिक खेळ",
+        nav_vault: "3. आप्तेष्ट आणि स्मरण",
+        nav_movement: "4. हालचाल आणि उच्चार",
+        nav_nutrition: "5. पोषण आणि पाणी",
+        banner_badge: "दैनंदिन दिनचर्या आणि समन्वय",
+        mini_cues_tab: "1. स्मरण संकेत (३ संधी + मदत)",
+        mini_direct_tab: "2. थेट वेळापत्रक सूची"
+      },
+      ta: {
+        portal_patient: "நோயாளி போர்டல் (Patient Portal)",
+        tagline: "அறிவாற்றல் நல்வாழ்வு, நிகழ்நேர ஒருங்கிணைப்பு & AI உதவியாளர்",
+        emergency_sos: "அவசர SOS",
+        read_screen: "படிக்க",
+        breathe: "மூச்சு பயிற்சி",
+        calendar_date: "தேர்ந்தெடுக்கப்பட்ட தேதி",
+        timeframe_daily: "தினசரி பணிகள்",
+        timeframe_weekly: "வாராந்திர முன்னேற்றம்",
+        timeframe_monthly: "மாதாந்திர பார்வை",
+        nav_routine: "1. தினசரி நடைமுறை",
+        nav_games: "2. மூளை விளையாட்டுகள்",
+        nav_vault: "3. அன்பானவர்கள்",
+        nav_movement: "4. உடற்பயிற்சி & பேச்சு",
+        nav_nutrition: "5. உணவு & தண்ணீர்",
+        banner_badge: "தினசரி ஒருங்கிணைப்பு",
+        mini_cues_tab: "1. நினைவக குறிப்புகள் (3 வாய்ப்புகள்)",
+        mini_direct_tab: "2. நேரடி அட்டவணை"
+      },
+      te: {
+        portal_patient: "రోగి పోర్టల్ (Patient Portal)",
+        tagline: "అభిజ్ఞా శ్రేయస్సు, రోజువారీ సమన్వయం మరియు AI సహాయకుడు",
+        emergency_sos: "అత్యవసర SOS",
+        read_screen: "చదవండి",
+        breathe: "శ్వాస తీసుకోండి",
+        calendar_date: "ఎంచుకున్న తేదీ",
+        timeframe_daily: "రోజువారీ పనులు",
+        timeframe_weekly: "వారపు పురోగతి",
+        timeframe_monthly: "నెలవారీ అవలోకనం",
+        nav_routine: "1. రోజువారీ దినచర్య",
+        nav_games: "2. మైండ్ క్లినిక్ ఆటలు",
+        nav_vault: "3. ఆప్తులు & గుర్తింపు",
+        nav_movement: "4. కదలిక & సంభాషణ",
+        nav_nutrition: "5. పోషణ & నీరు",
+        banner_badge: "రోజువారీ సమన్వయం",
+        mini_cues_tab: "1. జ్ఞాపకశక్తి ఆధారాలు (3 అవకాశాలు)",
+        mini_direct_tab: "2. ప్రత్యక్ష జాబితా"
+      },
+      bn: {
+        portal_patient: "রোগী পোর্টাল (Patient Portal)",
+        tagline: "জ্ঞানীয় সুস্থতা, দৈনন্দিন সমন্বয় ও বুদ্ধিমান সহায়ক",
+        emergency_sos: "জরুরি এসওএস",
+        read_screen: "স্ক্রিন পড়ুন",
+        breathe: "শ্বাস নিন",
+        calendar_date: "নির্বাচিত তারিখ",
+        timeframe_daily: "দৈনিক কাজ ও সময়",
+        timeframe_weekly: "সাপ্তাহিক অগ্রগতি",
+        timeframe_monthly: "মাসিক পর্যালোচনা",
+        nav_routine: "1. দৈনন্দিন রুটিন ও সংকেত",
+        nav_games: "2. মাইন্ড ক্লিনিক গেমস",
+        nav_vault: "3. প্রিয়জন ও স্মৃতি",
+        nav_movement: "4. অঙ্গ সঞ্চালন ও বাক্যালাপ",
+        nav_nutrition: "5. পুষ্টি ও জলপান",
+        banner_badge: "দৈনন্দিন রুটিন সমন্বয়",
+        mini_cues_tab: "1. স্মৃতি সংকেত (৩টি সুযোগ + ইঙ্গিত)",
+        mini_direct_tab: "2. সরাসরি তালিকা"
+      },
+      gu: {
+        portal_patient: "દર્દી પોર્ટલ (Patient Portal)",
+        tagline: "માનસિક સુખાકારી, દૈનિક સંકલન અને AI સહાયક",
+        emergency_sos: "કટોકટી SOS",
+        read_screen: "વાંચો",
+        breathe: "શ્વાસ લો",
+        calendar_date: "પસંદ કરેલી તારીખ",
+        timeframe_daily: "દૈનિક કાર્યો",
+        timeframe_weekly: "સાપ્તાહિક પ્રગતિ",
+        timeframe_monthly: "માસિક વિહંગાવલોકન",
+        nav_routine: "1. દૈનિક દિનચર્યા",
+        nav_games: "2. માઇન્ડ ક્લિનિક રમતો",
+        nav_vault: "3. સ્વજનો અને ઓળખ",
+        nav_movement: "4. હલનચલન અને વાણી",
+        nav_nutrition: "5. પોષણ અને હાઇડ્રેશન",
+        banner_badge: "દૈનિક દિનચર્યા સંકલન",
+        mini_cues_tab: "1. મેમરી સંકેત (3 તક + સંકેત)",
+        mini_direct_tab: "2. સીધી યાદી"
+      },
+      kn: {
+        portal_patient: "ರೋಗಿ ಪೋರ್ಟಲ್ (Patient Portal)",
+        tagline: "ಅರಿವಿನ ಸ್ವಾಸ್ಥ್ಯ, ನೈಜ ಸಮಯದ ಸಮನ್ವಯ ಮತ್ತು AI ಸಹಾಯಕ",
+        emergency_sos: "ತುರ್ತು SOS",
+        read_screen: "ಓದಿ",
+        breathe: "ಉಸಿರಾಡಿ",
+        calendar_date: "ಆಯ್ಕೆಮಾಡಿದ ದಿನಾಂಕ",
+        timeframe_daily: "ದೈನಂದಿನ ಕಾರ್ಯಗಳು",
+        timeframe_weekly: "ವಾರದ ಪ್ರಗತಿ",
+        timeframe_monthly: "ಮಾಸಿಕ ಅವಲೋಕನ",
+        nav_routine: "1. ದೈನಂದಿನ ದಿನಚರಿ",
+        nav_games: "2. ಮೈಂಡ್ ಕ್ಲಿನಿಕ್ ಆಟಗಳು",
+        nav_vault: "3. ಆಪ್ತರು ಮತ್ತು ನೆನಪು",
+        nav_movement: "4. ಚಲನೆ ಮತ್ತು ಮಾತು",
+        nav_nutrition: "5. ಪೋಷಣೆ ಮತ್ತು ನೀರು",
+        banner_badge: "ದೈನಂದಿನ ದಿನಚರಿ ಸಮನ್ವಯ",
+        mini_cues_tab: "1. ನೆನಪಿನ ಸುಳಿವುಗಳು (3 ಅವಕಾಶಗಳು)",
+        mini_direct_tab: "2. ನೇರ ವೇಳಾಪಟ್ಟಿ"
+      }
+    };
+
+    let currentLang = 'en';
+
+    function changeLanguage(langKey) {
+      currentLang = langKey;
+      const dict = I18N_DICTIONARY[langKey] || I18N_DICTIONARY['en'];
+      
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.innerText = dict[key];
+        }
+      });
+
+      // Update utterance language
+      const langCodes = { en: 'en-US', hi: 'hi-IN', mr: 'mr-IN', ta: 'ta-IN', te: 'te-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN' };
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      playAudioChime('bell');
+    }
+
     /* ==================== GLOBAL APP STATE ==================== */
     let state = {
       user: 'Eleanor Vance',
-      role: 'patient', // 'patient' | 'caregiver' | 'doctor'
+      role: 'patient',
       uid: 'HC-PT-8842',
       wakeTime: '08:00',
       xp: 1250,
       streak: 7,
       waterLogged: 5,
       waterTargetGlasses: 8,
+      selectedDate: new Date().toISOString().split('T')[0],
+      timeframeMode: 'daily', // 'daily' | 'weekly' | 'monthly'
       geminiApiKey: localStorage.getItem('harmony_gemini_api_key') || '',
       tasks: [
         { 
@@ -1546,10 +1637,12 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           done: true, 
           tag: "Wellness", 
           status: 'done',
+          latencyMinutes: 4,
           cueQuestion: "You woke up at 08:00 AM. What gentle action lubricates your digestive motility before any medication?",
           cueOptions: ["Drink a glass of warm water & stretch gently", "Immediately eat heavy scrambled eggs", "Start a fast 5 km walk"],
           correctOptionIndex: 0,
-          cueHint: "Hydrating first prepares your digestive system for morning Levodopa absorption."
+          cueHint: "Hydrating first prepares your digestive system for morning Levodopa absorption.",
+          attemptsLeft: 3
         },
         { 
           id: 2, 
@@ -1559,102 +1652,85 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           done: false, 
           tag: "Medication", 
           status: 'pending',
+          latencyMinutes: 12,
           cueQuestion: "It is 08:30 AM before breakfast. What vital medicine needs to be taken now with a sip of water?",
           cueOptions: ["Afternoon Vitamin D supplement", "Morning Levodopa (100mg) dose", "Bedtime sleep tea"],
           correctOptionIndex: 1,
-          cueHint: "Levodopa works best on an empty stomach 30-45 minutes before food."
+          cueHint: "Levodopa works best on an empty stomach 30-45 minutes before food.",
+          attemptsLeft: 3
         },
         { 
           id: 3, 
+          title: "Buttoning Shirt & Morning Dressing", 
+          time: "09:00 AM", 
+          sound: "bell", 
+          done: true, 
+          tag: "Motor", 
+          status: 'done',
+          latencyMinutes: 19, // Needed more time!
+          cueQuestion: "It is 09:00 AM. What fine motor activity prepares you for a fresh day?",
+          cueOptions: ["Buttoning your morning shirt slowly and steadily", "Running outdoors without shoes", "Leaving clothes untouched"],
+          correctOptionIndex: 0,
+          cueHint: "Taking 15-20 calm minutes for buttoning keeps finger coordination sharp.",
+          attemptsLeft: 3
+        },
+        { 
+          id: 4, 
           time: "09:15 AM", 
           title: "Nutritious Breakfast with Antioxidant Berries", 
           sound: "sax", 
           done: false, 
           tag: "Food", 
           status: 'pending',
+          latencyMinutes: 8,
           cueQuestion: "It is 09:15 AM. What breakfast supports dopamine cells without blocking medication?",
           cueOptions: ["Heavy pork sausage and melted cheese", "Wild berries, oatmeal & chamomile tea", "Three cups of strong black espresso"],
           correctOptionIndex: 1,
-          cueHint: "Berries provide neural antioxidants while keeping heavy protein for dinner."
+          cueHint: "Berries provide neural antioxidants while keeping heavy protein for dinner.",
+          attemptsLeft: 3
         },
         { 
-          id: 4, 
+          id: 5, 
           time: "10:30 AM", 
           title: "15-Min Speech Loudness Drill (AHHH)", 
           sound: "sax", 
           done: false, 
           tag: "Speech", 
           status: 'pending',
+          latencyMinutes: 15,
           cueQuestion: "It's 10:30 AM mid-morning. What vocal exercise helps maintain clear speech volume?",
           cueOptions: ["Speaking in a very soft whisper", "Sustained vocalization ('AHHH') with full breath", "Complete silence for 3 hours"],
           correctOptionIndex: 1,
-          cueHint: "Loud, clear vowel sounds strengthen vocal cords against Parkinsonian vocal fade."
+          cueHint: "Loud, clear vowel sounds strengthen vocal cords against Parkinsonian vocal fade.",
+          attemptsLeft: 3
         },
         { 
-          id: 5, 
+          id: 6, 
           time: "01:00 PM", 
           title: "Afternoon Levodopa (100mg) Dose", 
           sound: "bell", 
           done: false, 
           tag: "Medication", 
           status: 'pending',
+          latencyMinutes: 5,
           cueQuestion: "It's 01:00 PM midday. What routine keeps motor tremor steady throughout the afternoon?",
           cueOptions: ["Afternoon Levodopa (100mg) dose", "Taking a 4-hour uninterrupted sleep", "Skipping dose until evening"],
           correctOptionIndex: 0,
-          cueHint: "Timed midday doses prevent off-periods and rigidity."
-        },
-        { 
-          id: 6, 
-          time: "03:30 PM", 
-          title: "Mind Clinic Finger Tap Dexterity", 
-          sound: "marimba", 
-          done: false, 
-          tag: "Cognitive", 
-          status: 'pending',
-          cueQuestion: "It's 03:30 PM. What micro-exercise preserves buttoning and writing coordination?",
-          cueOptions: ["Watching television without moving hands", "Alternating finger opposition taps", "Holding hands inside pockets"],
-          correctOptionIndex: 1,
-          cueHint: "Rhythmic finger-to-thumb taps keep fine motor coordination agile."
+          cueHint: "Timed midday doses prevent off-periods and rigidity.",
+          attemptsLeft: 3
         }
       ],
       familiarPeople: [
-        { 
-          name: "Julian Vance", 
-          role: "Primary Caregiver (Son)", 
-          phone: "+1 (555) 234-8901", 
-          whatsapp: "15552348901",
-          email: "julian.vance@example.com",
-          clue: "Your son Julian who visits every evening and brings fresh groceries.", 
-          img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80", 
-          options: ["Julian Vance (Son)", "Dr. Marcus", "Neighbor Robert", "Pharmacist"] 
-        },
-        { 
-          name: "Clara Vance", 
-          role: "Granddaughter", 
-          phone: "+1 (555) 345-6789", 
-          whatsapp: "15553456789",
-          email: "clara.vance@example.com",
-          clue: "Your granddaughter Clara who loves drawing garden pictures with you.", 
-          img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80", 
-          options: ["Clara Vance (Granddaughter)", "Nurse Emily", "Aunt Helen", "Sarah"] 
-        },
-        { 
-          name: "Dr. Marcus Vance", 
-          role: "Neurologist", 
-          phone: "+1 (555) 901-2345", 
-          whatsapp: "15559012345",
-          email: "dr.marcus.vance@neurologyclinic.org",
-          clue: "Dr. Vance who checks your motor rhythm and Levodopa timing.", 
-          img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80", 
-          options: ["Dr. Marcus Vance (Neurologist)", "Julian Vance", "Physical Therapist", "Leo"] 
-        }
+        { name: "Julian Vance", role: "Primary Caregiver (Son)", phone: "+1 (555) 234-8901", whatsapp: "15552348901", email: "julian.vance@example.com", clue: "Your son Julian who visits every evening and brings fresh groceries.", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80", options: ["Julian Vance (Son)", "Dr. Marcus", "Neighbor Robert", "Pharmacist"] },
+        { name: "Clara Vance", role: "Granddaughter", phone: "+1 (555) 345-6789", whatsapp: "15553456789", email: "clara.vance@example.com", clue: "Your granddaughter Clara who loves drawing garden pictures with you.", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80", options: ["Clara Vance (Granddaughter)", "Nurse Emily", "Aunt Helen", "Sarah"] },
+        { name: "Dr. Marcus Vance", role: "Neurologist", phone: "+1 (555) 901-2345", whatsapp: "15559012345", email: "dr.marcus.vance@neurologyclinic.org", clue: "Dr. Vance who checks your motor rhythm and Levodopa timing.", img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80", options: ["Dr. Marcus Vance (Neurologist)", "Julian Vance", "Physical Therapist", "Leo"] }
       ],
       caregiverAlerts: [
-        { time: "11:42 AM", text: "Task 'Buttoning Shirt' experienced 2 snoozes. Latency was 19 mins." },
-        { time: "02:05 PM", text: "Afternoon Levodopa dose snoozed for 5 minutes." }
+        { time: "09:19 AM", text: "Task 'Buttoning Shirt & Dressing' took 19 mins (Needed extra motor assistance)." },
+        { time: "11:42 AM", text: "Midday Levodopa preparation snoozed for 5 minutes." }
       ],
       caregiverDoctorNotes: [
-        { title: "Pre-Dose Tremor Observation", body: "Slight motor tremor in right thumb prior to 2 PM Levodopa dose. Dressing took 18 minutes." }
+        { title: "Pre-Dose Tremor Observation", body: "Slight motor tremor in right thumb prior to 2 PM Levodopa dose. Dressing took 19 minutes." }
       ],
       doctorDirectives: [
         { title: "Levodopa Timing Guidance", body: "Keep protein meals separated by 45 minutes from dose for maximal intestinal uptake." }
@@ -1731,6 +1807,9 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         u.rate = rate;
         u.pitch = 1.0;
 
+        const langCodes = { en: 'en-US', hi: 'hi-IN', mr: 'mr-IN', ta: 'ta-IN', te: 'te-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN' };
+        u.lang = langCodes[currentLang] || 'en-US';
+
         const banner = document.getElementById('ttsSpeakingBanner');
         const txtEl = document.getElementById('ttsSpeakingText');
         if (banner && txtEl) {
@@ -1738,12 +1817,8 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           banner.classList.remove('hidden');
         }
 
-        u.onend = () => {
-          if (banner) banner.classList.add('hidden');
-        };
-        u.onerror = () => {
-          if (banner) banner.classList.add('hidden');
-        };
+        u.onend = () => { if (banner) banner.classList.add('hidden'); };
+        u.onerror = () => { if (banner) banner.classList.add('hidden'); };
 
         currentUtterance = u;
         window.speechSynthesis.speak(u);
@@ -1751,9 +1826,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     }
 
     function stopSpeaking() {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
       const banner = document.getElementById('ttsSpeakingBanner');
       if (banner) banner.classList.add('hidden');
     }
@@ -1764,9 +1837,9 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         const taskMsg = nextPending ? `Your upcoming task is: ${nextPending.title} at ${nextPending.time}.` : "All routine tasks for today are completed!";
         speakText(`HarmonyCare Patient Portal for Eleanor. Consistency streak is 7 days with ${state.xp} Brain Points. ${taskMsg}`);
       } else if (state.role === 'caregiver') {
-        speakText(`Caregiver Oversight Hub for Julian Vance. Eleanor's adherence is 94.8 percent. There are ${state.caregiverAlerts.length} recent alerts recorded.`);
+        speakText(`Caregiver Oversight Hub for Julian Vance. Eleanor's adherence is 94.8 percent. Tasks taking longer include Buttoning Shirt.`);
       } else {
-        speakText(`Neurological Telemetry Portal for Dr. Marcus Vance. Eleanor Vance Hoehn & Yahr Stage II. 30 day medication adherence is 94.8 percent.`);
+        speakText(`Doctor Portal for Dr. Marcus Vance. Medication adherence 94.8 percent. Tremor index 1.2 centimeters.`);
       }
     }
 
@@ -1779,7 +1852,155 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       speakText("Important Parkinson's nutrition tip: space high protein meals 45 to 60 minutes away from your Levodopa dose to allow maximum brain absorption.");
     }
 
-    /* ==================== 1. STRICT ROLE ISOLATION & PORTAL SWITCHING ==================== */
+    /* ==================== REAL CALENDAR & TIMEFRAME INSIGHTS (DAILY / WEEKLY / MONTHLY) ==================== */
+    function onCalendarDateChanged(newDateStr) {
+      state.selectedDate = newDateStr;
+      const d = new Date(newDateStr + 'T00:00:00');
+      const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+      document.getElementById('txtCalendarFriendlyLabel').innerText = `Selected: ${d.toLocaleDateString('en-US', options)}`;
+      renderTimeframeInsights();
+    }
+
+    function setTimeframeMode(mode) {
+      state.timeframeMode = mode;
+      ['daily', 'weekly', 'monthly'].forEach(m => {
+        const btn = document.getElementById(`tf-btn-${m}`);
+        if (m === mode) {
+          btn.className = "tf-btn px-4 py-1.5 rounded-xl text-xs font-black bg-white text-teal-800 shadow-xs transition flex items-center gap-1.5";
+        } else {
+          btn.className = "tf-btn px-4 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5";
+        }
+      });
+      renderTimeframeInsights();
+    }
+
+    function renderTimeframeInsights() {
+      const container = document.getElementById('timeframe-display-container');
+      const isDaily = state.timeframeMode === 'daily';
+      const isWeekly = state.timeframeMode === 'weekly';
+      const isMonthly = state.timeframeMode === 'monthly';
+
+      // Find tasks that needed more time (latency > 10 min)
+      const tasksTakingMoreTime = state.tasks.filter(t => t.latencyMinutes >= 15);
+
+      if (isDaily) {
+        container.innerHTML = `
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-slate-100 pb-3">
+            <div>
+              <span class="text-[10px] font-black uppercase text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200">Daily Telemetry Record</span>
+              <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1 font-heading">
+                Daily Activity Log & Tasks Requiring More Time (${state.selectedDate})
+              </h3>
+            </div>
+            <div class="flex gap-2">
+              <span class="px-2.5 py-1 bg-emerald-50 text-emerald-800 font-bold text-xs rounded-xl border border-emerald-200">
+                ✅ Completed: ${state.tasks.filter(t => t.done).length} / ${state.tasks.length}
+              </span>
+              <span class="px-2.5 py-1 bg-amber-50 text-amber-800 font-bold text-xs rounded-xl border border-amber-200">
+                ⏳ Slow Tasks: ${tasksTakingMoreTime.length}
+              </span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <!-- Normal Tasks Today -->
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+              <h4 class="font-black text-slate-800 uppercase text-[11px] flex items-center gap-1.5">
+                <i class="fa-solid fa-list-check text-teal-600"></i> Today's Schedule Overview
+              </h4>
+              <div class="space-y-1.5 max-h-36 overflow-y-auto">
+                ${state.tasks.map(t => `
+                  <div class="flex justify-between items-center bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
+                    <span class="font-bold text-slate-800">${t.time} - ${t.title}</span>
+                    <span class="font-bold text-[10px] px-2 py-0.5 rounded-full ${t.done ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800'}">
+                      ${t.done ? 'Done' : 'Pending'} (${t.latencyMinutes}m)
+                    </span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Tasks That Needed More Time / Extra Help -->
+            <div class="bg-amber-50/60 p-4 rounded-2xl border border-amber-200 space-y-2">
+              <h4 class="font-black text-amber-900 uppercase text-[11px] flex items-center gap-1.5">
+                <i class="fa-solid fa-clock-rotate-left text-amber-600"></i> Activities That Needed More Time Today
+              </h4>
+              <p class="text-[11px] text-amber-800">Highlighted for Caregiver and Neurologist review to adjust assistance:</p>
+              <div class="space-y-1.5">
+                ${tasksTakingMoreTime.map(t => `
+                  <div class="bg-white p-2.5 rounded-xl border border-amber-300 shadow-2xs flex justify-between items-center">
+                    <div>
+                      <strong class="text-slate-900 font-bold">${t.title}</strong>
+                      <p class="text-slate-500 text-[10px]">Normal: 5-8 mins | Recorded: <span class="text-rose-600 font-black">${t.latencyMinutes} mins</span></p>
+                    </div>
+                    <span class="px-2 py-1 bg-amber-100 text-amber-900 font-extrabold text-[10px] rounded-lg">Caregiver Alerted</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (isWeekly) {
+        container.innerHTML = `
+          <div class="border-b border-slate-100 pb-3">
+            <span class="text-[10px] font-black uppercase text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200">Weekly Progress Rollup</span>
+            <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1 font-heading">
+              7-Day Motor Stability & Routine Completion Progress
+            </h3>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+              <p class="text-[11px] text-slate-500 font-bold">Weekly Adherence</p>
+              <p class="text-2xl font-black text-teal-600 font-heading">95.2%</p>
+              <p class="text-[10px] text-emerald-600 font-bold mt-0.5">↑ 2.1% from last week</p>
+            </div>
+            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+              <p class="text-[11px] text-slate-500 font-bold">Speech Loudness Avg</p>
+              <p class="text-2xl font-black text-indigo-600 font-heading">69.4 dB</p>
+              <p class="text-[10px] text-indigo-600 font-bold mt-0.5">Target: 70 dB</p>
+            </div>
+            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+              <p class="text-[11px] text-slate-500 font-bold">Tremor Variance</p>
+              <p class="text-2xl font-black text-amber-500 font-heading">1.2 cm</p>
+              <p class="text-[10px] text-teal-600 font-bold mt-0.5">Stable amplitude</p>
+            </div>
+            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+              <p class="text-[11px] text-slate-500 font-bold">Tasks Requiring Aid</p>
+              <p class="text-2xl font-black text-rose-500 font-heading">4 Tasks</p>
+              <p class="text-[10px] text-slate-500 font-bold mt-0.5">Buttoning & fine motor</p>
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="border-b border-slate-100 pb-3">
+            <span class="text-[10px] font-black uppercase text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">Monthly Clinical Overview</span>
+            <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1 font-heading">
+              30-Day Neurological Staging & Consistency Summary
+            </h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <h4 class="font-bold text-slate-800 mb-1">Monthly Consistency Score</h4>
+              <p class="text-3xl font-black text-teal-600 font-heading">94.8%</p>
+              <p class="text-slate-500 mt-1">Total active days: 28 of 30 days. Consecutive streak active at 7 days.</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <h4 class="font-bold text-slate-800 mb-1">Snooze & Latency Trends</h4>
+              <p class="text-3xl font-black text-amber-500 font-heading">12 Snoozes</p>
+              <p class="text-slate-500 mt-1">Most frequent slower task: Morning buttoning shirt (averages 18 mins).</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <h4 class="font-bold text-slate-800 mb-1">Doctor Directive Status</h4>
+              <p class="text-3xl font-black text-indigo-600 font-heading">Active Rx</p>
+              <p class="text-slate-500 mt-1">Dr. Marcus Vance protocol: 45 min protein meal spacing observed in 96% of doses.</p>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    /* ==================== 1. ROLE ISOLATION & PORTAL SWITCHING ==================== */
     function applyRolePermissions(role) {
       state.role = role;
       
@@ -1840,6 +2061,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
 
       document.getElementById('lblAuthUser').innerText = state.user;
+      renderTimeframeInsights();
     }
 
     function selectQuickPersona(role) {
@@ -1900,11 +2122,16 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           }
         }
       });
-      if (subId === 'doc-telemetry') renderDoctorLogs();
+
+      if (subId === 'doc-telemetry') {
+        renderDoctorLogs();
+        if (doctorPieChartInst) doctorPieChartInst.resize();
+        if (doctorBarChartInst) doctorBarChartInst.resize();
+      }
       if (subId === 'doc-directives') renderDoctorDirectivesList();
     }
 
-    /* ==================== 2. ROUTINE MINI-TABS & CUES ==================== */
+    /* ==================== 2. ROUTINE CUES WITH 3-CHANCE PROGRESSIVE SYSTEM ==================== */
     function switchRoutineMiniTab(tabType) {
       document.getElementById('routine-miniview-cues').classList.toggle('hidden', tabType !== 'cues');
       document.getElementById('routine-miniview-direct').classList.toggle('hidden', tabType !== 'direct');
@@ -1924,6 +2151,12 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       const task = state.tasks[currentCueIndex];
       const box = document.getElementById('activeCueBox');
       document.getElementById('cueCurrentIndexTxt').innerText = `${currentCueIndex + 1} of ${state.tasks.length}`;
+
+      if (task.attemptsLeft === undefined) task.attemptsLeft = 3;
+
+      // Update hearts display
+      const heartsStr = task.attemptsLeft === 3 ? "❤️❤️❤️ (3 Left)" : (task.attemptsLeft === 2 ? "❤️❤️🤍 (2 Left)" : (task.attemptsLeft === 1 ? "❤️🤍🤍 (1 Left)" : "🤍🤍🤍 (Guided)"));
+      document.getElementById('cueHeartsDisplay').innerText = heartsStr;
 
       const optionLetters = ['A', 'B', 'C'];
       box.innerHTML = `
@@ -1957,7 +2190,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
             <button onclick="speakText('${task.title}')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50">
               <i class="fa-solid fa-volume-high text-teal-600 mr-1"></i> Speak
             </button>
-            <button onclick="completeTaskFromCue(${task.id})" class="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-md shadow-teal-600/20 transition">
+            <button onclick="completeTaskFromCue(${task.id})" class="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 text-white font-extrabold text-xs rounded-xl shadow-md transition">
               Mark "${task.title}" Done (+25 XP)
             </button>
           </div>
@@ -1979,6 +2212,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
+    /* 3-Chance Progressive Cue Response Logic */
     function handleTaskCueAnswer(selectedIdx) {
       const task = state.tasks[currentCueIndex];
       const alertBox = document.getElementById('cueFeedbackAlert');
@@ -1987,13 +2221,41 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       if (selectedIdx === task.correctOptionIndex) {
         playAudioChime('bell');
         alertBox.className = "p-3.5 rounded-2xl text-xs font-bold bg-teal-50 border border-teal-200 text-teal-900";
-        alertBox.innerHTML = `<strong>⭐ Excellent recall!</strong> That is correct (+25 XP awarded). Tap 'Mark Done' to complete this routine item.`;
+        alertBox.innerHTML = `<strong>⭐ Perfect Recall!</strong> That is correct (+25 XP awarded). Tap 'Mark Done' or continue below.`;
         state.xp += 25;
         document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
+        task.attemptsLeft = 3;
+        renderActiveCueCard();
       } else {
+        task.attemptsLeft = Math.max(0, (task.attemptsLeft || 3) - 1);
         playAudioChime('sax');
-        alertBox.className = "p-3.5 rounded-2xl text-xs font-bold bg-amber-50 border border-amber-200 text-amber-900";
-        alertBox.innerHTML = `<strong>Helpful reminder:</strong> ${task.cueHint}`;
+
+        if (task.attemptsLeft === 2) {
+          // 1st Chance Missed -> 2 chances left
+          alertBox.className = "p-3.5 rounded-2xl text-xs font-bold bg-amber-50 border border-amber-200 text-amber-900";
+          alertBox.innerHTML = `<strong>Chance 1 missed:</strong> Take a deep breath! You have 2 chances left (❤️❤️🤍). Give it another try!`;
+          speakText("First chance missed. Take a calm breath and try again.");
+        } else if (task.attemptsLeft === 1) {
+          // 2nd Chance Missed -> Reveal Hint automatically
+          alertBox.className = "p-3.5 rounded-2xl text-xs font-bold bg-indigo-50 border border-indigo-200 text-indigo-900";
+          alertBox.innerHTML = `<strong>Chance 2 missed (Hint Revealed):</strong> ${task.cueHint}. You have 1 chance left (❤️🤍🤍)!`;
+          speakText(`Here is a helpful hint: ${task.cueHint}. Try one more time.`);
+        } else {
+          // 3rd Chance Missed -> Directly give the exact task to do!
+          alertBox.className = "p-4 rounded-2xl text-xs font-bold bg-rose-50 border border-rose-300 text-rose-950 space-y-2";
+          alertBox.innerHTML = `
+            <div>
+              <p class="font-black text-sm text-rose-900">🤍🤍🤍 Direct Guided Assistance:</p>
+              <p class="mt-1">No worries at all! Today's exact task is: <strong>${task.title}</strong> at <strong>${task.time}</strong>.</p>
+              <p class="text-rose-700 text-[11px] mt-0.5">${task.cueHint}</p>
+            </div>
+            <button onclick="completeTaskFromCue(${task.id})" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs rounded-xl shadow">
+              Do Activity Now: "${task.title}" (+15 XP)
+            </button>
+          `;
+          speakText(`All 3 chances completed. Your task right now is: ${task.title}. Let's do it together!`);
+        }
+        document.getElementById('cueHeartsDisplay').innerText = task.attemptsLeft === 2 ? "❤️❤️🤍 (2 Left)" : (task.attemptsLeft === 1 ? "❤️🤍🤍 (1 Left)" : "🤍🤍🤍 (Guided)");
       }
     }
 
@@ -2032,6 +2294,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
                   <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${isDone ? 'bg-teal-100 text-teal-800' : (isNotDone ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700')}">
                     ${isDone ? 'Completed' : (isNotDone ? 'Not Done' : t.tag)}
                   </span>
+                  ${t.latencyMinutes >= 15 ? `<span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">Took ${t.latencyMinutes}m</span>` : ''}
                 </div>
               </div>
             </div>
@@ -2062,6 +2325,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         renderDirectTasksList();
         renderActiveCueCard();
         updateChartsData();
+        renderTimeframeInsights();
       }
     }
 
@@ -2074,6 +2338,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           text: `Task "${task.title}" delayed by ${minutes} mins by Eleanor.`
         });
         renderCaregiverAlerts();
+        renderTimeframeInsights();
       }
     }
 
@@ -2089,6 +2354,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         renderDirectTasksList();
         renderCaregiverAlerts();
         updateChartsData();
+        renderTimeframeInsights();
       }
     }
 
@@ -2139,7 +2405,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       const targetTab = document.getElementById(`minigame-tab-${id}`);
       if (targetView) targetView.classList.remove('hidden');
       if (targetTab) {
-        targetTab.className = "minigame-tab px-4 py-2.5 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-md shadow-indigo-600/20 whitespace-nowrap";
+        targetTab.className = "minigame-tab px-4 py-2.5 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-md whitespace-nowrap";
       }
 
       if (id === 5) renderMaze();
@@ -2230,13 +2496,13 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           document.getElementById('g3BtnA').disabled = true;
           document.getElementById('g3BtnA').className = "py-4 bg-slate-100 text-slate-400 font-black rounded-2xl text-sm transition";
           document.getElementById('g3BtnB').disabled = false;
-          document.getElementById('g3BtnB').className = "py-4 bg-teal-600 hover:bg-teal-700 text-white font-black rounded-2xl text-sm shadow-md shadow-teal-600/25 transition";
+          document.getElementById('g3BtnB').className = "py-4 bg-teal-600 hover:bg-teal-700 text-white font-black rounded-2xl text-sm shadow-md transition";
         } else {
           g3Next = 'A';
           document.getElementById('g3BtnB').disabled = true;
           document.getElementById('g3BtnB').className = "py-4 bg-slate-100 text-slate-400 font-black rounded-2xl text-sm transition";
           document.getElementById('g3BtnA').disabled = false;
-          document.getElementById('g3BtnA').className = "py-4 bg-teal-600 hover:bg-teal-700 text-white font-black rounded-2xl text-sm shadow-md shadow-teal-600/25 transition";
+          document.getElementById('g3BtnA').className = "py-4 bg-teal-600 hover:bg-teal-700 text-white font-black rounded-2xl text-sm shadow-md transition";
         }
       }
     }
@@ -2369,7 +2635,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
-    /* Game 8: Continuous Math Sprint */
+    /* Game 8: Math Sprint */
     let mathScore = 0;
     let mathRound = 1;
     let currentMathAns = 27;
@@ -2401,7 +2667,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
-    /* ==================== 5. LOVED ONES VAULT & RECALL ==================== */
+    /* ==================== 5. LOVED ONES VAULT ==================== */
     let faceQuizIdx = 0;
     function loadFaceQuizCard(idx = 0) {
       faceQuizIdx = idx % state.familiarPeople.length;
@@ -2475,7 +2741,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
-    /* ==================== 6. REAL WHATSAPP & GMAIL INTEGRATION ==================== */
+    /* ==================== 6. WHATSAPP & GMAIL ACTIONS ==================== */
     function sendCaregiverWhatsAppReminder() {
       const msg = encodeURIComponent(`HarmonyCare Reminder: Eleanor, time for your scheduled activity: "${state.tasks[1].title}". Julian is checking in on you!`);
       window.open(`https://wa.me/15552348901?text=${msg}`, '_blank');
@@ -2483,7 +2749,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
 
     function shareAlertsViaWhatsApp() {
       const alertSummary = state.caregiverAlerts.map(a => `• ${a.time}: ${a.text}`).join('\n');
-      const msg = encodeURIComponent(`*HarmonyCare Daily Update for Eleanor Vance*\nStatus: Active\nStreak: 7 Days\nAdherence: 94.8%\n\nRecent Alerts:\n${alertSummary}`);
+      const msg = encodeURIComponent(`*HarmonyCare Daily Update for Eleanor Vance*\nStatus: Active\nStreak: 7 Days\nAdherence: 94.8%\n\nRecent Alerts & Latency:\n${alertSummary}`);
       window.open(`https://wa.me/?text=${msg}`, '_blank');
     }
 
@@ -2514,7 +2780,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${toEmail}&su=${subject}&body=${body}`, '_blank');
     }
 
-    /* ==================== 7. REAL AI ASSISTANT (GEMINI API + NATURAL NLP) ==================== */
+    /* ==================== 7. REAL AI (GEMINI API + NATURAL NLP) ==================== */
     function toggleAiDrawer(open) {
       const drawer = document.getElementById('aiDrawer');
       const backdrop = document.getElementById('aiDrawerBackdrop');
@@ -2579,7 +2845,6 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         }
       }
 
-      // Autonomous Clinical Intelligence Fallback Engine
       setTimeout(() => {
         removeAiTypingIndicator(typingId);
         const reply = generateAutonomousAiResponse(query);
@@ -2588,7 +2853,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     }
 
     async function callGeminiApi(prompt) {
-      const systemInstruction = `You are HarmonyAI, a warm, expert cognitive wellness and Parkinson's disease medical companion. Your client is Eleanor Vance (an elderly Parkinson's patient, Hoehn & Yahr Stage II), her son and caregiver Julian Vance, and her neurologist Dr. Marcus Vance. Provide clear, empathetic, clinically accurate advice regarding Levodopa timing (protein spacing), speech loudness (LSVT LOUD 'AHHH' drills), fine motor exercises, gait freezing cues, and emotional encouragement. Keep formatting clean with bullet points and short friendly paragraphs.`;
+      const systemInstruction = `You are HarmonyAI, a warm, expert cognitive wellness and Parkinson's disease medical companion. Your client is Eleanor Vance (an elderly Parkinson's patient, Hoehn & Yahr Stage II), her son and caregiver Julian Vance, and her neurologist Dr. Marcus Vance. Provide clear, empathetic, clinically accurate advice regarding Levodopa timing (protein spacing), speech loudness (LSVT LOUD 'AHHH' drills), fine motor exercises, gait freezing cues, and emotional encouragement. Keep formatting clean with bullet points and short friendly paragraphs. Respond in the user's preferred language if asked.`;
       
       const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${state.geminiApiKey}`;
       
@@ -2596,12 +2861,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [
-            {
-              role: 'user',
-              parts: [{ text: `${systemInstruction}\n\nUser Question: ${prompt}` }]
-            }
-          ]
+          contents: [{ role: 'user', parts: [{ text: `${systemInstruction}\n\nUser Question: ${prompt}` }] }]
         })
       });
 
@@ -2645,13 +2905,6 @@ This stimulates fronto-striatal pathways and enhances dopamine neuron activation
 • Take a deep breath expanding your belly.
 • Sustain an **"AHHH"** sound at comfortable speaking volume for 8 seconds, pretending you are calling out to someone across the room.
 • Check your amplitude in Tab 4 to reach the green 70-75 dB zone!`;
-      }
-
-      if (lower.includes('caregiver') || lower.includes('stress') || lower.includes('note') || lower.includes('julian')) {
-        return `**Caregiver Support & Clinical Documentation:**
-• Remember to note the exact time of motor fluctuations (e.g. "tremor 20 mins prior to dose").
-• Use the **Caregiver Portal** to log observations directly for Dr. Marcus Vance.
-• Don't hesitate to take a sensory breath pause together with Eleanor using the top 'Breathe' button. You are doing exceptional work!`;
       }
 
       return `Thank you for sharing that! 🌿 In Parkinson's cognitive and motor wellness, consistency is everything. 
@@ -2719,7 +2972,7 @@ Here are three personalized actions you can take today:
       appendAiMessage('assistant', "Chat cleared! How can I support your cognitive routine or wellness today?");
     }
 
-    /* Speech-to-Text for AI Chat */
+    /* Speech-to-Text Microphone */
     let recognition = null;
     let isRecognizing = false;
     function toggleAiVoiceInput() {
@@ -2736,7 +2989,8 @@ Here are three personalized actions you can take today:
         micBtn.classList.remove('bg-rose-500', 'text-white');
       } else {
         recognition = new SpeechRecognition();
-        recognition.lang = 'en-US';
+        const langCodes = { en: 'en-US', hi: 'hi-IN', mr: 'mr-IN', ta: 'ta-IN', te: 'te-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN' };
+        recognition.lang = langCodes[currentLang] || 'en-US';
         recognition.interimResults = false;
 
         recognition.onstart = () => {
@@ -2765,12 +3019,8 @@ Here are three personalized actions you can take today:
     function renderCaregiverAlerts() {
       document.getElementById('caregiverAlertList').innerHTML = state.caregiverAlerts.map(a => `
         <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-800 flex justify-between items-center shadow-xs">
-          <div>
-            <strong class="text-amber-700">${a.time}:</strong> ${a.text}
-          </div>
-          <button onclick="speakText('${a.text}')" class="text-slate-400 hover:text-slate-700">
-            <i class="fa-solid fa-volume-high"></i>
-          </button>
+          <div><strong class="text-amber-700">${a.time}:</strong> ${a.text}</div>
+          <button onclick="speakText('${a.text}')" class="text-slate-400 hover:text-slate-700"><i class="fa-solid fa-volume-high"></i></button>
         </div>
       `).join('');
     }
@@ -3007,15 +3257,18 @@ Here are three personalized actions you can take today:
           done: false,
           tag: c,
           status: 'pending',
+          latencyMinutes: 5,
           cueQuestion: `It is ${tm}. What activity should you prepare for?`,
           cueOptions: [t, "Take an unprescribed nap", "Skip to tomorrow"],
           correctOptionIndex: 0,
-          cueHint: `Check your routine: ${t}`
+          cueHint: `Check your routine: ${t}`,
+          attemptsLeft: 3
         });
         renderDirectTasksList();
         renderActiveCueCard();
         renderCaregiverManagedTasks();
         updateChartsData();
+        renderTimeframeInsights();
         closeAddTaskModal();
         document.getElementById('newTaskTitle').value = '';
       }
@@ -3094,10 +3347,14 @@ Here are three personalized actions you can take today:
       document.getElementById('alarmModal').classList.remove('flex');
     }
 
-    /* ==================== 11. CHARTS ==================== */
+    /* ==================== 11. CHARTS (CAREGIVER & DOCTOR PIE/BAR CHARTS) ==================== */
     let ringChartInst = null;
     let lineChartInst = null;
+    let doctorPieChartInst = null;
+    let doctorBarChartInst = null;
+
     function initCharts() {
+      // Caregiver Adherence Doughnut
       const ctxRing = document.getElementById('caregiverRingChart')?.getContext('2d');
       if (ctxRing) {
         const doneCount = state.tasks.filter(t => t.done).length;
@@ -3116,6 +3373,7 @@ Here are three personalized actions you can take today:
         });
       }
 
+      // Caregiver Speech line chart
       const ctxLine = document.getElementById('caregiverLineChart')?.getContext('2d');
       if (ctxLine) {
         lineChartInst = new Chart(ctxLine, {
@@ -3134,6 +3392,56 @@ Here are three personalized actions you can take today:
           options: { responsive: true, maintainAspectRatio: false }
         });
       }
+
+      // NEW: Doctor Pie / Doughnut Chart
+      const ctxDocPie = document.getElementById('doctorPieChart')?.getContext('2d');
+      if (ctxDocPie) {
+        doctorPieChartInst = new Chart(ctxDocPie, {
+          type: 'pie',
+          data: {
+            labels: ['Optimal ON', 'Mild Tremor', 'Mild Rigidity', 'OFF Window'],
+            datasets: [{
+              data: [76, 14, 6, 4],
+              backgroundColor: ['#0D9488', '#F59E0B', '#6366F1', '#F43F5E'],
+              borderWidth: 2,
+              borderColor: '#FFFFFF'
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
+
+      // NEW: Doctor Bar Chart (Tremor Amplitude Across Windows)
+      const ctxDocBar = document.getElementById('doctorBarChart')?.getContext('2d');
+      if (ctxDocBar) {
+        doctorBarChartInst = new Chart(ctxDocBar, {
+          type: 'bar',
+          data: {
+            labels: ['08:00 AM', '11:00 AM', '02:00 PM', '05:00 PM', '08:00 PM'],
+            datasets: [
+              {
+                label: 'Pre-Dose Tremor (cm)',
+                data: [1.8, 1.5, 1.9, 1.4, 1.6],
+                backgroundColor: '#F59E0B',
+                borderRadius: 8
+              },
+              {
+                label: 'Post-Dose Tremor (cm)',
+                data: [0.9, 0.7, 1.1, 0.8, 0.9],
+                backgroundColor: '#0D9488',
+                borderRadius: 8
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: { beginAtZero: true, title: { display: true, text: 'Amplitude (cm)' } }
+            }
+          }
+        });
+      }
     }
 
     function updateChartsData() {
@@ -3147,6 +3455,10 @@ Here are three personalized actions you can take today:
 
     /* ==================== WINDOW INITIALIZATION ==================== */
     window.onload = function() {
+      // Set initial real calendar date
+      document.getElementById('globalCalendarPicker').value = state.selectedDate;
+      onCalendarDateChanged(state.selectedDate);
+
       applyRolePermissions('patient');
       switchRoutineMiniTab('cues');
       renderLovedOnes();
