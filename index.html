@@ -21,6 +21,19 @@
   <!-- Canvas Confetti for Reward Celebrations -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+  <!-- Google Translate Element Script -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,mr,ta,te,bn,gu,kn,pa,ml,ur',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -59,37 +72,44 @@
       color: #0F172A;
       min-height: 100vh;
     }
-
-    h1, h2, h3, h4, .font-heading {
-      font-family: 'Outfit', sans-serif;
-    }
-
+    h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
     ::-webkit-scrollbar { width: 7px; height: 7px; }
     ::-webkit-scrollbar-track { background: #F1F5F9; }
     ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 6px; }
     ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
     /* 3D Tumbling Cube */
-    .scene-dice { width: 82px; height: 82px; perspective: 450px; }
+    .scene-dice { width: 80px; height: 80px; perspective: 450px; }
     .cube {
       width: 100%; height: 100%; position: relative;
       transform-style: preserve-3d;
       transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .cube-face {
-      position: absolute; width: 82px; height: 82px;
+      position: absolute; width: 80px; height: 80px;
       background: linear-gradient(135deg, #0D9488, #4F46E5);
       border: 2px solid #FFFFFF; border-radius: 16px;
       display: flex; align-items: center; justify-content: center;
       font-size: 26px; font-weight: 800; color: white;
       box-shadow: inset 0 0 12px rgba(255,255,255,0.3), 0 8px 18px rgba(79, 70, 229, 0.35);
     }
-    .cube-face-1 { transform: rotateY(0deg) translateZ(41px); }
-    .cube-face-2 { transform: rotateY(90deg) translateZ(41px); }
-    .cube-face-3 { transform: rotateY(180deg) translateZ(41px); }
-    .cube-face-4 { transform: rotateY(-90deg) translateZ(41px); }
-    .cube-face-5 { transform: rotateX(90deg) translateZ(41px); }
-    .cube-face-6 { transform: rotateX(-90deg) translateZ(41px); }
+    .cube-face-1 { transform: rotateY(0deg) translateZ(40px); }
+    .cube-face-2 { transform: rotateY(90deg) translateZ(40px); }
+    .cube-face-3 { transform: rotateY(180deg) translateZ(40px); }
+    .cube-face-4 { transform: rotateY(-90deg) translateZ(40px); }
+    .cube-face-5 { transform: rotateX(90deg) translateZ(40px); }
+    .cube-face-6 { transform: rotateX(-90deg) translateZ(40px); }
+
+    @keyframes floatUpFade {
+      0% { opacity: 0; transform: translateY(10px) scale(0.9); }
+      20% { opacity: 1; transform: translateY(-5px) scale(1.1); }
+      80% { opacity: 1; transform: translateY(-30px) scale(1.0); }
+      100% { opacity: 0; transform: translateY(-50px) scale(0.8); }
+    }
+    .xp-float-badge {
+      animation: floatUpFade 1.6s ease-out forwards;
+      pointer-events: none;
+    }
 
     @keyframes softGlow {
       0%, 100% { box-shadow: 0 0 20px rgba(13, 148, 136, 0.35); border-color: #14B8A6; }
@@ -107,6 +127,13 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .goog-te-banner-frame.skiptranslate { display: none !important; }
     body { top: 0px !important; }
+    .goog-te-gadget-simple {
+      background-color: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      font-size: 11px !important;
+    }
+    .goog-te-gadget-simple span { color: #FFFFFF !important; }
   </style>
 </head>
 
@@ -140,7 +167,7 @@
       <!-- Quick Action Utilities -->
       <div class="flex items-center flex-wrap gap-2 sm:gap-2.5">
         
-        <!-- Multilingual Language Selector (India & Global) -->
+        <!-- Multilingual Language Selector (Native Dictionary + Google Translate) -->
         <div class="flex items-center bg-slate-800/90 rounded-xl px-2 py-1 border border-slate-700 text-xs">
           <i class="fa-solid fa-language text-teal-400 mr-1.5"></i>
           <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-transparent text-white font-bold text-xs focus:outline-hidden cursor-pointer">
@@ -153,6 +180,7 @@
             <option value="gu" class="bg-slate-900 text-white">ગુજરાતી (Gujarati)</option>
             <option value="kn" class="bg-slate-900 text-white">ಕನ್ನಡ (Kannada)</option>
           </select>
+          <div id="google_translate_element" class="ml-1 hidden sm:inline-block"></div>
         </div>
 
         <!-- Emergency SOS Button -->
@@ -167,7 +195,7 @@
           <span>HarmonyAI</span>
         </button>
 
-        <!-- Text-to-Speech Controls -->
+        <!-- Natural Voice Engine Controls (Lag-Free) -->
         <div class="flex items-center bg-slate-800/80 rounded-xl p-1 border border-slate-700 text-xs">
           <button onclick="speakPageSummary()" class="px-2.5 py-1 rounded-lg bg-teal-600/80 hover:bg-teal-500 text-white font-bold transition flex items-center gap-1" title="Read current page aloud">
             <i class="fa-solid fa-volume-high"></i>
@@ -178,8 +206,8 @@
           </button>
           <select id="ttsRateSelect" class="bg-transparent text-slate-300 text-[11px] font-bold focus:outline-hidden ml-1 border-l border-slate-600 pl-1.5 pr-0.5 cursor-pointer">
             <option value="0.85" class="bg-slate-900 text-white">0.85x</option>
-            <option value="1.0" class="bg-slate-900 text-white" selected>1.0x</option>
-            <option value="1.15" class="bg-slate-900 text-white">1.15x</option>
+            <option value="0.95" class="bg-slate-900 text-white" selected>0.95x</option>
+            <option value="1.1" class="bg-slate-900 text-white">1.1x</option>
           </select>
         </div>
 
@@ -224,41 +252,52 @@
     </div>
   </div>
 
-  <!-- ==================== UNIFIED REAL CALENDAR & TIMEFRAME BAR (DAILY / WEEKLY / MONTHLY) ==================== -->
-  <div class="bg-white border-b border-slate-200/90 shadow-2xs py-2.5 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+  <!-- FLOATING XP POPUP CONTAINER -->
+  <div id="xpToastContainer" class="fixed top-20 right-6 z-50 pointer-events-none flex flex-col items-end space-y-2"></div>
+
+  <!-- ==================== GAMIFIED LEVEL ZERO & REAL CALENDAR STRIP ==================== -->
+  <div class="bg-white border-b border-slate-200/90 shadow-2xs py-3 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
       
-      <!-- Real Calendar Date Selector -->
-      <div class="flex items-center space-x-2.5 w-full md:w-auto">
-        <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-xs border border-teal-200">
-          <i class="fa-regular fa-calendar-days"></i>
+      <!-- GAMIFIED LEVEL 0 PROGRESSION BAR -->
+      <div class="flex items-center space-x-3.5 w-full lg:w-auto bg-gradient-to-r from-slate-50 to-teal-50/50 p-2.5 rounded-2xl border border-slate-200">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-white text-xl font-black shadow-md shrink-0" id="levelIconBox">
+          🌱
         </div>
-        <div>
-          <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider" data-i18n="calendar_date">Selected Date (Real Calendar)</span>
-          <input type="date" id="globalCalendarPicker" onchange="onCalendarDateChanged(this.value)" class="block text-xs font-bold text-slate-800 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 focus:outline-hidden focus:ring-1 focus:ring-teal-500 cursor-pointer">
+        <div class="min-w-[200px] flex-1">
+          <div class="flex justify-between items-center text-xs mb-1">
+            <span class="font-black text-slate-900 font-heading" id="lblLevelTitle">Level 0: Cognitive Sprout</span>
+            <span class="font-extrabold text-teal-700 font-mono text-[11px]" id="lblXpProgress">0 / 100 XP</span>
+          </div>
+          <!-- Level Progress Bar -->
+          <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
+            <div id="levelProgressBar" class="h-full bg-gradient-to-r from-teal-500 via-emerald-400 to-amber-400 rounded-full transition-all duration-500 shadow-sm" style="width: 0%;"></div>
+          </div>
+          <div class="flex justify-between items-center text-[10px] text-slate-500 mt-1 font-bold">
+            <span id="lblCurrentTotalXp">Total: 0 XP (Starting Baseline)</span>
+            <button onclick="resetToLevelZero()" class="text-indigo-600 hover:underline">Reset to Level 0</button>
+          </div>
         </div>
       </div>
 
-      <!-- Timeframe Toggle: Daily vs. Weekly vs. Monthly -->
-      <div class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200 w-full md:w-auto justify-center">
-        <button onclick="setTimeframeMode('daily')" id="tf-btn-daily" class="tf-btn px-4 py-1.5 rounded-xl text-xs font-black bg-white text-teal-800 shadow-xs transition flex items-center gap-1.5">
-          <i class="fa-solid fa-sun text-amber-500"></i>
-          <span data-i18n="timeframe_daily">Daily Tasks & Latency</span>
-        </button>
-        <button onclick="setTimeframeMode('weekly')" id="tf-btn-weekly" class="tf-btn px-4 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-chart-simple text-indigo-500"></i>
-          <span data-i18n="timeframe_weekly">Weekly Progress</span>
-        </button>
-        <button onclick="setTimeframeMode('monthly')" id="tf-btn-monthly" class="tf-btn px-4 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-calendar-check text-rose-500"></i>
-          <span data-i18n="timeframe_monthly">Monthly Overview</span>
-        </button>
-      </div>
+      <!-- Real Calendar Date Selector & Timeframe Toggle -->
+      <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-end">
+        <div class="flex items-center space-x-2 bg-slate-50 px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs">
+          <i class="fa-regular fa-calendar-days text-teal-600"></i>
+          <input type="date" id="globalCalendarPicker" onchange="onCalendarDateChanged(this.value)" class="bg-transparent text-xs font-bold text-slate-800 focus:outline-hidden cursor-pointer">
+        </div>
 
-      <!-- Quick Date Status Badge -->
-      <div class="hidden lg:flex items-center gap-2 text-xs font-bold text-slate-500">
-        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-        <span id="txtCalendarFriendlyLabel">Today: Friday, Sept 25, 2026</span>
+        <div class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold">
+          <button onclick="setTimeframeMode('daily')" id="tf-btn-daily" class="tf-btn px-3 py-1 rounded-xl font-black bg-white text-teal-800 shadow-xs transition">
+            <span data-i18n="timeframe_daily">Daily</span>
+          </button>
+          <button onclick="setTimeframeMode('weekly')" id="tf-btn-weekly" class="tf-btn px-3 py-1 rounded-xl text-slate-600 hover:text-slate-900 transition">
+            <span data-i18n="timeframe_weekly">Weekly</span>
+          </button>
+          <button onclick="setTimeframeMode('monthly')" id="tf-btn-monthly" class="tf-btn px-3 py-1 rounded-xl text-slate-600 hover:text-slate-900 transition">
+            <span data-i18n="timeframe_monthly">Monthly Calendar</span>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -266,23 +305,27 @@
 
   <!-- ==================== NAVIGATION BARS (ROLE ISOLATED) ==================== -->
   
-  <!-- 1. PATIENT NAV -->
+  <!-- 1. PATIENT NAV (NOW INCLUDES 6TH TAB: INTERACTIVE CALENDAR & MILESTONES) -->
   <nav id="nav-patient" class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-[57px] z-40 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto no-scrollbar py-2.5 gap-2 text-slate-700">
-      <button onclick="switchTab('routine')" id="tab-routine" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md shadow-teal-600/20 flex items-center gap-2 whitespace-nowrap">
+      <button onclick="switchTab('routine')" id="tab-routine" class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-list-check"></i> <span data-i18n="nav_routine">1. Daily Routine & Cues</span>
       </button>
-      <button onclick="switchTab('games')" id="tab-games" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+      <button onclick="switchTab('games')" id="tab-games" class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-puzzle-piece text-indigo-500"></i> <span data-i18n="nav_games">2. Mind Clinic Games</span>
       </button>
-      <button onclick="switchTab('vault')" id="tab-vault" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+      <button onclick="switchTab('vault')" id="tab-vault" class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-heart text-rose-500"></i> <span data-i18n="nav_vault">3. Loved Ones & Face Recall</span>
       </button>
-      <button onclick="switchTab('movement')" id="tab-movement" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+      <button onclick="switchTab('movement')" id="tab-movement" class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-person-walking text-teal-600"></i> <span data-i18n="nav_movement">4. Movement & Speech</span>
       </button>
-      <button onclick="switchTab('nutrition')" id="tab-nutrition" class="nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+      <button onclick="switchTab('nutrition')" id="tab-nutrition" class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-apple-whole text-amber-500"></i> <span data-i18n="nav_nutrition">5. Nutrition & Hydration</span>
+      </button>
+      <!-- NEW 6TH TAB: INTERACTIVE CALENDAR & XP MILESTONES -->
+      <button onclick="switchTab('calendar-hub')" id="tab-calendar-hub" class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-calendar-check text-purple-600"></i> <span data-i18n="nav_calendar_hub">6. Calendar & Milestones</span>
       </button>
     </div>
   </nav>
@@ -290,7 +333,7 @@
   <!-- 2. CAREGIVER NAV -->
   <nav id="nav-caregiver" class="hidden bg-slate-900 border-b border-indigo-500/30 sticky top-[57px] z-40 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto no-scrollbar py-2.5 gap-2 text-slate-300">
-      <button onclick="switchCaregiverSubTab('cg-overview')" id="tab-cg-overview" class="cg-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-600/25 flex items-center gap-2 whitespace-nowrap">
+      <button onclick="switchCaregiverSubTab('cg-overview')" id="tab-cg-overview" class="cg-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-chart-pie"></i> Caregiver Telemetry Dashboard
       </button>
       <button onclick="switchCaregiverSubTab('cg-alerts')" id="tab-cg-alerts" class="cg-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center gap-2 whitespace-nowrap">
@@ -308,7 +351,7 @@
   <!-- 3. DOCTOR NAV -->
   <nav id="nav-doctor" class="hidden bg-slate-950 border-b border-sky-500/30 sticky top-[57px] z-40 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto no-scrollbar py-2.5 gap-2 text-slate-300">
-      <button onclick="switchDoctorSubTab('doc-telemetry')" id="tab-doc-telemetry" class="doc-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-sky-600 to-teal-600 text-white shadow-md shadow-sky-600/25 flex items-center gap-2 whitespace-nowrap">
+      <button onclick="switchDoctorSubTab('doc-telemetry')" id="tab-doc-telemetry" class="doc-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-sky-600 to-teal-600 text-white shadow-md flex items-center gap-2 whitespace-nowrap">
         <i class="fa-solid fa-stethoscope"></i> Neurological Telemetry & Clinical Charts
       </button>
       <button onclick="switchDoctorSubTab('doc-directives')" id="tab-doc-directives" class="doc-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-900 hover:bg-slate-800 text-slate-300 flex items-center gap-2 whitespace-nowrap">
@@ -320,12 +363,12 @@
     </div>
   </nav>
 
-  <!-- ==================== MAIN APPLICATION CONTENT ==================== -->
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-    <!-- REAL TIMEFRAME INSIGHTS CARD (DAILY, WEEKLY, MONTHLY) - ADAPTED TO ALL ROLES -->
+    <!-- REAL TIMEFRAME INSIGHTS CARD (DAILY, WEEKLY, MONTHLY) -->
     <div id="timeframe-display-container" class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-      <!-- Populated dynamically based on daily/weekly/monthly mode -->
+      <!-- Populated dynamically -->
     </div>
 
     <!-- ======================================================================= -->
@@ -333,11 +376,9 @@
     <!-- ======================================================================= -->
     <div id="portal-patient-container" class="space-y-6">
 
-      <!-- ==================== TAB 1: DAILY ROUTINE & CUES ==================== -->
+      <!-- TAB 1: DAILY ROUTINE & CUES -->
       <section id="view-routine" class="tab-view space-y-6">
-        
-        <!-- Inspiration Banner -->
-        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-teal-700 via-emerald-600 to-indigo-700 text-white p-6 sm:p-8 shadow-xl shadow-teal-900/10">
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-teal-700 via-emerald-600 to-indigo-700 text-white p-6 sm:p-8 shadow-xl">
           <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
             <div>
               <div class="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold text-teal-100 mb-2.5 border border-white/25">
@@ -354,22 +395,20 @@
 
             <div class="flex items-center space-x-3 bg-slate-900/50 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 shadow-lg">
               <div class="text-center px-3 border-r border-white/20">
-                <p class="text-[10px] uppercase tracking-wider font-extrabold text-teal-200">Consistency</p>
-                <p class="text-xl sm:text-2xl font-black text-amber-400 flex items-center justify-center gap-1">
-                  7 Days <i class="fa-solid fa-fire text-amber-400 text-base"></i>
-                </p>
+                <p class="text-[10px] uppercase tracking-wider font-extrabold text-teal-200">Level Rank</p>
+                <p class="text-xl sm:text-2xl font-black text-amber-400 font-heading" id="txtCurrentLevelBadge">Level 0</p>
               </div>
               <div class="text-center px-3">
-                <p class="text-[10px] uppercase tracking-wider font-extrabold text-teal-200">Brain Points</p>
-                <p class="text-xl sm:text-2xl font-black text-emerald-300" id="txtTotalXP">1,250 XP</p>
+                <p class="text-[10px] uppercase tracking-wider font-extrabold text-teal-200">Brain XP</p>
+                <p class="text-xl sm:text-2xl font-black text-emerald-300 font-mono" id="txtTotalXP">0 XP</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Routine Mini-Tabs: Cues (First) vs Direct Checklist -->
+        <!-- Routine Mini-Tabs -->
         <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap gap-2">
-          <button onclick="switchRoutineMiniTab('cues')" id="mini-tab-cues" class="flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md shadow-teal-600/20 flex items-center justify-center gap-2 transition-all">
+          <button onclick="switchRoutineMiniTab('cues')" id="mini-tab-cues" class="flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md flex items-center justify-center gap-2 transition-all">
             <i class="fa-solid fa-lightbulb text-amber-300"></i> <span data-i18n="mini_cues_tab">1. Memory Cues for Every Task (3 Chances + Hint)</span>
           </button>
           <button onclick="switchRoutineMiniTab('direct')" id="mini-tab-direct" class="flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center justify-center gap-2 transition-all">
@@ -377,7 +416,7 @@
           </button>
         </div>
 
-        <!-- MINI-VIEW A: 3-CHANCE PROGRESSIVE CUES & MEMORY QUIZ -->
+        <!-- MINI-VIEW A: 3-CHANCE CUES -->
         <div id="routine-miniview-cues" class="space-y-4">
           <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-5">
             <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-100 pb-4">
@@ -389,7 +428,6 @@
                 <button onclick="speakCurrentCue()" class="px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-700 rounded-xl text-xs font-bold border border-teal-200 transition flex items-center gap-1.5">
                   <i class="fa-solid fa-volume-high"></i> Read Question
                 </button>
-                <!-- Visual Hearts / Chances Remaining -->
                 <div id="cueChancesBadge" class="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-xs font-extrabold flex items-center gap-1">
                   <span>Chances:</span>
                   <span id="cueHeartsDisplay">❤️❤️❤️ (3 Left)</span>
@@ -397,12 +435,8 @@
               </div>
             </div>
 
-            <!-- The Active Cue Card -->
-            <div id="activeCueBox" class="p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-teal-50/40 border border-slate-200 space-y-4 shadow-inner">
-              <!-- Dynamically populated -->
-            </div>
+            <div id="activeCueBox" class="p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-teal-50/40 border border-slate-200 space-y-4 shadow-inner"></div>
 
-            <!-- Cue Progress Tracker Indicator -->
             <div class="flex justify-between items-center text-xs text-slate-500 pt-2 border-t border-slate-100">
               <span class="font-bold">Routine Progress: <strong id="cueCurrentIndexTxt" class="text-teal-700">1 of 6</strong></span>
               <div class="flex gap-2">
@@ -413,7 +447,7 @@
           </div>
         </div>
 
-        <!-- MINI-VIEW B: DIRECT TO-DO SCHEDULE -->
+        <!-- MINI-VIEW B: DIRECT LIST -->
         <div id="routine-miniview-direct" class="hidden space-y-4">
           <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
@@ -425,13 +459,11 @@
                 <button onclick="readActiveTaskAloud()" class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-700 rounded-xl text-xs font-bold border border-teal-200 transition flex items-center gap-1.5">
                   <i class="fa-solid fa-volume-high"></i> Read Next Task
                 </button>
-                <button onclick="openAddTaskModal()" class="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold shadow-md shadow-teal-600/20 transition">
+                <button onclick="openAddTaskModal()" class="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold shadow-md transition">
                   + Add Activity
                 </button>
               </div>
             </div>
-
-            <!-- All tasks rendered here -->
             <div class="space-y-3" id="allTasksDirectList"></div>
           </div>
         </div>
@@ -465,17 +497,16 @@
                 <i class="fa-solid fa-dice text-indigo-600"></i>
                 <span>Roll 3D Cube</span>
               </button>
-              <button onclick="completeHobbyChallenge()" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 text-white font-black text-xs rounded-xl shadow-md shadow-orange-500/25 flex items-center gap-1.5 transition">
+              <button onclick="completeHobbyChallenge()" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 text-white font-black text-xs rounded-xl shadow-md transition flex items-center gap-1.5">
                 <i class="fa-solid fa-gift"></i>
                 <span>Claim +60 XP Reward</span>
               </button>
             </div>
           </div>
         </div>
-
       </section>
 
-      <!-- ==================== TAB 2: MIND CLINIC GAMES ==================== -->
+      <!-- TAB 2: MIND CLINIC GAMES -->
       <section id="view-games" class="tab-view hidden space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -483,14 +514,11 @@
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-2 font-heading">Mind Clinic Interactive Games</h2>
             <p class="text-xs sm:text-sm text-slate-600 font-medium">Select any exercise from the 8 categories below or click Random Game (+50 XP each).</p>
           </div>
-          <div>
-            <button onclick="pickRandomMiniGame()" class="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center gap-2">
-              <i class="fa-solid fa-dice text-amber-300"></i> 🎲 Pick a Game For Me
-            </button>
-          </div>
+          <button onclick="pickRandomMiniGame()" class="px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 text-white font-extrabold text-xs rounded-2xl shadow-lg transition flex items-center gap-2">
+            <i class="fa-solid fa-dice text-amber-300"></i> 🎲 Pick a Game For Me
+          </button>
         </div>
 
-        <!-- 8 Mini-Tabs Selector -->
         <div class="flex overflow-x-auto no-scrollbar gap-2 pb-2">
           <button onclick="switchMiniGame(1)" id="minigame-tab-1" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-md whitespace-nowrap">1. Color Sequence</button>
           <button onclick="switchMiniGame(2)" id="minigame-tab-2" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">2. Shape Match</button>
@@ -502,7 +530,6 @@
           <button onclick="switchMiniGame(8)" id="minigame-tab-8" class="minigame-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 whitespace-nowrap">8. Math Sprint</button>
         </div>
 
-        <!-- ACTIVE MINI-GAME CARD CONTAINER -->
         <div id="miniGameCardContainer" class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md max-w-2xl mx-auto">
           <!-- Game 1 -->
           <div id="mg-view-1" class="mg-view space-y-4">
@@ -649,7 +676,7 @@
         </div>
       </section>
 
-      <!-- ==================== TAB 3: LOVED ONES VAULT & RECALL ==================== -->
+      <!-- TAB 3: LOVED ONES VAULT -->
       <section id="view-vault" class="tab-view hidden space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-6 max-w-3xl mx-auto">
           <div class="flex justify-between items-center border-b border-slate-100 pb-4">
@@ -695,7 +722,7 @@
         </div>
       </section>
 
-      <!-- ==================== TAB 4: MOVEMENT & SPEECH MOBILITY ==================== -->
+      <!-- TAB 4: MOVEMENT & SPEECH -->
       <section id="view-movement" class="tab-view hidden space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200 shadow-md flex flex-col justify-between">
@@ -771,7 +798,7 @@
         </div>
       </section>
 
-      <!-- ==================== TAB 5: NUTRITION & HYDRATION ==================== -->
+      <!-- TAB 5: NUTRITION & HYDRATION -->
       <section id="view-nutrition" class="tab-view hidden space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <div class="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -811,14 +838,53 @@
         </div>
       </section>
 
+      <!-- NEW TAB 6: INTERACTIVE CALENDAR & MILESTONES (PATIENT PORTAL) -->
+      <section id="view-calendar-hub" class="tab-view hidden space-y-6">
+        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-4">
+            <div>
+              <span class="text-xs font-black uppercase text-purple-700 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">Patient Longitudinal History</span>
+              <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1 font-heading">Interactive Calendar & Missed Task Tracker</h2>
+              <p class="text-xs sm:text-sm text-slate-600">Tap on any calendar day to inspect completed tasks, snooze delays, or missed activities.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="renderInteractiveMonthlyGrid()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold">
+                <i class="fa-solid fa-rotate-right mr-1"></i> Refresh Month
+              </button>
+            </div>
+          </div>
+
+          <!-- Calendar Legend -->
+          <div class="flex flex-wrap gap-4 text-xs font-bold">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> 100% Completed</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Snoozed / Slower Task</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-500"></span> Missed / Not Done</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-teal-500 ring-2 ring-teal-300"></span> Selected Day</span>
+          </div>
+
+          <!-- Full Interactive Month Grid -->
+          <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200">
+            <div class="grid grid-cols-7 gap-2 mb-2 text-center text-xs font-black text-slate-500 uppercase tracking-wider">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="grid grid-cols-7 gap-2" id="interactiveCalendarGrid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Selected Day Inspection Card -->
+          <div id="calendarDayInspectionCard" class="bg-gradient-to-br from-teal-50/50 to-indigo-50/40 p-5 rounded-2xl border border-teal-200 space-y-3">
+            <!-- Dynamically populated when clicking any day -->
+          </div>
+        </div>
+      </section>
+
     </div>
 
     <!-- ======================================================================= -->
     <!-- PORTAL 2: CAREGIVER PORTAL                                              -->
     <!-- ======================================================================= -->
     <div id="portal-caregiver-container" class="hidden space-y-6">
-      
-      <!-- Caregiver Banner -->
       <div class="bg-gradient-to-r from-indigo-900 via-slate-900 to-purple-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-indigo-500/20">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -843,7 +909,7 @@
         </div>
       </div>
 
-      <!-- CAREGIVER SUB-VIEW 1: OVERVIEW -->
+      <!-- CAREGIVER SUB-VIEW 1 -->
       <div id="cg-subview-overview" class="space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md flex flex-col items-center">
@@ -853,10 +919,6 @@
             </div>
             <div class="w-64 h-64 relative flex items-center justify-center">
               <canvas id="caregiverRingChart"></canvas>
-            </div>
-            <div class="flex gap-4 text-xs font-bold mt-2">
-              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-teal-600"></span> Completed</span>
-              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-300"></span> Pending / Snoozed</span>
             </div>
           </div>
 
@@ -872,7 +934,7 @@
         </div>
       </div>
 
-      <!-- CAREGIVER SUB-VIEW 2: ALERTS -->
+      <!-- CAREGIVER SUB-VIEW 2 -->
       <div id="cg-subview-alerts" class="space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
@@ -892,7 +954,7 @@
         </div>
       </div>
 
-      <!-- CAREGIVER SUB-VIEW 3: SCHEDULE -->
+      <!-- CAREGIVER SUB-VIEW 3 -->
       <div id="cg-subview-schedule" class="space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <div class="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -908,7 +970,7 @@
         </div>
       </div>
 
-      <!-- CAREGIVER SUB-VIEW 4: NOTES -->
+      <!-- CAREGIVER SUB-VIEW 4 -->
       <div id="cg-subview-notes" class="space-y-6">
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
@@ -934,15 +996,12 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- ======================================================================= -->
-    <!-- PORTAL 3: DOCTOR / CLINICIAN PORTAL (NOW WITH PIE & BAR CHARTS!)        -->
+    <!-- PORTAL 3: DOCTOR / CLINICIAN PORTAL                                     -->
     <!-- ======================================================================= -->
     <div id="portal-doctor-container" class="hidden space-y-6">
-      
-      <!-- Doctor Banner -->
       <div class="bg-gradient-to-r from-slate-950 via-sky-950 to-teal-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-sky-500/20">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -967,10 +1026,8 @@
         </div>
       </div>
 
-      <!-- DOCTOR SUB-VIEW 1: TELEMETRY & CLINICAL CHARTS (PIE & BAR CHARTS!) -->
+      <!-- DOCTOR SUB-VIEW 1: TELEMETRY & PIE/BAR CHARTS -->
       <div id="doc-subview-telemetry" class="space-y-6">
-        
-        <!-- Telemetry KPIs -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md text-center">
             <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Medication Adherence Rate</p>
@@ -991,10 +1048,8 @@
           </div>
         </div>
 
-        <!-- NEW DOCTOR CHARTS: PIE CHART & BAR CHART -->
+        <!-- DOCTOR PIE & BAR CHARTS -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          
-          <!-- Doctor Pie / Doughnut Chart: Motor State Distribution -->
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md flex flex-col items-center">
             <div class="w-full flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
               <div>
@@ -1014,7 +1069,6 @@
             </div>
           </div>
 
-          <!-- Doctor Bar Chart: Tremor Amplitude vs. Medication Doses -->
           <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
               <div>
@@ -1027,10 +1081,8 @@
               <canvas id="doctorBarChart"></canvas>
             </div>
           </div>
-
         </div>
 
-        <!-- Caregiver Feed Review -->
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
           <h3 class="text-lg font-black text-slate-900 font-heading">Reviewed Caregiver Submissions</h3>
           <div class="space-y-2.5" id="doctorLogFeed"></div>
@@ -1099,12 +1151,11 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           </div>
         </div>
       </div>
-
     </div>
 
   </main>
 
-  <!-- ==================== REAL AI ASSISTANT: HARMONYAI DRAWER WIDGET ==================== -->
+  <!-- ==================== HARMONYAI DRAWER WIDGET ==================== -->
   <div id="aiDrawerBackdrop" onclick="toggleAiDrawer(false)" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs hidden z-50 transition-opacity"></div>
   <div id="aiDrawer" class="fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200">
     <div class="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white p-4 flex justify-between items-center border-b border-indigo-400/20">
@@ -1143,7 +1194,6 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       </button>
     </div>
 
-    <!-- AI Chat Messages -->
     <div id="aiChatMessages" class="flex-1 p-4 overflow-y-auto space-y-3.5 bg-slate-50/50">
       <div class="flex items-start space-x-2.5">
         <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center shrink-0 text-xs shadow">
@@ -1161,7 +1211,6 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       </div>
     </div>
 
-    <!-- AI Input -->
     <div class="p-3 bg-white border-t border-slate-200 space-y-2">
       <div class="flex items-center gap-2">
         <button id="btnAiMic" onclick="toggleAiVoiceInput()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm transition">
@@ -1209,7 +1258,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
             <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold text-sm shadow">👵</div>
             <div>
               <p class="font-black text-xs text-slate-900">Eleanor Vance (Patient)</p>
-              <p class="text-[11px] text-teal-700 font-medium">Daily cues, games, face recall, speech</p>
+              <p class="text-[11px] text-teal-700 font-medium">Daily cues, games, face recall, speech, calendar</p>
             </div>
           </div>
           <span class="text-xs font-bold text-teal-700">Enter ➔</span>
@@ -1238,26 +1287,13 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         </div>
       </div>
 
-      <div class="relative flex py-1 items-center">
-        <div class="grow border-t border-slate-200"></div>
-        <span class="shrink mx-3 text-slate-400 text-[11px] uppercase font-bold">Or Manual Login</span>
-        <div class="grow border-t border-slate-200"></div>
-      </div>
-
-      <div class="space-y-2.5">
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">Email / Health ID</label>
-          <input type="text" id="authInputEmail" placeholder="user@harmonycare.com" class="w-full px-3 py-2 text-xs font-bold rounded-xl border border-slate-200">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">Select Role Portal</label>
-          <select id="authInputRole" class="w-full px-3 py-2 text-xs font-bold rounded-xl border border-slate-200 cursor-pointer">
-            <option value="patient">Patient Portal</option>
-            <option value="caregiver">Caregiver Portal</option>
-            <option value="doctor">Doctor / Clinician Portal</option>
-          </select>
-        </div>
+      <div class="space-y-2.5 pt-2">
+        <label class="block text-xs font-bold text-slate-600">Manual Role Portal</label>
+        <select id="authInputRole" class="w-full px-3 py-2 text-xs font-bold rounded-xl border border-slate-200 cursor-pointer">
+          <option value="patient">Patient Portal</option>
+          <option value="caregiver">Caregiver Portal</option>
+          <option value="doctor">Doctor / Clinician Portal</option>
+        </select>
       </div>
 
       <button onclick="handleAuthSubmit()" class="w-full py-3 bg-gradient-to-r from-teal-600 to-indigo-600 hover:from-teal-700 text-white font-black text-xs rounded-xl shadow-md transition">
@@ -1317,8 +1353,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         </h3>
         <button onclick="closeAiSettingsModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
       </div>
-
-      <p class="text-xs text-slate-600">HarmonyAI has built-in neural NLP. To enable <strong>Live Google Gemini 1.5 Real-Time Intelligence</strong>, paste your free Gemini API Key below.</p>
+      <p class="text-xs text-slate-600">To enable <strong>Live Google Gemini 1.5 Real-Time Intelligence</strong>, paste your free Gemini API Key below.</p>
       <div>
         <label class="block text-xs font-bold text-slate-700">Google Gemini API Key</label>
         <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-mono">
@@ -1438,7 +1473,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
 
   <!-- ==================== JAVASCRIPT APPLICATION CORE ==================== -->
   <script>
-    /* ==================== MULTILINGUAL TRANSLATION DICTIONARY (INDIAN & GLOBAL) ==================== */
+    /* ==================== COMPREHENSIVE MULTILINGUAL TRANSLATION DICTIONARY ==================== */
     const I18N_DICTIONARY = {
       en: {
         portal_patient: "Patient Portal",
@@ -1446,15 +1481,16 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         emergency_sos: "Emergency SOS",
         read_screen: "Read",
         breathe: "Breathe",
-        calendar_date: "Selected Date (Real Calendar)",
-        timeframe_daily: "Daily Tasks & Latency",
-        timeframe_weekly: "Weekly Progress",
-        timeframe_monthly: "Monthly Overview",
+        calendar_date: "Selected Date",
+        timeframe_daily: "Daily",
+        timeframe_weekly: "Weekly",
+        timeframe_monthly: "Monthly Calendar",
         nav_routine: "1. Daily Routine & Cues",
         nav_games: "2. Mind Clinic Games",
         nav_vault: "3. Loved Ones & Face Recall",
         nav_movement: "4. Movement & Speech",
         nav_nutrition: "5. Nutrition & Hydration",
+        nav_calendar_hub: "6. Calendar & Milestones",
         banner_badge: "Daily Routine & Cognitive Coordination",
         mini_cues_tab: "1. Memory Cues for Every Task (3 Chances + Hint)",
         mini_direct_tab: "2. Direct Schedule Checklist"
@@ -1465,15 +1501,16 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         emergency_sos: "आपातकालीन SOS",
         read_screen: "स्क्रीन पढ़ें",
         breathe: "गहरी सांस लें",
-        calendar_date: "चुनी गई तारीख (वास्तविक कैलेंडर)",
-        timeframe_daily: "दैनिक कार्य और विलंबता",
+        calendar_date: "चुनी गई तारीख",
+        timeframe_daily: "दैनिक कार्य",
         timeframe_weekly: "साप्ताहिक प्रगति",
-        timeframe_monthly: "मासिक अवलोकन",
+        timeframe_monthly: "मासिक कैलेंडर",
         nav_routine: "1. दैनिक दिनचर्या और संकेत",
         nav_games: "2. माइंड क्लिनिक गेम्स",
         nav_vault: "3. प्रियजन और चेहरे की पहचान",
         nav_movement: "4. शारीरिक गति और वाणी",
         nav_nutrition: "5. पोषण और जलयोजन",
+        nav_calendar_hub: "6. कैलेंडर और उपलब्धियां",
         banner_badge: "दैनिक दिनचर्या और संज्ञानात्मक समन्वय",
         mini_cues_tab: "1. स्मृति संकेत (3 मौके + संकेत)",
         mini_direct_tab: "2. सीधी कार्य अनुसूची"
@@ -1484,15 +1521,16 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         emergency_sos: "आपत्कालीन SOS",
         read_screen: "स्क्रीन वाचा",
         breathe: "दीर्घ श्वास घ्या",
-        calendar_date: "निवडलेली तारीख (दिनदर्शिका)",
-        timeframe_daily: "दैनिक कार्ये आणि वेळ",
+        calendar_date: "निवडलेली तारीख",
+        timeframe_daily: "दैनिक कार्ये",
         timeframe_weekly: "साप्ताहिक प्रगती",
-        timeframe_monthly: "मासिक आढावा",
+        timeframe_monthly: "मासिक दिनदर्शिका",
         nav_routine: "1. दैनंदिन दिनचर्या आणि संकेत",
         nav_games: "2. माइंड क्लिनिक खेळ",
         nav_vault: "3. आप्तेष्ट आणि स्मरण",
         nav_movement: "4. हालचाल आणि उच्चार",
         nav_nutrition: "5. पोषण आणि पाणी",
+        nav_calendar_hub: "6. दिनदर्शिका आणि प्रगती",
         banner_badge: "दैनंदिन दिनचर्या आणि समन्वय",
         mini_cues_tab: "1. स्मरण संकेत (३ संधी + मदत)",
         mini_direct_tab: "2. थेट वेळापत्रक सूची"
@@ -1506,12 +1544,13 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         calendar_date: "தேர்ந்தெடுக்கப்பட்ட தேதி",
         timeframe_daily: "தினசரி பணிகள்",
         timeframe_weekly: "வாராந்திர முன்னேற்றம்",
-        timeframe_monthly: "மாதாந்திர பார்வை",
+        timeframe_monthly: "மாதாந்திர நாட்காட்டி",
         nav_routine: "1. தினசரி நடைமுறை",
         nav_games: "2. மூளை விளையாட்டுகள்",
         nav_vault: "3. அன்பானவர்கள்",
         nav_movement: "4. உடற்பயிற்சி & பேச்சு",
         nav_nutrition: "5. உணவு & தண்ணீர்",
+        nav_calendar_hub: "6. நாட்காட்டி & மைல்கற்கள்",
         banner_badge: "தினசரி ஒருங்கிணைப்பு",
         mini_cues_tab: "1. நினைவக குறிப்புகள் (3 வாய்ப்புகள்)",
         mini_direct_tab: "2. நேரடி அட்டவணை"
@@ -1525,12 +1564,13 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         calendar_date: "ఎంచుకున్న తేదీ",
         timeframe_daily: "రోజువారీ పనులు",
         timeframe_weekly: "వారపు పురోగతి",
-        timeframe_monthly: "నెలవారీ అవలోకనం",
+        timeframe_monthly: "నెలవారీ క్యాలెండర్",
         nav_routine: "1. రోజువారీ దినచర్య",
         nav_games: "2. మైండ్ క్లినిక్ ఆటలు",
         nav_vault: "3. ఆప్తులు & గుర్తింపు",
         nav_movement: "4. కదలిక & సంభాషణ",
         nav_nutrition: "5. పోషణ & నీరు",
+        nav_calendar_hub: "6. క్యాలెండర్ & మైలురాళ్ళు",
         banner_badge: "రోజువారీ సమన్వయం",
         mini_cues_tab: "1. జ్ఞాపకశక్తి ఆధారాలు (3 అవకాశాలు)",
         mini_direct_tab: "2. ప్రత్యక్ష జాబితా"
@@ -1542,14 +1582,15 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         read_screen: "স্ক্রিন পড়ুন",
         breathe: "শ্বাস নিন",
         calendar_date: "নির্বাচিত তারিখ",
-        timeframe_daily: "দৈনিক কাজ ও সময়",
+        timeframe_daily: "দৈনিক কাজ",
         timeframe_weekly: "সাপ্তাহিক অগ্রগতি",
-        timeframe_monthly: "মাসিক পর্যালোচনা",
+        timeframe_monthly: "মাসিক ক্যালেন্ডার",
         nav_routine: "1. দৈনন্দিন রুটিন ও সংকেত",
         nav_games: "2. মাইন্ড ক্লিনিক গেমস",
         nav_vault: "3. প্রিয়জন ও স্মৃতি",
         nav_movement: "4. অঙ্গ সঞ্চালন ও বাক্যালাপ",
         nav_nutrition: "5. পুষ্টি ও জলপান",
+        nav_calendar_hub: "6. ক্যালেন্ডার ও মাইলফলক",
         banner_badge: "দৈনন্দিন রুটিন সমন্বয়",
         mini_cues_tab: "1. স্মৃতি সংকেত (৩টি সুযোগ + ইঙ্গিত)",
         mini_direct_tab: "2. সরাসরি তালিকা"
@@ -1563,12 +1604,13 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         calendar_date: "પસંદ કરેલી તારીખ",
         timeframe_daily: "દૈનિક કાર્યો",
         timeframe_weekly: "સાપ્તાહિક પ્રગતિ",
-        timeframe_monthly: "માસિક વિહંગાવલોકન",
+        timeframe_monthly: "માસિક કેલેન્ડર",
         nav_routine: "1. દૈનિક દિનચર્યા",
         nav_games: "2. માઇન્ડ ક્લિનિક રમતો",
         nav_vault: "3. સ્વજનો અને ઓળખ",
         nav_movement: "4. હલનચલન અને વાણી",
         nav_nutrition: "5. પોષણ અને હાઇડ્રેશન",
+        nav_calendar_hub: "6. કેલેન્ડર અને માઇલસ્ટોન",
         banner_badge: "દૈનિક દિનચર્યા સંકલન",
         mini_cues_tab: "1. મેમરી સંકેત (3 તક + સંકેત)",
         mini_direct_tab: "2. સીધી યાદી"
@@ -1582,12 +1624,13 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         calendar_date: "ಆಯ್ಕೆಮಾಡಿದ ದಿನಾಂಕ",
         timeframe_daily: "ದೈನಂದಿನ ಕಾರ್ಯಗಳು",
         timeframe_weekly: "ವಾರದ ಪ್ರಗತಿ",
-        timeframe_monthly: "ಮಾಸಿಕ ಅವಲೋಕನ",
+        timeframe_monthly: "ಮಾಸಿಕ ಕ್ಯಾಲೆಂಡರ್",
         nav_routine: "1. ದೈನಂದಿನ ದಿನಚರಿ",
         nav_games: "2. ಮೈಂಡ್ ಕ್ಲಿನಿಕ್ ಆಟಗಳು",
         nav_vault: "3. ಆಪ್ತರು ಮತ್ತು ನೆನಪು",
         nav_movement: "4. ಚಲನೆ ಮತ್ತು ಮಾತು",
         nav_nutrition: "5. ಪೋಷಣೆ ಮತ್ತು ನೀರು",
+        nav_calendar_hub: "6. ಕ್ಯಾಲೆಂಡರ್ ಮತ್ತು ಪ್ರಗತಿ",
         banner_badge: "ದೈನಂದಿನ ದಿನಚರಿ ಸಮನ್ವಯ",
         mini_cues_tab: "1. ನೆನಪಿನ ಸುಳಿವುಗಳು (3 ಅವಕಾಶಗಳು)",
         mini_direct_tab: "2. ನೇರ ವೇಳಾಪಟ್ಟಿ"
@@ -1607,36 +1650,74 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         }
       });
 
-      // Update utterance language
-      const langCodes = { en: 'en-US', hi: 'hi-IN', mr: 'mr-IN', ta: 'ta-IN', te: 'te-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN' };
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
+      // Synchronize with Google Translate if available
+      const select = document.querySelector('.goog-te-combo');
+      if (select) {
+        select.value = langKey;
+        select.dispatchEvent(new Event('change'));
       }
-      playAudioChime('bell');
+
+      playAudioChime('chime');
     }
 
-    /* ==================== GLOBAL APP STATE ==================== */
+    /* ==================== GLOBAL APP STATE & GAMIFIED LEVEL 0 ==================== */
     let state = {
       user: 'Eleanor Vance',
       role: 'patient',
       uid: 'HC-PT-8842',
       wakeTime: '08:00',
-      xp: 1250,
+      xp: 0, // Starts at Level 0 (0 XP baseline!)
+      level: 0,
       streak: 7,
       waterLogged: 5,
       waterTargetGlasses: 8,
       selectedDate: new Date().toISOString().split('T')[0],
-      timeframeMode: 'daily', // 'daily' | 'weekly' | 'monthly'
+      timeframeMode: 'daily',
       geminiApiKey: localStorage.getItem('harmony_gemini_api_key') || '',
+      
+      // Monthly calendar simulated history (Sept 2026)
+      calendarMonthDays: [
+        { day: 1, status: 'all_done', completed: 5, total: 5, latency: 4, notes: "All on time" },
+        { day: 2, status: 'all_done', completed: 5, total: 5, latency: 6, notes: "Speech 72 dB" },
+        { day: 3, status: 'delayed', completed: 5, total: 5, latency: 19, notes: "Buttoning shirt took 19m" },
+        { day: 4, status: 'all_done', completed: 5, total: 5, latency: 5, notes: "Morning walk 1.5 km" },
+        { day: 5, status: 'missed', completed: 4, total: 5, latency: 12, notes: "Missed afternoon finger tap" },
+        { day: 6, status: 'all_done', completed: 5, total: 5, latency: 4, notes: "Great mood" },
+        { day: 7, status: 'all_done', completed: 5, total: 5, latency: 5, notes: "Mind Clinic 50 XP" },
+        { day: 8, status: 'all_done', completed: 5, total: 5, latency: 6, notes: "Water goal reached" },
+        { day: 9, status: 'delayed', completed: 5, total: 5, latency: 18, notes: "Dressing required extra time" },
+        { day: 10, status: 'all_done', completed: 5, total: 5, latency: 5, notes: "All on time" },
+        { day: 11, status: 'all_done', completed: 5, total: 5, latency: 4, notes: "Steady tremor score" },
+        { day: 12, status: 'missed', completed: 3, total: 5, latency: 25, notes: "Missed speech drill & walk" },
+        { day: 13, status: 'all_done', completed: 5, total: 5, latency: 5, notes: "Metronome cadence 60" },
+        { day: 14, status: 'all_done', completed: 5, total: 5, latency: 4, notes: "Good energy" },
+        { day: 15, status: 'all_done', completed: 5, total: 5, latency: 5, notes: "Caregiver visit" },
+        { day: 16, status: 'delayed', completed: 5, total: 5, latency: 22, notes: "Midday Levodopa delayed" },
+        { day: 17, status: 'all_done', completed: 5, total: 5, latency: 5, notes: "All on time" },
+        { day: 18, status: 'all_done', completed: 5, total: 5, latency: 6, notes: "Wild berries breakfast" },
+        { day: 19, status: 'all_done', completed: 5, total: 5, latency: 4, notes: "Puzzle games 100 XP" },
+        { day: 20, status: 'missed', completed: 4, total: 5, latency: 15, notes: "Skipped hydration glass" },
+        { day: 21, status: 'all_done', completed: 5, total: 5, latency: 5, notes: "Doctor consultation" },
+        { day: 22, status: 'delayed', completed: 5, total: 5, latency: 19, notes: "Buttoning shirt took 19m" },
+        { day: 23, status: 'all_done', completed: 5, total: 5, latency: 5, notes: "All on time" },
+        { day: 24, status: 'all_done', completed: 5, total: 5, latency: 4, notes: "Metronome walk 1.4 km" },
+        { day: 25, status: 'all_done', completed: 5, total: 5, latency: 5, notes: "Today active!" },
+        { day: 26, status: 'pending', completed: 0, total: 5, latency: 0, notes: "Upcoming" },
+        { day: 27, status: 'pending', completed: 0, total: 5, latency: 0, notes: "Upcoming" },
+        { day: 28, status: 'pending', completed: 0, total: 5, latency: 0, notes: "Upcoming" },
+        { day: 29, status: 'pending', completed: 0, total: 5, latency: 0, notes: "Upcoming" },
+        { day: 30, status: 'pending', completed: 0, total: 5, latency: 0, notes: "Upcoming" }
+      ],
+
       tasks: [
         { 
           id: 1, 
           time: "08:00 AM", 
           title: "Gentle Wake-up & Warm Hydration", 
           sound: "bell", 
-          done: true, 
+          done: false, 
           tag: "Wellness", 
-          status: 'done',
+          status: 'pending',
           latencyMinutes: 4,
           cueQuestion: "You woke up at 08:00 AM. What gentle action lubricates your digestive motility before any medication?",
           cueOptions: ["Drink a glass of warm water & stretch gently", "Immediately eat heavy scrambled eggs", "Start a fast 5 km walk"],
@@ -1664,9 +1745,9 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           title: "Buttoning Shirt & Morning Dressing", 
           time: "09:00 AM", 
           sound: "bell", 
-          done: true, 
+          done: false, 
           tag: "Motor", 
-          status: 'done',
+          status: 'pending',
           latencyMinutes: 19, // Needed more time!
           cueQuestion: "It is 09:00 AM. What fine motor activity prepares you for a fresh day?",
           cueOptions: ["Buttoning your morning shirt slowly and steadily", "Running outdoors without shoes", "Leaving clothes untouched"],
@@ -1720,6 +1801,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           attemptsLeft: 3
         }
       ],
+
       familiarPeople: [
         { name: "Julian Vance", role: "Primary Caregiver (Son)", phone: "+1 (555) 234-8901", whatsapp: "15552348901", email: "julian.vance@example.com", clue: "Your son Julian who visits every evening and brings fresh groceries.", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80", options: ["Julian Vance (Son)", "Dr. Marcus", "Neighbor Robert", "Pharmacist"] },
         { name: "Clara Vance", role: "Granddaughter", phone: "+1 (555) 345-6789", whatsapp: "15553456789", email: "clara.vance@example.com", clue: "Your granddaughter Clara who loves drawing garden pictures with you.", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80", options: ["Clara Vance (Granddaughter)", "Nurse Emily", "Aunt Helen", "Sarah"] },
@@ -1748,7 +1830,91 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     let webcamStream = null;
     let baseFontSize = 16;
 
-    /* ==================== WEB AUDIO PROCEDURAL CHIMES ==================== */
+    /* ==================== LEVEL TIERS & REWARD ENGINE ==================== */
+    const LEVEL_TIERS = [
+      { level: 0, title: "Level 0: Cognitive Sprout", icon: "🌱", minXp: 0, maxXp: 100 },
+      { level: 1, title: "Level 1: Mindful Seedling", icon: "🌿", minXp: 100, maxXp: 250 },
+      { level: 2, title: "Level 2: Memory Blossom", icon: "🌸", minXp: 250, maxXp: 500 },
+      { level: 3, title: "Level 3: Focus Warrior", icon: "⚡", minXp: 500, maxXp: 850 },
+      { level: 4, title: "Level 4: Resilient Oak", icon: "🌳", minXp: 850, maxXp: 1300 },
+      { level: 5, title: "Level 5: Neuro Champion", icon: "👑", minXp: 1300, maxXp: 2000 }
+    ];
+
+    function calculateLevelState(xp) {
+      let currentTier = LEVEL_TIERS[0];
+      for (let i = LEVEL_TIERS.length - 1; i >= 0; i--) {
+        if (xp >= LEVEL_TIERS[i].minXp) {
+          currentTier = LEVEL_TIERS[i];
+          break;
+        }
+      }
+      return currentTier;
+    }
+
+    function awardXp(amount, label = "Reward") {
+      const prevTier = calculateLevelState(state.xp);
+      state.xp += amount;
+      const newTier = calculateLevelState(state.xp);
+
+      // Play rich audio chime
+      playAudioChime('chime');
+
+      // Floating XP Toast Animation
+      showFloatingXpToast(`+${amount} XP (${label}) ⭐`);
+
+      // Update XP & Level UI
+      updateLevelProgressUI();
+
+      // Check Level-Up
+      if (newTier.level > prevTier.level) {
+        triggerLevelUpCelebration(newTier);
+      }
+    }
+
+    function updateLevelProgressUI() {
+      const tier = calculateLevelState(state.xp);
+      state.level = tier.level;
+
+      document.getElementById('lblLevelTitle').innerText = tier.title;
+      document.getElementById('levelIconBox').innerText = tier.icon;
+      document.getElementById('txtCurrentLevelBadge').innerText = `Level ${tier.level}`;
+      document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
+      document.getElementById('lblCurrentTotalXp').innerText = `Total: ${state.xp} XP`;
+
+      const nextXp = tier.maxXp;
+      const curTierBase = tier.minXp;
+      const progressPercent = Math.min(100, Math.max(0, ((state.xp - curTierBase) / (nextXp - curTierBase)) * 100));
+
+      document.getElementById('levelProgressBar').style.width = `${progressPercent}%`;
+      document.getElementById('lblXpProgress').innerText = `${state.xp} / ${nextXp} XP`;
+    }
+
+    function resetToLevelZero() {
+      state.xp = 0;
+      state.level = 0;
+      updateLevelProgressUI();
+      playAudioChime('bell');
+      alert("Reset to Level 0: Cognitive Sprout (0 XP). Begin your journey!");
+    }
+
+    function showFloatingXpToast(msg) {
+      const c = document.getElementById('xpToastContainer');
+      const toast = document.createElement('div');
+      toast.className = "xp-float-badge px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xs rounded-2xl shadow-xl flex items-center space-x-2 border border-white/40";
+      toast.innerHTML = `<i class="fa-solid fa-star text-yellow-200"></i><span>${msg}</span>`;
+      c.appendChild(toast);
+      setTimeout(() => toast.remove(), 1600);
+    }
+
+    function triggerLevelUpCelebration(tier) {
+      playAudioChime('fanfare');
+      if (window.confetti) {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
+      }
+      alert(`🎉 LEVEL UP! You reached ${tier.title} ${tier.icon}!\nYour brain pathways are staying agile and connected.`);
+    }
+
+    /* ==================== HIGH QUALITY LAG-FREE AUDIO SYNTHESIZER ==================== */
     let audioCtx = null;
     function initAudio() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1759,56 +1925,91 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       try {
         initAudio();
         const now = audioCtx.currentTime;
-        if (type === 'bell') {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(659.25, now);
-          osc.frequency.exponentialRampToValueAtTime(440, now + 1.2);
-          gain.gain.setValueAtTime(0.3, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-          osc.connect(gain); gain.connect(audioCtx.destination);
-          osc.start(now); osc.stop(now + 1.2);
-        } else if (type === 'sax') {
-          [261.63, 329.63, 392.00].forEach((freq, idx) => {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, now + idx * 0.05);
-            gain.gain.setValueAtTime(0.12, now + idx * 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(now + idx * 0.05); osc.stop(now + 0.9);
-          });
-        } else {
-          [440, 554.37, 659.25].forEach((freq, i) => {
+
+        if (type === 'chime') {
+          // Soft warm chime chord (C5, G5, C6)
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, now + i * 0.08);
-            gain.gain.setValueAtTime(0.18, now + i * 0.08);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.5);
+            osc.frequency.setValueAtTime(freq, now + i * 0.04);
+            gain.gain.setValueAtTime(0.12, now + i * 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.04 + 0.9);
             osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(now + i * 0.08); osc.stop(now + i * 0.08 + 0.5);
+            osc.start(now + i * 0.04); osc.stop(now + i * 0.04 + 0.9);
           });
+        } else if (type === 'bell') {
+          // Warm meditative singing bell
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, now); // D5
+          osc.frequency.exponentialRampToValueAtTime(440, now + 1.2);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+          osc.connect(gain); gain.connect(audioCtx.destination);
+          osc.start(now); osc.stop(now + 1.2);
+        } else if (type === 'fanfare') {
+          // Level up fanfare
+          [440, 554.37, 659.25, 880].forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+            gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.6);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.6);
+          });
+        } else {
+          // Gentle warm pulse
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(392.00, now);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+          osc.connect(gain); gain.connect(audioCtx.destination);
+          osc.start(now); osc.stop(now + 0.4);
         }
       } catch (e) {
-        console.log("Audio awaiting gesture");
+        console.log("Audio waiting for interaction");
       }
     }
 
-    /* ==================== EXPANDED TEXT-TO-SPEECH (TTS) ==================== */
-    let currentUtterance = null;
-    function speakText(txt) {
+    /* ==================== NATURAL SPEECH SYNTHESIS ENGINE ==================== */
+    let cachedVoices = [];
+    function loadVoices() {
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const rate = parseFloat(document.getElementById('ttsRateSelect')?.value || '1.0');
+        cachedVoices = window.speechSynthesis.getVoices();
+      }
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+
+    function speakText(txt) {
+      if (!('speechSynthesis' in window)) return;
+
+      // Clean cancel without lock
+      window.speechSynthesis.cancel();
+
+      setTimeout(() => {
+        const rate = parseFloat(document.getElementById('ttsRateSelect')?.value || '0.95');
         const u = new SpeechSynthesisUtterance(txt);
         u.rate = rate;
         u.pitch = 1.0;
 
         const langCodes = { en: 'en-US', hi: 'hi-IN', mr: 'mr-IN', ta: 'ta-IN', te: 'te-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN' };
-        u.lang = langCodes[currentLang] || 'en-US';
+        const desiredLang = langCodes[currentLang] || 'en-US';
+        u.lang = desiredLang;
+
+        // Select the most natural voice available
+        if (cachedVoices.length > 0) {
+          const naturalVoice = cachedVoices.find(v => v.lang.startsWith(desiredLang.slice(0, 2)) && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Premium')));
+          if (naturalVoice) u.voice = naturalVoice;
+        }
 
         const banner = document.getElementById('ttsSpeakingBanner');
         const txtEl = document.getElementById('ttsSpeakingText');
@@ -1820,9 +2021,8 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         u.onend = () => { if (banner) banner.classList.add('hidden'); };
         u.onerror = () => { if (banner) banner.classList.add('hidden'); };
 
-        currentUtterance = u;
         window.speechSynthesis.speak(u);
-      }
+      }, 50);
     }
 
     function stopSpeaking() {
@@ -1835,7 +2035,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       if (state.role === 'patient') {
         const nextPending = state.tasks.find(t => !t.done && t.status !== 'not_done');
         const taskMsg = nextPending ? `Your upcoming task is: ${nextPending.title} at ${nextPending.time}.` : "All routine tasks for today are completed!";
-        speakText(`HarmonyCare Patient Portal for Eleanor. Consistency streak is 7 days with ${state.xp} Brain Points. ${taskMsg}`);
+        speakText(`HarmonyCare Patient Portal for Eleanor. Current status is ${LEVEL_TIERS[state.level].title} with ${state.xp} Brain Points. ${taskMsg}`);
       } else if (state.role === 'caregiver') {
         speakText(`Caregiver Oversight Hub for Julian Vance. Eleanor's adherence is 94.8 percent. Tasks taking longer include Buttoning Shirt.`);
       } else {
@@ -1852,12 +2052,96 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       speakText("Important Parkinson's nutrition tip: space high protein meals 45 to 60 minutes away from your Levodopa dose to allow maximum brain absorption.");
     }
 
-    /* ==================== REAL CALENDAR & TIMEFRAME INSIGHTS (DAILY / WEEKLY / MONTHLY) ==================== */
+    /* ==================== INTERACTIVE MONTHLY CALENDAR GRID & MISSED TASK INSPECTION ==================== */
+    function renderInteractiveMonthlyGrid() {
+      const grid = document.getElementById('interactiveCalendarGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      state.calendarMonthDays.forEach(item => {
+        const isCurrentDay = item.day === 25; // Sept 25
+        let statusBadge = '';
+        let cellBg = 'bg-white hover:bg-slate-100';
+
+        if (item.status === 'all_done') {
+          statusBadge = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500" title="All Completed"></span>';
+        } else if (item.status === 'delayed') {
+          statusBadge = '<span class="w-2.5 h-2.5 rounded-full bg-amber-500" title="Needed More Time"></span>';
+          cellBg = 'bg-amber-50/50 hover:bg-amber-100/60 border-amber-200';
+        } else if (item.status === 'missed') {
+          statusBadge = '<span class="w-2.5 h-2.5 rounded-full bg-rose-500" title="Missed Tasks"></span>';
+          cellBg = 'bg-rose-50/50 hover:bg-rose-100/60 border-rose-200';
+        } else {
+          statusBadge = '<span class="w-2 h-2 rounded-full bg-slate-300"></span>';
+        }
+
+        const cell = document.createElement('div');
+        cell.className = `p-2.5 min-h-[62px] rounded-2xl border ${cellBg} flex flex-col justify-between cursor-pointer transition shadow-2xs ${isCurrentDay ? 'ring-2 ring-teal-500 bg-teal-50' : 'border-slate-200'}`;
+        cell.onclick = () => inspectCalendarDay(item);
+
+        cell.innerHTML = `
+          <div class="flex justify-between items-center text-xs font-black">
+            <span class="${isCurrentDay ? 'text-teal-800' : 'text-slate-800'}">${item.day}</span>
+            ${statusBadge}
+          </div>
+          <div class="text-[10px] font-bold text-slate-500 text-right">
+            ${item.completed > 0 ? `${item.completed}/${item.total}` : ''}
+          </div>
+        `;
+        grid.appendChild(cell);
+      });
+
+      // Default inspect today
+      inspectCalendarDay(state.calendarMonthDays[24]);
+    }
+
+    function inspectCalendarDay(dayItem) {
+      const card = document.getElementById('calendarDayInspectionCard');
+      if (!card) return;
+
+      const dateStr = `September ${dayItem.day}, 2026`;
+      const isMissed = dayItem.status === 'missed';
+      const isDelayed = dayItem.status === 'delayed';
+
+      card.innerHTML = `
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-teal-200/80 pb-2">
+          <div>
+            <span class="text-[10px] font-black uppercase text-teal-800 tracking-wider">Detailed Day Telemetry</span>
+            <h4 class="text-base font-black text-slate-900 font-heading">Inspection Log: ${dateStr}</h4>
+          </div>
+          <div class="flex gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${isMissed ? 'bg-rose-100 text-rose-800' : (isDelayed ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800')}">
+              ${isMissed ? '⚠️ Tasks Missed' : (isDelayed ? '⏳ Slower Tasks / Latency' : '✅ 100% Completed')}
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <div>
+            <p class="font-bold text-slate-700">Completed Score:</p>
+            <p class="text-xl font-black text-slate-900">${dayItem.completed} of ${dayItem.total} Tasks Completed</p>
+            <p class="text-slate-500 mt-1">Daily Latency / Extra Time: <strong>${dayItem.latency} minutes</strong></p>
+          </div>
+          <div class="space-y-1">
+            <p class="font-bold text-slate-700">Clinical Observations & Alerts:</p>
+            <p class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-800 font-medium">
+              ${dayItem.notes}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-1 text-xs">
+          <button onclick="speakText('Day inspection for ${dateStr}. ${dayItem.notes}. ${dayItem.completed} of ${dayItem.total} tasks completed.')" class="text-teal-700 font-bold hover:underline flex items-center gap-1">
+            <i class="fa-solid fa-volume-high"></i> Listen to Day Summary
+          </button>
+          <span class="text-slate-500 text-[11px]">Synchronized with Caregiver Hub</span>
+        </div>
+      `;
+    }
+
+    /* ==================== REAL CALENDAR DATE CHANGE & TIMEFRAME ==================== */
     function onCalendarDateChanged(newDateStr) {
       state.selectedDate = newDateStr;
-      const d = new Date(newDateStr + 'T00:00:00');
-      const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-      document.getElementById('txtCalendarFriendlyLabel').innerText = `Selected: ${d.toLocaleDateString('en-US', options)}`;
       renderTimeframeInsights();
     }
 
@@ -1865,22 +2149,26 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       state.timeframeMode = mode;
       ['daily', 'weekly', 'monthly'].forEach(m => {
         const btn = document.getElementById(`tf-btn-${m}`);
-        if (m === mode) {
-          btn.className = "tf-btn px-4 py-1.5 rounded-xl text-xs font-black bg-white text-teal-800 shadow-xs transition flex items-center gap-1.5";
-        } else {
-          btn.className = "tf-btn px-4 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5";
+        if (btn) {
+          if (m === mode) {
+            btn.className = "tf-btn px-3 py-1 rounded-xl font-black bg-white text-teal-800 shadow-xs transition";
+          } else {
+            btn.className = "tf-btn px-3 py-1 rounded-xl text-slate-600 hover:text-slate-900 transition";
+          }
         }
       });
-      renderTimeframeInsights();
+
+      if (mode === 'monthly') {
+        switchTab('calendar-hub');
+      } else {
+        renderTimeframeInsights();
+      }
     }
 
     function renderTimeframeInsights() {
       const container = document.getElementById('timeframe-display-container');
       const isDaily = state.timeframeMode === 'daily';
       const isWeekly = state.timeframeMode === 'weekly';
-      const isMonthly = state.timeframeMode === 'monthly';
-
-      // Find tasks that needed more time (latency > 10 min)
       const tasksTakingMoreTime = state.tasks.filter(t => t.latencyMinutes >= 15);
 
       if (isDaily) {
@@ -1903,7 +2191,6 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <!-- Normal Tasks Today -->
             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
               <h4 class="font-black text-slate-800 uppercase text-[11px] flex items-center gap-1.5">
                 <i class="fa-solid fa-list-check text-teal-600"></i> Today's Schedule Overview
@@ -1920,12 +2207,10 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
               </div>
             </div>
 
-            <!-- Tasks That Needed More Time / Extra Help -->
             <div class="bg-amber-50/60 p-4 rounded-2xl border border-amber-200 space-y-2">
               <h4 class="font-black text-amber-900 uppercase text-[11px] flex items-center gap-1.5">
                 <i class="fa-solid fa-clock-rotate-left text-amber-600"></i> Activities That Needed More Time Today
               </h4>
-              <p class="text-[11px] text-amber-800">Highlighted for Caregiver and Neurologist review to adjust assistance:</p>
               <div class="space-y-1.5">
                 ${tasksTakingMoreTime.map(t => `
                   <div class="bg-white p-2.5 rounded-xl border border-amber-300 shadow-2xs flex justify-between items-center">
@@ -1952,55 +2237,25 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
             <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
               <p class="text-[11px] text-slate-500 font-bold">Weekly Adherence</p>
               <p class="text-2xl font-black text-teal-600 font-heading">95.2%</p>
-              <p class="text-[10px] text-emerald-600 font-bold mt-0.5">↑ 2.1% from last week</p>
             </div>
             <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
               <p class="text-[11px] text-slate-500 font-bold">Speech Loudness Avg</p>
               <p class="text-2xl font-black text-indigo-600 font-heading">69.4 dB</p>
-              <p class="text-[10px] text-indigo-600 font-bold mt-0.5">Target: 70 dB</p>
             </div>
             <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
               <p class="text-[11px] text-slate-500 font-bold">Tremor Variance</p>
               <p class="text-2xl font-black text-amber-500 font-heading">1.2 cm</p>
-              <p class="text-[10px] text-teal-600 font-bold mt-0.5">Stable amplitude</p>
             </div>
             <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
-              <p class="text-[11px] text-slate-500 font-bold">Tasks Requiring Aid</p>
+              <p class="text-[11px] text-slate-500 font-bold">Assisted Tasks</p>
               <p class="text-2xl font-black text-rose-500 font-heading">4 Tasks</p>
-              <p class="text-[10px] text-slate-500 font-bold mt-0.5">Buttoning & fine motor</p>
-            </div>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div class="border-b border-slate-100 pb-3">
-            <span class="text-[10px] font-black uppercase text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">Monthly Clinical Overview</span>
-            <h3 class="text-base sm:text-lg font-black text-slate-900 mt-1 font-heading">
-              30-Day Neurological Staging & Consistency Summary
-            </h3>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-              <h4 class="font-bold text-slate-800 mb-1">Monthly Consistency Score</h4>
-              <p class="text-3xl font-black text-teal-600 font-heading">94.8%</p>
-              <p class="text-slate-500 mt-1">Total active days: 28 of 30 days. Consecutive streak active at 7 days.</p>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-              <h4 class="font-bold text-slate-800 mb-1">Snooze & Latency Trends</h4>
-              <p class="text-3xl font-black text-amber-500 font-heading">12 Snoozes</p>
-              <p class="text-slate-500 mt-1">Most frequent slower task: Morning buttoning shirt (averages 18 mins).</p>
-            </div>
-            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-              <h4 class="font-bold text-slate-800 mb-1">Doctor Directive Status</h4>
-              <p class="text-3xl font-black text-indigo-600 font-heading">Active Rx</p>
-              <p class="text-slate-500 mt-1">Dr. Marcus Vance protocol: 45 min protein meal spacing observed in 96% of doses.</p>
             </div>
           </div>
         `;
       }
     }
 
-    /* ==================== 1. ROLE ISOLATION & PORTAL SWITCHING ==================== */
+    /* ==================== 1. ROLE ISOLATION ==================== */
     function applyRolePermissions(role) {
       state.role = role;
       
@@ -2067,23 +2322,24 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     function selectQuickPersona(role) {
       closeAuthModal();
       applyRolePermissions(role);
-      playAudioChime('bell');
+      playAudioChime('chime');
     }
 
     function switchTab(tabKey) {
       document.querySelectorAll('#portal-patient-container .tab-view').forEach(view => view.classList.add('hidden'));
       document.querySelectorAll('.nav-tab-btn').forEach(btn => {
-        btn.className = "nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap";
+        btn.className = "nav-tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-2 whitespace-nowrap";
       });
 
       const targetView = document.getElementById(`view-${tabKey}`);
       const targetBtn = document.getElementById(`tab-${tabKey}`);
       if (targetView) targetView.classList.remove('hidden');
       if (targetBtn) {
-        targetBtn.className = "nav-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md shadow-teal-600/20 flex items-center gap-2 whitespace-nowrap";
+        targetBtn.className = "nav-tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md flex items-center gap-2 whitespace-nowrap";
       }
 
       if (tabKey === 'vault') loadFaceQuizCard(0);
+      if (tabKey === 'calendar-hub') renderInteractiveMonthlyGrid();
     }
 
     function switchCaregiverSubTab(subId) {
@@ -2093,7 +2349,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         if (view) view.classList.toggle('hidden', id !== subId);
         if (btn) {
           if (id === subId) {
-            btn.className = "cg-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-600/25 flex items-center gap-2 whitespace-nowrap";
+            btn.className = "cg-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md flex items-center gap-2 whitespace-nowrap";
           } else {
             btn.className = "cg-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center gap-2 whitespace-nowrap";
           }
@@ -2116,7 +2372,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         if (view) view.classList.toggle('hidden', id !== subId);
         if (btn) {
           if (id === subId) {
-            btn.className = "doc-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-sky-600 to-teal-600 text-white shadow-md shadow-sky-600/25 flex items-center gap-2 whitespace-nowrap";
+            btn.className = "doc-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all bg-gradient-to-r from-sky-600 to-teal-600 text-white shadow-md flex items-center gap-2 whitespace-nowrap";
           } else {
             btn.className = "doc-subnav-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-900 hover:bg-slate-800 text-slate-300 flex items-center gap-2 whitespace-nowrap";
           }
@@ -2131,17 +2387,17 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       if (subId === 'doc-directives') renderDoctorDirectivesList();
     }
 
-    /* ==================== 2. ROUTINE CUES WITH 3-CHANCE PROGRESSIVE SYSTEM ==================== */
+    /* ==================== 2. ROUTINE CUES WITH 3-CHANCE SYSTEM ==================== */
     function switchRoutineMiniTab(tabType) {
       document.getElementById('routine-miniview-cues').classList.toggle('hidden', tabType !== 'cues');
       document.getElementById('routine-miniview-direct').classList.toggle('hidden', tabType !== 'direct');
 
       if (tabType === 'cues') {
-        document.getElementById('mini-tab-cues').className = "flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md shadow-teal-600/20 flex items-center justify-center gap-2 transition-all";
+        document.getElementById('mini-tab-cues').className = "flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md flex items-center justify-center gap-2 transition-all";
         document.getElementById('mini-tab-direct').className = "flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center justify-center gap-2 transition-all";
         renderActiveCueCard();
       } else {
-        document.getElementById('mini-tab-direct').className = "flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md shadow-teal-600/20 flex items-center justify-center gap-2 transition-all";
+        document.getElementById('mini-tab-direct').className = "flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md flex items-center justify-center gap-2 transition-all";
         document.getElementById('mini-tab-cues').className = "flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center justify-center gap-2 transition-all";
         renderDirectTasksList();
       }
@@ -2153,8 +2409,6 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       document.getElementById('cueCurrentIndexTxt').innerText = `${currentCueIndex + 1} of ${state.tasks.length}`;
 
       if (task.attemptsLeft === undefined) task.attemptsLeft = 3;
-
-      // Update hearts display
       const heartsStr = task.attemptsLeft === 3 ? "❤️❤️❤️ (3 Left)" : (task.attemptsLeft === 2 ? "❤️❤️🤍 (2 Left)" : (task.attemptsLeft === 1 ? "❤️🤍🤍 (1 Left)" : "🤍🤍🤍 (Guided)"));
       document.getElementById('cueHeartsDisplay').innerText = heartsStr;
 
@@ -2212,36 +2466,30 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
-    /* 3-Chance Progressive Cue Response Logic */
     function handleTaskCueAnswer(selectedIdx) {
       const task = state.tasks[currentCueIndex];
       const alertBox = document.getElementById('cueFeedbackAlert');
       alertBox.classList.remove('hidden');
 
       if (selectedIdx === task.correctOptionIndex) {
-        playAudioChime('bell');
+        awardXp(25, "Task Recall");
         alertBox.className = "p-3.5 rounded-2xl text-xs font-bold bg-teal-50 border border-teal-200 text-teal-900";
         alertBox.innerHTML = `<strong>⭐ Perfect Recall!</strong> That is correct (+25 XP awarded). Tap 'Mark Done' or continue below.`;
-        state.xp += 25;
-        document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
         task.attemptsLeft = 3;
         renderActiveCueCard();
       } else {
         task.attemptsLeft = Math.max(0, (task.attemptsLeft || 3) - 1);
-        playAudioChime('sax');
+        playAudioChime('pulse');
 
         if (task.attemptsLeft === 2) {
-          // 1st Chance Missed -> 2 chances left
           alertBox.className = "p-3.5 rounded-2xl text-xs font-bold bg-amber-50 border border-amber-200 text-amber-900";
           alertBox.innerHTML = `<strong>Chance 1 missed:</strong> Take a deep breath! You have 2 chances left (❤️❤️🤍). Give it another try!`;
           speakText("First chance missed. Take a calm breath and try again.");
         } else if (task.attemptsLeft === 1) {
-          // 2nd Chance Missed -> Reveal Hint automatically
           alertBox.className = "p-3.5 rounded-2xl text-xs font-bold bg-indigo-50 border border-indigo-200 text-indigo-900";
           alertBox.innerHTML = `<strong>Chance 2 missed (Hint Revealed):</strong> ${task.cueHint}. You have 1 chance left (❤️🤍🤍)!`;
           speakText(`Here is a helpful hint: ${task.cueHint}. Try one more time.`);
         } else {
-          // 3rd Chance Missed -> Directly give the exact task to do!
           alertBox.className = "p-4 rounded-2xl text-xs font-bold bg-rose-50 border border-rose-300 text-rose-950 space-y-2";
           alertBox.innerHTML = `
             <div>
@@ -2318,9 +2566,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         task.done = !task.done;
         task.status = task.done ? 'done' : 'pending';
         if (task.done) {
-          playAudioChime(task.sound);
-          state.xp += 25;
-          document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
+          awardXp(25, task.title);
         }
         renderDirectTasksList();
         renderActiveCueCard();
@@ -2374,7 +2620,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       currentCubeRotations.x += 360 * 2 + Math.floor(Math.random() * 4) * 90;
       currentCubeRotations.y += 360 * 2 + Math.floor(Math.random() * 4) * 90;
       cube.style.transform = `rotateX(${currentCubeRotations.x}deg) rotateY(${currentCubeRotations.y}deg)`;
-      playAudioChime('sax');
+      playAudioChime('chime');
 
       setTimeout(() => {
         currentHobbyIdx = (currentHobbyIdx + 1) % DAILY_HOBBIES.length;
@@ -2387,10 +2633,8 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     }
 
     function completeHobbyChallenge() {
-      playAudioChime('bell');
+      awardXp(60, "Motor Challenge");
       if (window.confetti) confetti({ particleCount: 90, spread: 65, origin: { y: 0.6 } });
-      state.xp += 60;
-      document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
       alert("🎉 Wonderful work! You completed today's sensory motor challenge (+60 XP Special Reward awarded)!");
     }
 
@@ -2415,10 +2659,10 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     function pickRandomMiniGame() {
       const randomId = Math.floor(Math.random() * 8) + 1;
       switchMiniGame(randomId);
-      playAudioChime('bell');
+      playAudioChime('chime');
     }
 
-    /* Game 1: Color Memory */
+    /* Game 1 */
     let g1Sequence = [];
     let g1UserStep = 0;
     function startColorSequenceGame() {
@@ -2430,7 +2674,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         if (i < g1Sequence.length) {
           const colors = ['Rose Red', 'Sky Blue', 'Emerald Green', 'Amber Yellow'];
           document.getElementById('game1Display').innerText = `Pulse ${i+1}: ${colors[g1Sequence[i]]}`;
-          playAudioChime('bell');
+          playAudioChime('chime');
           i++;
         } else {
           clearInterval(interval);
@@ -2442,12 +2686,11 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       if (g1Sequence.length === 0) return;
       if (g1Sequence[g1UserStep] === idx) {
         g1UserStep++;
-        playAudioChime('marimba');
+        playAudioChime('bell');
         if (g1UserStep === g1Sequence.length) {
           document.getElementById('game1Display').innerText = `🎉 Perfect Match! +50 XP`;
           g1Sequence = [];
-          state.xp += 50;
-          document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
+          awardXp(50, "Color Sequence");
         }
       } else {
         document.getElementById('game1Display').innerText = `❌ Try Again`;
@@ -2455,7 +2698,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
-    /* Game 2: Shape Match */
+    /* Game 2 */
     const g2Shapes = ['⭐ Star', '🔷 Diamond', '🔴 Circle', '🟩 Square'];
     let g2CurrentShape = '';
     let g2PrevShape = '';
@@ -2466,9 +2709,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     }
     function checkGame2Match(isMatch) {
       if ((g2CurrentShape === g2PrevShape) === isMatch) {
-        playAudioChime('bell');
-        state.xp += 50;
-        document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
+        awardXp(50, "Shape Match");
         alert('Correct Focus Match! +50 Points');
       } else {
         alert('Not a match this time!');
@@ -2476,19 +2717,18 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       nextGame2Shape();
     }
 
-    /* Game 3: Finger Tap */
+    /* Game 3 */
     let g3Count = 0;
     let g3Next = 'A';
     function tapGame3(btn) {
       if (btn === g3Next) {
         g3Count++;
         document.getElementById('game3Count').innerText = `Taps: ${g3Count} / 10`;
-        playAudioChime('marimba');
+        playAudioChime('chime');
         if (g3Count >= 10) {
+          awardXp(50, "Finger Rhythm");
           alert('Great Smooth Rhythm Completed! +50 XP');
           g3Count = 0;
-          state.xp += 50;
-          document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
           document.getElementById('game3Count').innerText = `Taps: 0 / 10`;
         }
         if (btn === 'A') {
@@ -2507,7 +2747,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
-    /* Game 4: Target Catch */
+    /* Game 4 */
     let targetCatches = 0;
     function startFiveTargetRound() {
       targetCatches = 0;
@@ -2532,13 +2772,11 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       } else {
         document.getElementById('game4Target').classList.add('hidden');
         document.getElementById('game4Status').innerText = "🎉 5 Targets Caught! +50 XP";
-        playAudioChime('sax');
-        state.xp += 50;
-        document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
+        awardXp(50, "Target Catch");
       }
     }
 
-    /* Game 5: Maze */
+    /* Game 5 */
     let mazePos = { x: 0, y: 0 };
     function renderMaze() {
       const grid = document.getElementById('mazeGrid');
@@ -2562,23 +2800,19 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       if (dir === 'right' && mazePos.x < 2) mazePos.x++;
       renderMaze();
       if (mazePos.x === 2 && mazePos.y === 2) {
-        playAudioChime('bell');
+        awardXp(50, "Maze Navigator");
         alert('🏡 Reached Home Safe! +50 XP');
-        state.xp += 50;
-        document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
         mazePos = { x: 0, y: 0 };
         renderMaze();
       }
     }
 
-    /* Game 6: Word Unscramble */
+    /* Game 6 */
     function checkGame6Word() {
       const val = document.getElementById('g6Input').value.trim().toUpperCase();
       if (val === 'SMILE' || val === 'HEALTH' || val === 'HARMONY') {
-        playAudioChime('bell');
+        awardXp(50, "Word Solved");
         alert('✨ Word Correct! +50 XP');
-        state.xp += 50;
-        document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
         document.getElementById('g6Scrambled').innerText = 'H E A L T H';
         document.getElementById('g6Input').value = '';
       } else {
@@ -2586,7 +2820,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
-    /* Game 7: Melody Recall */
+    /* Game 7 */
     let targetMelody = [];
     let userMelodyStep = 0;
     const NOTE_PITCHES = { 'C': 261.63, 'E': 329.63, 'G': 392.00, 'C2': 523.25 };
@@ -2596,8 +2830,8 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       const gain = audioCtx.createGain();
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
       osc.connect(gain); gain.connect(audioCtx.destination);
       osc.start(); osc.stop(audioCtx.currentTime + 0.5);
     }
@@ -2624,9 +2858,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         userMelodyStep++;
         if (userMelodyStep === targetMelody.length) {
           document.getElementById('melodyStatusBox').innerText = "⭐ Matched melody! +50 XP";
-          playAudioChime('sax');
-          state.xp += 50;
-          document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
+          awardXp(50, "Melody Recall");
           targetMelody = [];
         }
       } else {
@@ -2635,7 +2867,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
-    /* Game 8: Math Sprint */
+    /* Game 8 */
     let mathScore = 0;
     let mathRound = 1;
     let currentMathAns = 27;
@@ -2659,7 +2891,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       if (ans === currentMathAns) {
         mathScore += 10;
         mathRound++;
-        playAudioChime('bell');
+        awardXp(10, "Math Sprint");
         renderMathSprintQuestion();
       } else {
         alert(`Almost! The answer was ${currentMathAns}.`);
@@ -2693,9 +2925,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     function checkFaceQuizOption(selected, correctName, role) {
       const fb = document.getElementById('faceQuizFeedback');
       if (selected.toLowerCase().includes(correctName.toLowerCase())) {
-        playAudioChime('bell');
-        state.xp += 50;
-        document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
+        awardXp(50, "Face Recall");
         fb.className = "text-center font-black text-xs text-teal-700";
         fb.innerText = `⭐ Yes! That is ${correctName} (${role})! +50 XP`;
       } else {
@@ -2749,7 +2979,7 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
 
     function shareAlertsViaWhatsApp() {
       const alertSummary = state.caregiverAlerts.map(a => `• ${a.time}: ${a.text}`).join('\n');
-      const msg = encodeURIComponent(`*HarmonyCare Daily Update for Eleanor Vance*\nStatus: Active\nStreak: 7 Days\nAdherence: 94.8%\n\nRecent Alerts & Latency:\n${alertSummary}`);
+      const msg = encodeURIComponent(`*HarmonyCare Daily Update for Eleanor Vance*\nStatus: Active\nLevel: ${LEVEL_TIERS[state.level].title}\nAdherence: 94.8%\n\nRecent Alerts & Latency:\n${alertSummary}`);
       window.open(`https://wa.me/?text=${msg}`, '_blank');
     }
 
@@ -2972,7 +3202,7 @@ Here are three personalized actions you can take today:
       appendAiMessage('assistant', "Chat cleared! How can I support your cognitive routine or wellness today?");
     }
 
-    /* Speech-to-Text Microphone */
+    /* Speech-to-Text */
     let recognition = null;
     let isRecognizing = false;
     function toggleAiVoiceInput() {
@@ -3160,11 +3390,10 @@ Here are three personalized actions you can take today:
       document.getElementById('authModal').classList.remove('flex');
     }
     function handleAuthSubmit() {
-      const email = document.getElementById('authInputEmail').value.trim();
       const role = document.getElementById('authInputRole').value;
       closeAuthModal();
       applyRolePermissions(role);
-      playAudioChime('bell');
+      playAudioChime('chime');
       alert(`Entered ${role.toUpperCase()} Workspace.`);
     }
 
@@ -3182,7 +3411,8 @@ Here are three personalized actions you can take today:
       }, 150);
       setTimeout(() => {
         clearInterval(interval);
-        playAudioChime('sax');
+        playAudioChime('bell');
+        awardXp(30, "Vocal Practice");
         alert('Vocal Practice Complete! Peak Amplitude: 74 dB (LSVT Loud Optimal Range)');
       }, 3000);
     }
@@ -3204,8 +3434,8 @@ Here are three personalized actions you can take today:
           const osc = audioCtx.createOscillator();
           const g = audioCtx.createGain();
           osc.frequency.setValueAtTime(800, now);
-          g.gain.setValueAtTime(0.2, now);
-          g.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          g.gain.setValueAtTime(0.18, now);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
           osc.connect(g); g.connect(audioCtx.destination);
           osc.start(now); osc.stop(now + 0.05);
         }, 600);
@@ -3279,7 +3509,6 @@ Here are three personalized actions you can take today:
       document.body.style.fontSize = baseFontSize + 'px';
     }
 
-    /* Hydration */
     function calculatePersonalWaterTarget() {
       const w = parseFloat(document.getElementById('calcWeight').value) || 65;
       const liters = (w * 0.033).toFixed(1);
@@ -3292,9 +3521,7 @@ Here are three personalized actions you can take today:
     function logWaterGlass() {
       state.waterLogged++;
       document.getElementById('hydrationGlassesLabel').innerText = `${state.waterLogged} / ${state.waterTargetGlasses} Glasses`;
-      playAudioChime('bell');
-      state.xp += 10;
-      document.getElementById('txtTotalXP').innerText = `${state.xp} XP`;
+      awardXp(10, "Hydration");
     }
 
     const articlesData = [
@@ -3326,7 +3553,7 @@ Here are three personalized actions you can take today:
         document.getElementById('alarmModalSubtitle').innerText = `Scheduled right now for ${due.time}. Please complete or adjust.`;
         document.getElementById('alarmModal').classList.remove('hidden');
         document.getElementById('alarmModal').classList.add('flex');
-        playAudioChime('bell');
+        playAudioChime('chime');
         speakText(`Activity Reminder: ${due.title}.`);
       }
     }, 25000);
@@ -3347,14 +3574,13 @@ Here are three personalized actions you can take today:
       document.getElementById('alarmModal').classList.remove('flex');
     }
 
-    /* ==================== 11. CHARTS (CAREGIVER & DOCTOR PIE/BAR CHARTS) ==================== */
+    /* ==================== 11. CHARTS ==================== */
     let ringChartInst = null;
     let lineChartInst = null;
     let doctorPieChartInst = null;
     let doctorBarChartInst = null;
 
     function initCharts() {
-      // Caregiver Adherence Doughnut
       const ctxRing = document.getElementById('caregiverRingChart')?.getContext('2d');
       if (ctxRing) {
         const doneCount = state.tasks.filter(t => t.done).length;
@@ -3373,7 +3599,6 @@ Here are three personalized actions you can take today:
         });
       }
 
-      // Caregiver Speech line chart
       const ctxLine = document.getElementById('caregiverLineChart')?.getContext('2d');
       if (ctxLine) {
         lineChartInst = new Chart(ctxLine, {
@@ -3393,7 +3618,6 @@ Here are three personalized actions you can take today:
         });
       }
 
-      // NEW: Doctor Pie / Doughnut Chart
       const ctxDocPie = document.getElementById('doctorPieChart')?.getContext('2d');
       if (ctxDocPie) {
         doctorPieChartInst = new Chart(ctxDocPie, {
@@ -3411,7 +3635,6 @@ Here are three personalized actions you can take today:
         });
       }
 
-      // NEW: Doctor Bar Chart (Tremor Amplitude Across Windows)
       const ctxDocBar = document.getElementById('doctorBarChart')?.getContext('2d');
       if (ctxDocBar) {
         doctorBarChartInst = new Chart(ctxDocBar, {
@@ -3419,26 +3642,14 @@ Here are three personalized actions you can take today:
           data: {
             labels: ['08:00 AM', '11:00 AM', '02:00 PM', '05:00 PM', '08:00 PM'],
             datasets: [
-              {
-                label: 'Pre-Dose Tremor (cm)',
-                data: [1.8, 1.5, 1.9, 1.4, 1.6],
-                backgroundColor: '#F59E0B',
-                borderRadius: 8
-              },
-              {
-                label: 'Post-Dose Tremor (cm)',
-                data: [0.9, 0.7, 1.1, 0.8, 0.9],
-                backgroundColor: '#0D9488',
-                borderRadius: 8
-              }
+              { label: 'Pre-Dose Tremor (cm)', data: [1.8, 1.5, 1.9, 1.4, 1.6], backgroundColor: '#F59E0B', borderRadius: 8 },
+              { label: 'Post-Dose Tremor (cm)', data: [0.9, 0.7, 1.1, 0.8, 0.9], backgroundColor: '#0D9488', borderRadius: 8 }
             ]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-              y: { beginAtZero: true, title: { display: true, text: 'Amplitude (cm)' } }
-            }
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'Amplitude (cm)' } } }
           }
         });
       }
@@ -3455,9 +3666,8 @@ Here are three personalized actions you can take today:
 
     /* ==================== WINDOW INITIALIZATION ==================== */
     window.onload = function() {
-      // Set initial real calendar date
       document.getElementById('globalCalendarPicker').value = state.selectedDate;
-      onCalendarDateChanged(state.selectedDate);
+      updateLevelProgressUI();
 
       applyRolePermissions('patient');
       switchRoutineMiniTab('cues');
@@ -3467,6 +3677,7 @@ Here are three personalized actions you can take today:
       renderMathSprintQuestion();
       calculatePersonalWaterTarget();
       initCharts();
+      renderInteractiveMonthlyGrid();
     };
   </script>
 </body>
