@@ -27,18 +27,32 @@
   <!-- Canvas Confetti for Reward Celebrations -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- Google Translate Element Script -->
+  <!-- Google Translate Element Script (Silently initialized for full-page translation) -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,hi,mr,ta,te,bn,gu,kn,pa,ml,ur',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
+      try {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,hi,mr,ta,te,bn,gu,kn,pa,ml,ur',
+          autoDisplay: false
+        }, 'google_translate_element');
+
+        const savedLang = localStorage.getItem('saksham_lang');
+        if (savedLang && savedLang !== 'en') {
+          setTimeout(() => {
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+              select.value = savedLang;
+              select.dispatchEvent(new Event('change'));
+            }
+          }, 800);
+        }
+      } catch (err) {
+        console.log('[Saksham Translation] Google Translate init note:', err);
+      }
     }
   </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <script>
     tailwind.config = {
@@ -172,15 +186,43 @@
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .goog-te-banner-frame.skiptranslate { display: none !important; }
-    body { top: 0px !important; }
-    .goog-te-gadget-simple {
-      background-color: transparent !important;
-      border: none !important;
-      padding: 0 !important;
-      font-size: 11px !important;
+    /* Hide intrusive Google Translate widgets, banners, tooltips, and duplicate arrows */
+    .goog-te-banner-frame.skiptranslate,
+    .goog-te-banner-frame,
+    iframe.goog-te-banner-frame { 
+      display: none !important; 
+      visibility: hidden !important; 
+      height: 0 !important; 
     }
-    .goog-te-gadget-simple span { color: #FFFFFF !important; }
+    body { 
+      top: 0px !important; 
+      position: static !important; 
+    }
+    #google_translate_element {
+      position: absolute !important;
+      top: -9999px !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+    .goog-tooltip, .goog-tooltip:hover { 
+      display: none !important; 
+    }
+    .goog-text-highlight { 
+      background-color: transparent !important; 
+      border: none !important; 
+      box-shadow: none !important; 
+    }
+    .skiptranslate > iframe { 
+      display: none !important; 
+    }
+    .goog-te-gadget {
+      font-size: 0px !important;
+      color: transparent !important;
+    }
   </style>
 </head>
 
@@ -230,10 +272,10 @@
           <span id="eveningGuardBtnText" data-i18n="evening_guard">Evening Guard: OFF</span>
         </button>
 
-        <!-- Multilingual Language Selector (Native Dictionary + Google Translate) -->
-        <div class="flex items-center bg-slate-800/90 rounded-xl px-2 py-1 border border-slate-700 text-xs">
-          <i class="fa-solid fa-language text-teal-400 mr-1.5"></i>
-          <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-transparent text-white font-bold text-xs focus:outline-hidden cursor-pointer">
+        <!-- Multilingual Language Selector (Clean, Unified UI) -->
+        <div class="flex items-center bg-slate-800/90 hover:bg-slate-800 rounded-xl px-3 py-1.5 border border-slate-700 hover:border-teal-500/50 text-xs shadow-xs transition">
+          <i class="fa-solid fa-language text-teal-400 mr-2 text-sm"></i>
+          <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-transparent text-white font-bold text-xs focus:outline-hidden cursor-pointer pr-1">
             <option value="en" class="bg-slate-900 text-white">English</option>
             <option value="hi" class="bg-slate-900 text-white">हिन्दी (Hindi)</option>
             <option value="mr" class="bg-slate-900 text-white">मराठी (Marathi)</option>
@@ -243,7 +285,6 @@
             <option value="gu" class="bg-slate-900 text-white">ગુજરાતી (Gujarati)</option>
             <option value="kn" class="bg-slate-900 text-white">ಕನ್ನಡ (Kannada)</option>
           </select>
-          <div id="google_translate_element" class="ml-1 hidden sm:inline-block"></div>
         </div>
 
         <!-- Emergency SOS Button -->
@@ -2107,6 +2148,15 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
 
     function changeLanguage(langKey) {
       currentLang = langKey;
+      try {
+        localStorage.setItem('saksham_lang', langKey);
+      } catch (e) {}
+      
+      const langSelect = document.getElementById('languageSelect');
+      if (langSelect && langSelect.value !== langKey) {
+        langSelect.value = langKey;
+      }
+
       const dict = I18N_DICTIONARY[langKey] || I18N_DICTIONARY['en'];
       
       document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -2116,7 +2166,12 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         }
       });
 
-      // Synchronize with Google Translate if available
+      // Synchronize with background Google Translate engine if available
+      try {
+        document.cookie = `googtrans=/en/${langKey}; path=/;`;
+        document.cookie = `googtrans=/en/${langKey}; domain=${window.location.hostname}; path=/;`;
+      } catch (e) {}
+
       const select = document.querySelector('.goog-te-combo');
       if (select) {
         select.value = langKey;
@@ -4504,6 +4559,14 @@ Here are three personalized actions you can take today:
       renderInteractiveMonthlyGrid();
       updateNetworkStatus();
 
+      // Restore saved language preference if previously selected
+      const savedLang = localStorage.getItem('saksham_lang') || 'en';
+      if (savedLang && savedLang !== 'en') {
+        const langSelect = document.getElementById('languageSelect');
+        if (langSelect) langSelect.value = savedLang;
+        changeLanguage(savedLang);
+      }
+
       // Check current hour: if 18:00 (6 PM) or later, notify about Evening Guard
       const currentHour = new Date().getHours();
       if (currentHour >= 18) {
@@ -4511,5 +4574,8 @@ Here are three personalized actions you can take today:
       }
     };
   </script>
+
+  <!-- Hidden offscreen background container for Google Translate engine -->
+  <div id="google_translate_element" aria-hidden="true" style="position:absolute; top:-9999px; left:-9999px; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none;"></div>
 </body>
 </html>
