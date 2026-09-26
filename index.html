@@ -1846,6 +1846,41 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         <span id="runnerInstructions">Complete each guided step below. When all steps are ticked, your task will be recorded as completed with a green checkmark!</span>
       </div>
 
+      <!-- 15-Minute Countdown Timer & Progress Bar -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-teal-950 p-4 rounded-2xl border border-slate-700 text-white shadow-md space-y-3">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="runnerTimerPulse"></span>
+            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider" id="runnerTimerLabel">15m Activity Timer</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="setTaskTimerDuration(10)" class="px-2 py-0.5 text-[10px] font-bold rounded-lg border border-slate-600 hover:bg-white/10 text-slate-300" id="btnTimerPreset10">10m</button>
+            <button onclick="setTaskTimerDuration(15)" class="px-2 py-0.5 text-[10px] font-bold rounded-lg border border-teal-500/50 bg-teal-500/20 text-teal-300" id="btnTimerPreset15">15m</button>
+            <button onclick="setTaskTimerDuration(0.5)" class="px-2 py-0.5 text-[10px] font-bold rounded-lg border border-amber-500/50 text-amber-300 hover:bg-amber-500/20" title="30-Second Quick Demo Test">30s Demo</button>
+          </div>
+        </div>
+
+        <div class="flex items-baseline justify-between">
+          <div class="flex items-baseline space-x-2">
+            <span class="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white" id="runnerTimerClock">15:00</span>
+            <span class="text-xs font-bold text-teal-400" id="runnerTimerStatus">Remaining</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="extendTaskTimer(5)" class="px-2.5 py-1.5 bg-slate-700/80 hover:bg-slate-600 text-amber-300 rounded-xl text-xs font-bold border border-slate-600 flex items-center gap-1" title="Extend timer by 5 minutes">
+              <i class="fa-solid fa-clock-rotate-left"></i> +5m
+            </button>
+            <button onclick="openTaskHelpModal()" class="px-3 py-1.5 bg-rose-600/90 hover:bg-rose-500 text-white rounded-xl text-xs font-black shadow transition flex items-center gap-1">
+              <i class="fa-solid fa-hand-holding-hand"></i> Stuck?
+            </button>
+          </div>
+        </div>
+
+        <!-- Animated Progress Bar -->
+        <div class="w-full bg-slate-700/60 rounded-full h-2.5 overflow-hidden">
+          <div id="runnerTimerBar" class="bg-gradient-to-r from-emerald-400 to-teal-400 h-2.5 rounded-full transition-all duration-1000" style="width: 100%"></div>
+        </div>
+      </div>
+
       <!-- Step Checklist Container -->
       <div class="space-y-2.5" id="runnerStepsContainer">
         <!-- Rendered dynamically -->
@@ -1861,6 +1896,115 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           <span>Complete Task & Auto-Tick (+25 XP)</span>
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- "ARE YOU STUCK? / NEED HELP?" ASSISTANCE CHECK-IN MODAL -->
+  <div id="modalTaskHelp" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-7 shadow-2xl space-y-5 border-4 border-amber-400 animate-in fade-in zoom-in duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shadow-md shrink-0">
+            <i class="fa-solid fa-hand-holding-hand"></i>
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full">
+              Assisted Check-In
+            </span>
+            <h3 class="text-xl font-black text-slate-900 font-heading mt-0.5">
+              Are you stuck, Eleanor?
+            </h3>
+          </div>
+        </div>
+        <button onclick="closeTaskHelpModal()" class="text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+      </div>
+
+      <!-- Explanatory Context -->
+      <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 text-amber-950 text-xs sm:text-sm font-medium leading-relaxed">
+        <p>
+          You have been working on <strong id="helpTaskTitle" class="text-amber-900 font-black">Morning Medication</strong> for <span id="helpElapsedTxt" class="font-bold">15 minutes</span>.
+        </p>
+        <p class="mt-1 text-amber-800 text-xs">
+          Take a slow, deep breath. There is no rush at all! Let us know how we can support you:
+        </p>
+      </div>
+
+      <!-- Assistance Options Grid -->
+      <div class="grid grid-cols-1 gap-2.5" id="helpOptionsList">
+        
+        <!-- 1. I feel frozen / stiff -->
+        <button onclick="handleHelpAction('freeze')" class="p-3.5 bg-slate-50 hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
+          <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
+            🚶
+          </div>
+          <div class="flex-1">
+            <h4 class="font-black text-xs sm:text-sm text-slate-900">I feel frozen or stiff</h4>
+            <p class="text-[11px] text-slate-600">Start 100 BPM rhythm metronome audio & weight-shift reset cue.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-teal-600 text-xs"></i>
+        </button>
+
+        <!-- 2. I need 5 more minutes -->
+        <button onclick="handleHelpAction('more_time')" class="p-3.5 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
+          <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
+            ⏱️
+          </div>
+          <div class="flex-1">
+            <h4 class="font-black text-xs sm:text-sm text-slate-900">I need 5 more minutes</h4>
+            <p class="text-[11px] text-slate-600">Add 5 minutes to the timer and let me finish calmly at my pace.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-indigo-600 text-xs"></i>
+        </button>
+
+        <!-- 3. Ask Caregiver Julian for help -->
+        <button onclick="handleHelpAction('caregiver')" class="p-3.5 bg-slate-50 hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
+            🤝
+          </div>
+          <div class="flex-1">
+            <h4 class="font-black text-xs sm:text-sm text-slate-900">Ask Julian (Caregiver) for Help</h4>
+            <p class="text-[11px] text-slate-600">Send an instant alert to Julian's dashboard and WhatsApp SOS.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-emerald-600 text-xs"></i>
+        </button>
+
+        <!-- 4. Break into simpler steps -->
+        <button onclick="handleHelpAction('breakdown')" class="p-3.5 bg-slate-50 hover:bg-purple-50 border-2 border-slate-200 hover:border-purple-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
+            💡
+          </div>
+          <div class="flex-1">
+            <h4 class="font-black text-xs sm:text-sm text-slate-900">Break down into simpler steps</h4>
+            <p class="text-[11px] text-slate-600">Give me smaller, easier actions with large voice guidance.</p>
+          </div>
+          <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-purple-600 text-xs"></i>
+        </button>
+
+        <!-- 5. I finished it! -->
+        <button onclick="handleHelpAction('finished')" class="p-3.5 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 hover:border-emerald-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
+            ✓
+          </div>
+          <div class="flex-1">
+            <h4 class="font-black text-xs sm:text-sm text-emerald-950">I finished it just now!</h4>
+            <p class="text-[11px] text-emerald-800">Mark task completed with green tick on the to-do list (+25 XP).</p>
+          </div>
+          <i class="fa-solid fa-check text-emerald-600 text-sm"></i>
+        </button>
+
+      </div>
+
+      <div class="pt-2 flex justify-between items-center text-xs text-slate-500 border-t border-slate-100">
+        <button onclick="speakHelpPrompt()" class="font-bold text-teal-700 hover:underline flex items-center gap-1">
+          <i class="fa-solid fa-volume-high"></i> Read options aloud
+        </button>
+        <button onclick="closeTaskHelpModal()" class="font-bold text-slate-600 hover:text-slate-900">
+          Dismiss
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -2245,6 +2389,17 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       selectedDate: new Date().toISOString().split('T')[0],
       timeframeMode: 'daily',
       geminiApiKey: localStorage.getItem('saksham_gemini_api_key') || localStorage.getItem('harmony_gemini_api_key') || '',
+      
+      // Active Task Countdown Timer & Assisted Check-In State
+      taskTimer: {
+        activeTaskId: null,
+        totalSeconds: 15 * 60, // Default 15 minutes
+        remainingSeconds: 15 * 60,
+        intervalId: null,
+        status: 'idle', // 'idle' | 'running' | 'paused' | 'expired'
+        startTime: null,
+        elapsedSeconds: 0
+      },
       
       // Monthly calendar simulated history (Sept 2026)
       calendarMonthDays: [
@@ -2756,8 +2911,241 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       }
     }
 
+    /* ==================== 15-MINUTE TASK TIMER & ASSISTANCE ENGINE ==================== */
+    function formatTimerClock(totalSec) {
+      const s = Math.max(0, Math.floor(totalSec));
+      const mins = Math.floor(s / 60);
+      const secs = s % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function startTaskTimer(taskId, durationMinutes = 15) {
+      if (state.taskTimer.intervalId) {
+        clearInterval(state.taskTimer.intervalId);
+      }
+      
+      const totalSec = Math.round(durationMinutes * 60);
+      state.taskTimer.activeTaskId = taskId;
+      state.taskTimer.totalSeconds = totalSec;
+      state.taskTimer.remainingSeconds = totalSec;
+      state.taskTimer.status = 'running';
+      state.taskTimer.startTime = Date.now();
+      state.taskTimer.elapsedSeconds = 0;
+
+      // Update button styling in runner modal
+      const btn10 = document.getElementById('btnTimerPreset10');
+      const btn15 = document.getElementById('btnTimerPreset15');
+      if (btn10 && btn15) {
+        if (durationMinutes === 10) {
+          btn10.className = "px-2 py-0.5 text-[10px] font-bold rounded-lg border border-teal-500/50 bg-teal-500/20 text-teal-300";
+          btn15.className = "px-2 py-0.5 text-[10px] font-bold rounded-lg border border-slate-600 hover:bg-white/10 text-slate-300";
+        } else {
+          btn15.className = "px-2 py-0.5 text-[10px] font-bold rounded-lg border border-teal-500/50 bg-teal-500/20 text-teal-300";
+          btn10.className = "px-2 py-0.5 text-[10px] font-bold rounded-lg border border-slate-600 hover:bg-white/10 text-slate-300";
+        }
+      }
+
+      updateTimerUI();
+
+      state.taskTimer.intervalId = setInterval(() => {
+        if (state.taskTimer.status !== 'running') return;
+
+        state.taskTimer.remainingSeconds--;
+        state.taskTimer.elapsedSeconds++;
+
+        updateTimerUI();
+
+        if (state.taskTimer.remainingSeconds <= 0) {
+          clearInterval(state.taskTimer.intervalId);
+          state.taskTimer.intervalId = null;
+          state.taskTimer.status = 'expired';
+          triggerTaskTimeoutHelp(taskId);
+        }
+      }, 1000);
+
+      // Re-render task lists so active badge shows immediately
+      renderDirectTasksList();
+    }
+
+    function updateTimerUI() {
+      const clockEl = document.getElementById('runnerTimerClock');
+      const barEl = document.getElementById('runnerTimerBar');
+      const pulseEl = document.getElementById('runnerTimerPulse');
+      const statusEl = document.getElementById('runnerTimerStatus');
+
+      if (clockEl) {
+        clockEl.innerText = formatTimerClock(state.taskTimer.remainingSeconds);
+      }
+
+      const percent = Math.max(0, Math.min(100, (state.taskTimer.remainingSeconds / state.taskTimer.totalSeconds) * 100));
+
+      if (barEl) {
+        barEl.style.width = `${percent}%`;
+        if (state.taskTimer.remainingSeconds <= 60) {
+          barEl.className = "bg-gradient-to-r from-rose-500 to-red-600 h-2.5 rounded-full transition-all duration-1000";
+          if (pulseEl) pulseEl.className = "w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping";
+          if (statusEl) { statusEl.className = "text-xs font-bold text-rose-400"; statusEl.innerText = "Ending Soon"; }
+        } else if (state.taskTimer.remainingSeconds <= 300) {
+          barEl.className = "bg-gradient-to-r from-amber-400 to-orange-500 h-2.5 rounded-full transition-all duration-1000";
+          if (pulseEl) pulseEl.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse";
+          if (statusEl) { statusEl.className = "text-xs font-bold text-amber-400"; statusEl.innerText = "< 5m Left"; }
+        } else {
+          barEl.className = "bg-gradient-to-r from-emerald-400 to-teal-400 h-2.5 rounded-full transition-all duration-1000";
+          if (pulseEl) pulseEl.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
+          if (statusEl) { statusEl.className = "text-xs font-bold text-teal-400"; statusEl.innerText = "Remaining"; }
+        }
+      }
+
+      // Update live badge in task list if active
+      if (state.taskTimer.activeTaskId) {
+        const liveBadge = document.getElementById(`live-timer-badge-${state.taskTimer.activeTaskId}`);
+        if (liveBadge) {
+          liveBadge.innerText = `⏱️ ${formatTimerClock(state.taskTimer.remainingSeconds)} left`;
+        }
+      }
+    }
+
+    function stopTaskTimer() {
+      if (state.taskTimer.intervalId) {
+        clearInterval(state.taskTimer.intervalId);
+        state.taskTimer.intervalId = null;
+      }
+      state.taskTimer.status = 'idle';
+      state.taskTimer.activeTaskId = null;
+    }
+
+    function extendTaskTimer(extraMinutes = 5) {
+      state.taskTimer.remainingSeconds += extraMinutes * 60;
+      state.taskTimer.totalSeconds += extraMinutes * 60;
+      state.taskTimer.status = 'running';
+      updateTimerUI();
+      playAudioChime('pulse');
+      renderDirectTasksList();
+    }
+
+    function setTaskTimerDuration(mins) {
+      if (state.activeRunnerTaskId) {
+        startTaskTimer(state.activeRunnerTaskId, mins);
+        playAudioChime('pulse');
+      }
+    }
+
+    function triggerTaskTimeoutHelp(taskId) {
+      const task = state.tasks.find(t => t.id === taskId) || state.tasks[currentCueIndex];
+      const elapsedMins = Math.max(1, Math.round(state.taskTimer.totalSeconds / 60));
+
+      // Mark latency on task
+      if (task) {
+        task.latencyMinutes = elapsedMins;
+      }
+
+      // Record in caregiver alert log
+      state.caregiverAlerts.unshift({
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        text: `⏱️ 15m Timeout: Eleanor Vance working on '${task ? task.title : 'Routine Task'}'. Assisted check-in prompted.`
+      });
+      renderCaregiverAlerts();
+
+      playAudioChime('bell');
+      openTaskHelpModal(taskId);
+      speakText(`Eleanor, the 15-minute timer has completed for ${task ? task.title : 'your task'}. Are you stuck, or do you need some help?`);
+    }
+
+    function openTaskHelpModal(taskId) {
+      const id = taskId || state.activeRunnerTaskId || (state.tasks[currentCueIndex] ? state.tasks[currentCueIndex].id : 1);
+      const task = state.tasks.find(t => t.id === id);
+      if (!task) return;
+
+      state.activeRunnerTaskId = task.id;
+      const titleEl = document.getElementById('helpTaskTitle');
+      if (titleEl) titleEl.innerText = task.title;
+
+      const elapsedMins = Math.max(1, Math.round(state.taskTimer.elapsedSeconds / 60) || 15);
+      const elapsedEl = document.getElementById('helpElapsedTxt');
+      if (elapsedEl) elapsedEl.innerText = `${elapsedMins} minutes`;
+
+      const modal = document.getElementById('modalTaskHelp');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+      playAudioChime('pulse');
+    }
+
+    function closeTaskHelpModal() {
+      const modal = document.getElementById('modalTaskHelp');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function speakHelpPrompt() {
+      const task = state.tasks.find(t => t.id === state.activeRunnerTaskId);
+      const title = task ? task.title : "your scheduled activity";
+      speakText(`Are you stuck, Eleanor? You have been working on ${title}. You can choose: I feel frozen, I need 5 more minutes, Ask Julian for help, Break into simpler steps, or I finished it!`);
+    }
+
+    function handleHelpAction(action) {
+      const taskId = state.activeRunnerTaskId;
+      const task = state.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      if (action === 'freeze') {
+        closeTaskHelpModal();
+        toggleMetronomeBeep(); // Starts 100 BPM rhythm cue
+        speakText("Starting 100 beats per minute rhythm metronome. Stop, take a deep breath, shift your weight from left to right, and step in time with the sound.");
+        state.caregiverAlerts.unshift({
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: `🚶 Gait Freezing Alert: Eleanor activated 100 BPM rhythmic cadence cue for '${task.title}'.`
+        });
+        renderCaregiverAlerts();
+      } else if (action === 'more_time') {
+        extendTaskTimer(5);
+        closeTaskHelpModal();
+        speakText("Added 5 more minutes to your timer. Take your time, there is no hurry at all Eleanor.");
+      } else if (action === 'caregiver') {
+        closeTaskHelpModal();
+        state.caregiverAlerts.unshift({
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: `🚨 URGENT ASSISTANCE: Eleanor requested check-in help for '${task.title}' after 15m timer timeout.`
+        });
+        renderCaregiverAlerts();
+        const msg = encodeURIComponent(`🚨 SAKSHAM ASSISTANCE REQUEST: Eleanor Vance needs help with scheduled activity: "${task.title}". The 15-minute timer elapsed. Julian, please check in!`);
+        window.open(`https://wa.me/15552348901?text=${msg}`, '_blank');
+        speakText("I have sent a priority WhatsApp alert to Julian. He is checking in on you now.");
+      } else if (action === 'breakdown') {
+        closeTaskHelpModal();
+        task.runnerSteps = [
+          `Take 3 slow deep breaths to relax your muscles`,
+          `Look directly at what you need for ${task.title}`,
+          `Do just the first small action slowly and steadily`,
+          `Pause for 10 seconds, then complete the next step`
+        ];
+        // Re-render steps inside modal
+        const container = document.getElementById('runnerStepsContainer');
+        if (container) {
+          container.innerHTML = task.runnerSteps.map((s, idx) => `
+            <div class="p-3.5 rounded-2xl border-2 border-purple-200 hover:border-purple-400 bg-purple-50/60 flex items-center space-x-3 cursor-pointer transition" onclick="toggleRunnerStepCheckbox(${idx})">
+              <input type="checkbox" id="runner-step-chk-${idx}" class="w-6 h-6 rounded-lg text-purple-600 focus:ring-purple-500 cursor-pointer" onclick="event.stopPropagation(); playAudioChime('pulse');">
+              <span class="text-xs sm:text-sm font-bold text-purple-950">${idx + 1}. ${s}</span>
+            </div>
+          `).join('');
+        }
+        speakText(`I have simplified the steps for ${task.title}. Take it one small step at a time.`);
+      } else if (action === 'finished') {
+        closeTaskHelpModal();
+        finishTaskRunner();
+      }
+    }
+
+    function finishTaskRunnerWithId(id) {
+      state.activeRunnerTaskId = id;
+      finishTaskRunner();
+    }
+
     /* ==================== STEP-BY-STEP TASK RUNNER ENGINE ==================== */
-    function openTaskRunner(taskId) {
+    function openTaskRunner(taskId, customDurationMinutes = 15) {
       const task = state.tasks.find(t => t.id === taskId) || state.tasks[currentCueIndex];
       if (!task) return;
       state.activeRunnerTaskId = task.id;
@@ -2783,12 +3171,15 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       modal.classList.remove('hidden');
       modal.classList.add('flex');
 
+      // Start the 15-minute countdown timer
+      startTaskTimer(task.id, customDurationMinutes);
+
       // Play instrument cue for category
       if (task.tag === 'Medication') playInstrumentCue('bell');
       else if (task.tag === 'Food' || task.tag === 'Wellness') playInstrumentCue('sax');
       else playInstrumentCue('marimba');
 
-      speakText(`Starting guided task: ${task.title}. Follow each step on your screen.`);
+      speakText(`Starting guided task: ${task.title}. Follow each step on your screen. The 15-minute timer has started.`);
     }
 
     function toggleRunnerStepCheckbox(idx) {
@@ -2811,9 +3202,15 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       const taskId = state.activeRunnerTaskId;
       const task = state.tasks.find(t => t.id === taskId);
       if (task) {
+        // Calculate latency
+        const elapsedMins = Math.max(1, Math.round(state.taskTimer.elapsedSeconds / 60) || 5);
+        task.latencyMinutes = elapsedMins;
         task.done = true;
         task.status = 'all_done';
         task.attemptsLeft = 3;
+
+        // Stop the countdown timer
+        stopTaskTimer();
 
         // Award points & celebration
         awardXp(25, `${task.title} Completed`);
@@ -2836,15 +3233,24 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         if (state.calendarMonthDays[24]) {
           state.calendarMonthDays[24].completed = Math.min(5, state.calendarMonthDays[24].completed + 1);
           state.calendarMonthDays[24].status = 'all_done';
+          state.calendarMonthDays[24].latency = elapsedMins;
         }
+
+        // Log completion in caregiver alerts
+        state.caregiverAlerts.unshift({
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: `✅ Task Completed: Eleanor finished '${task.title}' in ${elapsedMins}m. Adherence logged.`
+        });
 
         renderBadgesUI();
         renderActiveCueCard();
         renderDirectTasksList();
         renderTimeframeInsights();
         renderInteractiveMonthlyGrid();
+        renderCaregiverAlerts();
+        updateChartsData();
 
-        speakText(`Wonderful job Eleanor! ${task.title} is completed and verified.`);
+        speakText(`Wonderful job Eleanor! ${task.title} is completed and marked as done on your to-do list.`);
       }
       closeTaskRunner();
     }
@@ -3292,12 +3698,21 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       document.getElementById('cueHeartsDisplay').innerText = heartsStr;
 
       const optionLetters = ['A', 'B', 'C'];
+      const isTimed = state.taskTimer.activeTaskId === task.id && state.taskTimer.status === 'running';
+
       box.innerHTML = `
         <div class="flex justify-between items-center">
           <span class="text-xs font-black text-teal-700 uppercase tracking-wider bg-teal-100 px-3 py-1 rounded-full border border-teal-200">
             Scheduled: ${task.time} (${task.tag})
           </span>
-          <span class="text-xs font-bold text-slate-500">${task.done ? '<span class="text-emerald-600 font-extrabold"><i class="fa-solid fa-circle-check"></i> Completed</span>' : 'Pending Action'}</span>
+          <div class="flex items-center gap-2">
+            ${isTimed ? `
+              <span id="live-timer-badge-${task.id}" class="text-xs font-mono font-black text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300 animate-pulse flex items-center gap-1">
+                ⏱️ ${formatTimerClock(state.taskTimer.remainingSeconds)} left
+              </span>
+            ` : ''}
+            <span class="text-xs font-bold text-slate-500">${task.done ? '<span class="text-emerald-600 font-extrabold"><i class="fa-solid fa-circle-check"></i> Completed</span>' : 'Pending Action'}</span>
+          </div>
         </div>
 
         <h4 class="text-base sm:text-lg font-black text-slate-900 leading-snug font-heading">
@@ -3319,13 +3734,25 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           <button onclick="revealCueHint()" class="text-xs font-bold text-indigo-600 hover:underline">
             Need a clue? Tap for hint
           </button>
-          <div class="flex gap-2">
+          <div class="flex flex-wrap gap-2">
             <button onclick="speakText('${task.title}')" class="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50">
               <i class="fa-solid fa-volume-high text-teal-600 mr-1"></i> Speak
             </button>
-            <button onclick="openTaskRunner(${task.id})" class="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center gap-1.5">
-              <i class="fa-solid fa-play"></i> Start Guided Task
-            </button>
+            ${isTimed ? `
+              <button onclick="openTaskHelpModal(${task.id})" class="px-2.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                <i class="fa-solid fa-hand-holding-hand"></i> Stuck?
+              </button>
+              <button onclick="finishTaskRunnerWithId(${task.id})" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1">
+                <i class="fa-solid fa-check"></i> Complete & Tick
+              </button>
+              <button onclick="openTaskRunner(${task.id})" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-teal-300 font-extrabold text-xs rounded-xl shadow transition flex items-center gap-1">
+                <i class="fa-solid fa-stopwatch"></i> View Timer
+              </button>
+            ` : `
+              <button onclick="openTaskRunner(${task.id}, 15)" class="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center gap-1.5">
+                <i class="fa-solid fa-play"></i> Start 15m Task
+              </button>
+            `}
           </div>
         </div>
       `;
@@ -3405,29 +3832,52 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       container.innerHTML = state.tasks.map(t => {
         const isDone = t.done;
         const isNotDone = t.status === 'not_done';
+        const isTimed = state.taskTimer.activeTaskId === t.id && state.taskTimer.status === 'running';
 
         return `
-          <div class="p-4 rounded-2xl border ${isDone ? 'bg-teal-50/60 border-teal-200' : (isNotDone ? 'bg-rose-50 border-rose-200' : 'bg-white border-slate-200')} flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs transition">
+          <div class="p-4 rounded-2xl border ${isDone ? 'bg-teal-50/60 border-teal-200' : (isNotDone ? 'bg-rose-50 border-rose-200' : (isTimed ? 'bg-teal-50/50 border-2 border-teal-500 shadow-md ring-2 ring-teal-400/20' : 'bg-white border-slate-200'))} flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs transition">
             <div class="flex items-center space-x-3.5">
-              <button onclick="toggleTask(${t.id})" class="w-8 h-8 rounded-xl border-2 flex items-center justify-center transition shrink-0 ${isDone ? 'bg-teal-600 border-teal-600 text-white shadow-sm' : (isNotDone ? 'bg-rose-600 border-rose-600 text-white' : 'border-slate-300 bg-white hover:border-teal-500')}">
+              <button onclick="toggleTask(${t.id})" class="w-8 h-8 rounded-xl border-2 flex items-center justify-center transition shrink-0 ${isDone ? 'bg-teal-600 border-teal-600 text-white shadow-sm' : (isNotDone ? 'bg-rose-600 border-rose-600 text-white' : 'border-slate-300 bg-white hover:border-teal-500')}" title="Toggle task completed">
                 ${isDone ? '<i class="fa-solid fa-check text-xs"></i>' : (isNotDone ? '<i class="fa-solid fa-xmark text-xs"></i>' : '')}
               </button>
               <div>
                 <p class="font-bold text-sm ${isDone ? 'line-through text-slate-400' : 'text-slate-800'}">${t.title}</p>
-                <div class="flex items-center space-x-2 mt-0.5">
+                <div class="flex items-center flex-wrap gap-1.5 mt-0.5">
                   <span class="text-xs font-mono font-bold text-slate-500">${t.time}</span>
                   <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${isDone ? 'bg-teal-100 text-teal-800' : (isNotDone ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700')}">
                     ${isDone ? 'Completed' : (isNotDone ? 'Not Done' : t.tag)}
                   </span>
+                  ${isTimed ? `
+                    <span id="live-timer-badge-${t.id}" class="text-xs font-mono font-black text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300 animate-pulse flex items-center gap-1">
+                      ⏱️ ${formatTimerClock(state.taskTimer.remainingSeconds)} left
+                    </span>
+                  ` : ''}
                   ${t.latencyMinutes >= 15 ? `<span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">Took ${t.latencyMinutes}m</span>` : ''}
                 </div>
               </div>
             </div>
 
-            <div class="flex items-center space-x-1.5 self-end sm:self-center">
-              <button onclick="postponeTask(${t.id}, 2)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold border border-slate-200">+2m</button>
-              <button onclick="postponeTask(${t.id}, 5)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold border border-slate-200">+5m</button>
-              <button onclick="markTaskNotDone(${t.id})" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-bold border border-rose-200">Not Done</button>
+            <div class="flex items-center flex-wrap gap-1.5 self-end sm:self-center">
+              ${!isDone ? `
+                <button onclick="openTaskRunner(${t.id}, 15)" class="px-3 py-1.5 ${isTimed ? 'bg-slate-900 text-teal-300' : 'bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-300'} rounded-xl text-xs font-bold transition flex items-center gap-1">
+                  <i class="fa-solid fa-stopwatch"></i> ${isTimed ? 'Runner' : '15m Timer'}
+                </button>
+                ${isTimed ? `
+                  <button onclick="openTaskHelpModal(${t.id})" class="px-2.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl text-xs font-bold border border-amber-300 flex items-center gap-1">
+                    <i class="fa-solid fa-hand-holding-hand"></i> Stuck?
+                  </button>
+                  <button onclick="finishTaskRunnerWithId(${t.id})" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow transition flex items-center gap-1">
+                    <i class="fa-solid fa-check"></i> Done
+                  </button>
+                ` : `
+                  <button onclick="postponeTask(${t.id}, 5)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold border border-slate-200">+5m</button>
+                  <button onclick="markTaskNotDone(${t.id})" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-bold border border-rose-200">Not Done</button>
+                `}
+              ` : `
+                <span class="text-xs font-bold text-emerald-600 px-2.5 py-1 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-check"></i> Done
+                </span>
+              `}
               <button onclick="speakText('${t.title} at ${t.time}')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-extrabold flex items-center space-x-1" title="Read Aloud">
                 <i class="fa-solid fa-volume-high text-teal-600"></i>
               </button>
