@@ -1899,109 +1899,118 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     </div>
   </div>
 
-  <!-- "ARE YOU STUCK? / NEED HELP?" ASSISTANCE CHECK-IN MODAL -->
+  <!-- "WHAT ARE YOU DOING RIGHT NOW?" COGNITIVE STEPPING DIAGNOSTIC & ASSISTANCE MODAL -->
   <div id="modalTaskHelp" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-7 shadow-2xl space-y-5 border-4 border-amber-400 animate-in fade-in zoom-in duration-200">
+    <div class="bg-white max-w-xl w-full rounded-3xl p-6 sm:p-7 shadow-2xl space-y-5 border-4 border-amber-400 animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto">
       
       <!-- Modal Header -->
       <div class="flex items-start justify-between border-b border-slate-100 pb-3">
         <div class="flex items-center space-x-3">
-          <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shadow-md shrink-0">
-            <i class="fa-solid fa-hand-holding-hand"></i>
+          <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shadow-md shrink-0" id="diagHeaderIcon">
+            <i class="fa-solid fa-compass"></i>
           </div>
           <div>
-            <span class="text-[10px] font-black uppercase text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full">
-              Assisted Check-In
-            </span>
-            <h3 class="text-xl font-black text-slate-900 font-heading mt-0.5">
-              Are you stuck, Eleanor?
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] font-black uppercase text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full" id="diagModalBadge">
+                Cognitive Step Guide
+              </span>
+              <span class="text-[10px] font-bold text-slate-500" id="diagTimerElapsedTxt">15m Elapsed</span>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 font-heading mt-0.5" id="diagModalTitle">
+              What are you doing right now, Eleanor?
             </h3>
           </div>
         </div>
         <button onclick="closeTaskHelpModal()" class="text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
       </div>
 
-      <!-- Explanatory Context -->
-      <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 text-amber-950 text-xs sm:text-sm font-medium leading-relaxed">
-        <p>
-          You have been working on <strong id="helpTaskTitle" class="text-amber-900 font-black">Morning Medication</strong> for <span id="helpElapsedTxt" class="font-bold">15 minutes</span>.
-        </p>
-        <p class="mt-1 text-amber-800 text-xs">
-          Take a slow, deep breath. There is no rush at all! Let us know how we can support you:
-        </p>
-      </div>
-
-      <!-- Assistance Options Grid -->
-      <div class="grid grid-cols-1 gap-2.5" id="helpOptionsList">
+      <!-- VIEW 1: DIAGNOSTIC QUESTIONS ("What are you doing right now?") -->
+      <div id="diagQuestionView" class="space-y-4">
         
-        <!-- 1. I feel frozen / stiff -->
-        <button onclick="handleHelpAction('freeze')" class="p-3.5 bg-slate-50 hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
-          <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-            🚶
+        <div class="bg-amber-50/80 p-4 rounded-2xl border border-amber-200 text-amber-950 text-xs sm:text-sm font-medium leading-relaxed flex items-start gap-3">
+          <div class="w-7 h-7 rounded-xl bg-amber-200 text-amber-900 flex items-center justify-center shrink-0 font-black text-xs">?</div>
+          <div>
+            <p>
+              You are working on <strong id="helpTaskTitle" class="text-amber-950 font-black">Morning Herbal Tea & Hydration</strong>.
+            </p>
+            <p class="mt-1 text-amber-900 text-xs">
+              Tell us what you have in front of you or what you just did. We will give you the <strong>exact next step</strong> so you know what to do!
+            </p>
           </div>
-          <div class="flex-1">
-            <h4 class="font-black text-xs sm:text-sm text-slate-900">I feel frozen or stiff</h4>
-            <p class="text-[11px] text-slate-600">Start 100 BPM rhythm metronome audio & weight-shift reset cue.</p>
-          </div>
-          <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-teal-600 text-xs"></i>
-        </button>
+        </div>
 
-        <!-- 2. I need 5 more minutes -->
-        <button onclick="handleHelpAction('more_time')" class="p-3.5 bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
-          <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-            ⏱️
-          </div>
-          <div class="flex-1">
-            <h4 class="font-black text-xs sm:text-sm text-slate-900">I need 5 more minutes</h4>
-            <p class="text-[11px] text-slate-600">Add 5 minutes to the timer and let me finish calmly at my pace.</p>
-          </div>
-          <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-indigo-600 text-xs"></i>
-        </button>
+        <p class="text-xs font-black uppercase tracking-wider text-slate-500" id="diagQuestionPrompt">Pick where you are right now:</p>
 
-        <!-- 3. Ask Caregiver Julian for help -->
-        <button onclick="handleHelpAction('caregiver')" class="p-3.5 bg-slate-50 hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
-          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-            🤝
-          </div>
-          <div class="flex-1">
-            <h4 class="font-black text-xs sm:text-sm text-slate-900">Ask Julian (Caregiver) for Help</h4>
-            <p class="text-[11px] text-slate-600">Send an instant alert to Julian's dashboard and WhatsApp SOS.</p>
-          </div>
-          <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-emerald-600 text-xs"></i>
-        </button>
+        <!-- Dynamic Checkpoints Container (Populated dynamically) -->
+        <div class="grid grid-cols-1 gap-2.5" id="diagnosticCheckpointContainer">
+          <!-- Rendered dynamically -->
+        </div>
 
-        <!-- 4. Break into simpler steps -->
-        <button onclick="handleHelpAction('breakdown')" class="p-3.5 bg-slate-50 hover:bg-purple-50 border-2 border-slate-200 hover:border-purple-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
-          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-            💡
+        <!-- Quick Additional Support Accordion -->
+        <div class="pt-3 border-t border-slate-100 space-y-2">
+          <p class="text-[11px] font-black uppercase tracking-wider text-slate-400">Other helpful actions:</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button onclick="handleHelpAction('freeze')" class="p-2.5 bg-slate-50 hover:bg-teal-50 border border-slate-200 hover:border-teal-400 rounded-xl text-center text-xs font-bold text-slate-800 transition">
+              🚶 Metronome
+            </button>
+            <button onclick="handleHelpAction('more_time')" class="p-2.5 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-400 rounded-xl text-center text-xs font-bold text-slate-800 transition">
+              ⏱️ +5 Minutes
+            </button>
+            <button onclick="handleHelpAction('caregiver')" class="p-2.5 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-400 rounded-xl text-center text-xs font-bold text-slate-800 transition">
+              🤝 Call Julian
+            </button>
+            <button onclick="handleHelpAction('finished')" class="p-2.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 hover:border-emerald-400 rounded-xl text-center text-xs font-black text-emerald-800 transition">
+              ✓ I'm Done!
+            </button>
           </div>
-          <div class="flex-1">
-            <h4 class="font-black text-xs sm:text-sm text-slate-900">Break down into simpler steps</h4>
-            <p class="text-[11px] text-slate-600">Give me smaller, easier actions with large voice guidance.</p>
-          </div>
-          <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-purple-600 text-xs"></i>
-        </button>
+        </div>
+      </div>
 
-        <!-- 5. I finished it! -->
-        <button onclick="handleHelpAction('finished')" class="p-3.5 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 hover:border-emerald-500 rounded-2xl text-left transition flex items-center space-x-3.5 group shadow-2xs">
-          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-            ✓
+      <!-- VIEW 2: FOCUSED SINGLE-STEP RESOLUTION ("Here is your exact next step:") -->
+      <div id="diagNextStepView" class="hidden space-y-4">
+        
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-teal-50 via-emerald-50 to-white border-2 border-teal-500 shadow-sm space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="px-3 py-1 bg-teal-600 text-white font-black text-xs uppercase tracking-wider rounded-full shadow-xs" id="diagStepBadge">
+              Your Exact Next Step (Step 2 of 4)
+            </span>
+            <span class="text-xs font-bold text-teal-700" id="diagCurrentStatusTxt">In Progress</span>
           </div>
-          <div class="flex-1">
-            <h4 class="font-black text-xs sm:text-sm text-emerald-950">I finished it just now!</h4>
-            <p class="text-[11px] text-emerald-800">Mark task completed with green tick on the to-do list (+25 XP).</p>
+
+          <h3 class="text-lg sm:text-xl font-black text-slate-900 leading-snug font-heading" id="diagInstructionTxt">
+            Place the pot on the stove and turn on the flame.
+          </h3>
+
+          <div class="p-3 bg-white/80 rounded-xl border border-teal-200 text-xs text-teal-950 font-medium flex items-center gap-2" id="diagSpokenTipBox">
+            <i class="fa-solid fa-volume-high text-teal-600"></i>
+            <span id="diagSpokenTipTxt">Take your time. Turn the knob gently to medium heat.</span>
           </div>
-          <i class="fa-solid fa-check text-emerald-600 text-sm"></i>
-        </button>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-2.5 pt-2">
+          <button onclick="backToDiagnosticQuestions()" class="w-full sm:w-auto px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-arrow-left"></i> Change My Answer
+          </button>
+          <div class="flex w-full sm:w-auto gap-2">
+            <button onclick="speakCurrentDiagnosticStep()" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition" title="Hear step again">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+            <button onclick="advanceDiagnosticStep()" id="btnAdvanceDiagStep" class="flex-1 sm:flex-none px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+              <span>I did this step! Next Step</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
 
       </div>
 
+      <!-- Modal Footer -->
       <div class="pt-2 flex justify-between items-center text-xs text-slate-500 border-t border-slate-100">
         <button onclick="speakHelpPrompt()" class="font-bold text-teal-700 hover:underline flex items-center gap-1">
-          <i class="fa-solid fa-volume-high"></i> Read options aloud
+          <i class="fa-solid fa-volume-high"></i> Read question aloud
         </button>
         <button onclick="closeTaskHelpModal()" class="font-bold text-slate-600 hover:text-slate-900">
-          Dismiss
+          Close
         </button>
       </div>
 
@@ -2439,21 +2448,61 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         { 
           id: 1, 
           time: "08:00 AM", 
-          title: "Gentle Wake-up & Warm Hydration", 
+          title: "Morning Herbal Tea & Gentle Hydration", 
           sound: "bell", 
           done: false, 
           tag: "Wellness", 
           status: 'pending',
           latencyMinutes: 4,
-          cueQuestion: "You woke up at 08:00 AM. What gentle action lubricates your digestive motility before any medication?",
-          cueOptions: ["Drink a glass of warm water & stretch gently", "Immediately eat heavy scrambled eggs", "Start a fast 5 km walk"],
+          cueQuestion: "You woke up at 08:00 AM. What warm drink gently hydrates your body before any medication?",
+          cueOptions: ["Prepare a warm herbal tea with water in the pot", "Immediately eat heavy scrambled eggs", "Start a fast 5 km walk"],
           correctOptionIndex: 0,
-          cueHint: "Hydrating first prepares your digestive system for morning Levodopa absorption.",
+          cueHint: "Taking warm herbal tea hydrates your stomach for smooth morning Levodopa absorption.",
           attemptsLeft: 3,
           runnerSteps: [
-            "Pour a fresh glass of room-temperature clean water",
-            "Drink slowly in 3 calm, mindful sips",
-            "Do 3 gentle shoulder rolls and open window for natural morning sunlight"
+            "Take out the tea pot and pour fresh clean water into it",
+            "Place the pot on the stove and turn on the flame to heat",
+            "Put your herbal tea bag into your favorite mug",
+            "Pour the warm water into the mug and let it steep for 2 minutes"
+          ],
+          diagnosticQuestion: "What are you doing right now with your tea?",
+          diagnosticCheckpoints: [
+            {
+              icon: "🫖",
+              currentDoing: "I took out the pot and poured water in it",
+              nextStepSummary: "Put pot on stove and turn on flame",
+              nextStep: "Place the pot on the stove and turn on the flame.",
+              spokenCue: "Great start! Now place the pot onto the gas stove and turn on the flame.",
+              stepIndex: 1,
+              tip: "Set heat to medium and make sure the pot handle is turned safely inwards."
+            },
+            {
+              icon: "🔥",
+              currentDoing: "The water is heating or boiling on the stove",
+              nextStepSummary: "Put the tea bag into your mug",
+              nextStep: "Put the herbal tea bag into your mug, ready for water.",
+              spokenCue: "The water is heating up nicely. Now put your herbal tea bag into your mug.",
+              stepIndex: 2,
+              tip: "Keep the mug right on the counter next to the stove so you do not have to carry hot water far."
+            },
+            {
+              icon: "📦",
+              currentDoing: "I have the tea bag in my mug",
+              nextStepSummary: "Pour the hot water and let it steep",
+              nextStep: "Carefully pour the hot water into the mug and let it steep for 2 minutes.",
+              spokenCue: "Carefully pour the hot water into your mug. Let it steep calmly for 2 minutes.",
+              stepIndex: 3,
+              tip: "Hold the pot handle with both hands for stability."
+            },
+            {
+              icon: "❓",
+              currentDoing: "I just started or forgot where to begin",
+              nextStepSummary: "Take out the pot and add water",
+              nextStep: "Take out the tea pot and pour 1 glass of fresh water into it.",
+              spokenCue: "No worries at all! Start by taking out your tea pot and filling it with fresh water.",
+              stepIndex: 0,
+              tip: "Use the tap or filtered water jug."
+            }
           ]
         },
         { 
@@ -2471,9 +2520,49 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           cueHint: "Levodopa works best on an empty stomach 30-45 minutes before food.",
           attemptsLeft: 3,
           runnerSteps: [
-            "Locate your morning pill organizer with the green label",
-            "Verify your 100mg Levodopa tablet",
-            "Take with a small sip of water and wait 30-45 mins before breakfast"
+            "Get a clean glass of room-temperature drinking water",
+            "Open the green morning compartment of your pillbox",
+            "Take out one 100mg Levodopa tablet",
+            "Swallow tablet with water and wait 30-45 mins before breakfast"
+          ],
+          diagnosticQuestion: "What are you doing right now with your medication?",
+          diagnosticCheckpoints: [
+            {
+              icon: "💧",
+              currentDoing: "I have my glass of water ready, but where is my medicine?",
+              nextStepSummary: "Open the green pillbox compartment",
+              nextStep: "Open the green morning compartment of your pillbox on the counter.",
+              spokenCue: "You have your water ready. Now open the green morning compartment of your pillbox.",
+              stepIndex: 1,
+              tip: "The green compartment is labeled '08:30 AM Morning'."
+            },
+            {
+              icon: "💊",
+              currentDoing: "I opened the pillbox and have the tablet in my hand",
+              nextStepSummary: "Take tablet with water",
+              nextStep: "Place the tablet on your tongue and take a full swallow of water.",
+              spokenCue: "Place the tablet on your tongue and drink a full swallow of water.",
+              stepIndex: 3,
+              tip: "Tilt your chin slightly forward as you swallow."
+            },
+            {
+              icon: "🍽️",
+              currentDoing: "I am about to eat breakfast right now",
+              nextStepSummary: "Pause food! Take Levodopa 30-45 mins before",
+              nextStep: "Pause breakfast! Take your Levodopa now with water, then wait 30-45 mins before eating.",
+              spokenCue: "Remember to take your Levodopa first. Waiting 30 minutes before eating allows full absorption.",
+              stepIndex: 0,
+              tip: "Dietary protein can block Levodopa absorption if taken at the same time."
+            },
+            {
+              icon: "❓",
+              currentDoing: "I cannot find my green pill organizer",
+              nextStepSummary: "Check bedside table or kitchen counter",
+              nextStep: "Look on the kitchen counter next to the water kettle, or on your bedside table.",
+              spokenCue: "Check the kitchen counter next to the kettle, or Julian's care shelf.",
+              stepIndex: 1,
+              tip: "If still missing, tap 'Call Julian' below."
+            }
           ]
         },
         { 
@@ -2493,7 +2582,38 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           runnerSteps: [
             "Lay your morning shirt flat and align collar smoothly",
             "Gently pinch top button with your thumb and index finger",
-            "Guide each button through slot calmly from top to bottom"
+            "Guide each button through slot calmly from top to bottom",
+            "Check mirror and smooth sleeves down comfortably"
+          ],
+          diagnosticQuestion: "What are you doing right now with dressing?",
+          diagnosticCheckpoints: [
+            {
+              icon: "👔",
+              currentDoing: "I put the shirt on, but buttons are uneven or mixed up",
+              nextStepSummary: "Unbutton and match the top collar button first",
+              nextStep: "Unbutton gently, match the top two collar tips, and slide the very top button first.",
+              spokenCue: "No worries! Unbutton gently, line up the collar at the top, and start with the very first button.",
+              stepIndex: 1,
+              tip: "Starting from the top keeps all lower buttons properly aligned."
+            },
+            {
+              icon: "🤏",
+              currentDoing: "My fingers feel stiff or shaking trying to pinch buttons",
+              nextStepSummary: "Rest hands for 15s and shake gently",
+              nextStep: "Rest your hands flat on your knees for 15 seconds, shake gently, then use both hands together.",
+              spokenCue: "Rest your hands for a moment. Take a deep breath, gently wiggle your fingers, and try with both hands.",
+              stepIndex: 2,
+              tip: "Using your opposite thumb behind the hole provides a steady backstop."
+            },
+            {
+              icon: "❓",
+              currentDoing: "I don't know which button goes where",
+              nextStepSummary: "Slide the top button near your neck first",
+              nextStep: "Find the button nearest your neck and push it through the highest hole.",
+              spokenCue: "Find the top button right near your neck and slide it into the highest hole.",
+              stepIndex: 1,
+              tip: "Work down one button at a time."
+            }
           ]
         },
         { 
@@ -2511,9 +2631,31 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           cueHint: "Berries provide neural antioxidants while keeping heavy protein for dinner.",
           attemptsLeft: 3,
           runnerSteps: [
-            "Prepare a warm bowl of oatmeal with wild antioxidant blueberries",
-            "Add a spoonful of raw walnuts for omega-3 brain nourishment",
-            "Enjoy slowly with warm herbal tea, keeping heavy protein for dinner"
+            "Prepare a warm bowl of oatmeal or whole grain porridge",
+            "Add a handful of raw walnuts for omega-3 brain nourishment",
+            "Top with wild antioxidant blueberries or fresh fruit",
+            "Enjoy calmly, keeping heavy meats and dairy for dinner"
+          ],
+          diagnosticQuestion: "What are you doing right now with breakfast?",
+          diagnosticCheckpoints: [
+            {
+              icon: "🥣",
+              currentDoing: "I have my warm oatmeal bowl ready",
+              nextStepSummary: "Add blueberries and walnuts",
+              nextStep: "Sprinkle a handful of fresh berries and walnuts on top for dopamine protection.",
+              spokenCue: "Your warm oatmeal is ready. Now add a handful of fresh blueberries and walnuts on top.",
+              stepIndex: 1,
+              tip: "Walnuts provide healthy omega-3 fatty acids for brain cell membrane fluidity."
+            },
+            {
+              icon: "🥛",
+              currentDoing: "I was thinking of drinking a large glass of milk or eating eggs",
+              nextStepSummary: "Keep protein light until evening",
+              nextStep: "Keep heavy protein for dinner so your morning Levodopa has full motor efficacy.",
+              spokenCue: "Save heavy protein for dinner so your morning Levodopa stays smooth and active.",
+              stepIndex: 3,
+              tip: "Herbal tea, warm water, or almond milk are excellent morning choices."
+            }
           ]
         },
         { 
@@ -2531,9 +2673,31 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           cueHint: "Loud, clear vowel sounds strengthen vocal cords against Parkinsonian vocal fade.",
           attemptsLeft: 3,
           runnerSteps: [
+            "Sit tall with your shoulders back and open chest",
             "Inhale a deep diaphragmatic breath through your nose",
             "Project your voice forward with a sustained 'AHHH' for 10 seconds",
             "Repeat 3 times aiming for green target meter above 70 dB"
+          ],
+          diagnosticQuestion: "What are you doing right now for your voice exercise?",
+          diagnosticCheckpoints: [
+            {
+              icon: "🪑",
+              currentDoing: "I am sitting upright, but don't know how loud to project",
+              nextStepSummary: "Inhale deep breath through nose",
+              nextStep: "Inhale a slow, deep breath through your nose expanding your belly.",
+              spokenCue: "Sit tall with chest open. Take a deep breath filling your lungs.",
+              stepIndex: 1,
+              tip: "Posture is key — keep your chin level with the horizon."
+            },
+            {
+              icon: "🗣️",
+              currentDoing: "I took a deep breath, what sound do I make?",
+              nextStepSummary: "Produce loud sustained 'AHHH' sound",
+              nextStep: "Produce a loud, steady 'AHHH' across the room for 8-10 seconds.",
+              spokenCue: "Now project a loud, clear AHHH sound across the room for 8 seconds.",
+              stepIndex: 2,
+              tip: "Imagine calling out to a friend across the garden."
+            }
           ]
         },
         { 
@@ -2551,9 +2715,31 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
           cueHint: "Timed midday doses prevent off-periods and rigidity.",
           attemptsLeft: 3,
           runnerSteps: [
-            "Locate 1:00 PM scheduled midday Levodopa dose",
+            "Pause afternoon activities and sit comfortably",
+            "Open 1:00 PM yellow scheduled midday Levodopa dose",
             "Swallow with room-temperature water",
             "Rest seated for 5 minutes to let dopamine absorption stabilize"
+          ],
+          diagnosticQuestion: "What are you doing right now for your 1 PM dose?",
+          diagnosticCheckpoints: [
+            {
+              icon: "🟡",
+              currentDoing: "I am seated looking for my 1 PM dose",
+              nextStepSummary: "Open yellow middle pill compartment",
+              nextStep: "Open the yellow middle compartment labeled 1:00 PM in your pillbox.",
+              spokenCue: "Open the yellow middle compartment labeled 1:00 PM in your pillbox.",
+              stepIndex: 1,
+              tip: "The yellow compartment holds your afternoon dose."
+            },
+            {
+              icon: "💊",
+              currentDoing: "I took the tablet with water",
+              nextStepSummary: "Rest seated for 5 minutes and tick Done",
+              nextStep: "Drink another sip of water, rest seated for 5 minutes, and tick Done.",
+              spokenCue: "Take another sip of water, rest comfortably for 5 minutes, and tap Complete Task.",
+              stepIndex: 3,
+              tip: "Resting lets the medication dissolve without motor strain."
+            }
           ]
         }
       ],
@@ -2673,8 +2859,8 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
 
     function triggerLevelUpCelebration(tier) {
       playAudioChime('fanfare');
-      if (window.confetti) {
-        confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
+      if (typeof window !== 'undefined' && window.confetti) {
+        window.confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
       }
       alert(`🎉 LEVEL UP! You reached ${tier.title} ${tier.icon}!\nYour brain pathways are staying agile and connected.`);
     }
@@ -3051,18 +3237,46 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
       speakText(`Eleanor, the 15-minute timer has completed for ${task ? task.title : 'your task'}. Are you stuck, or do you need some help?`);
     }
 
+    let currentDiagTaskId = null;
+    let currentDiagStepIndex = 0;
+    let currentDiagCheckpointsList = [];
+
     function openTaskHelpModal(taskId) {
       const id = taskId || state.activeRunnerTaskId || (state.tasks[currentCueIndex] ? state.tasks[currentCueIndex].id : 1);
       const task = state.tasks.find(t => t.id === id);
       if (!task) return;
 
+      currentDiagTaskId = task.id;
       state.activeRunnerTaskId = task.id;
+
+      // Update Header Text & Badges
       const titleEl = document.getElementById('helpTaskTitle');
       if (titleEl) titleEl.innerText = task.title;
+
+      const modalTitleEl = document.getElementById('diagModalTitle');
+      if (modalTitleEl) {
+        modalTitleEl.innerText = task.diagnosticQuestion || `What are you doing right now, Eleanor?`;
+      }
+
+      const modalBadgeEl = document.getElementById('diagModalBadge');
+      if (modalBadgeEl) {
+        modalBadgeEl.innerText = task.tag || `Cognitive Step Guide`;
+      }
 
       const elapsedMins = Math.max(1, Math.round(state.taskTimer.elapsedSeconds / 60) || 15);
       const elapsedEl = document.getElementById('helpElapsedTxt');
       if (elapsedEl) elapsedEl.innerText = `${elapsedMins} minutes`;
+      const diagElapsedEl = document.getElementById('diagTimerElapsedTxt');
+      if (diagElapsedEl) diagElapsedEl.innerText = `${elapsedMins}m Elapsed`;
+
+      // Reset views: show Question View, hide Next Step View
+      const qView = document.getElementById('diagQuestionView');
+      const sView = document.getElementById('diagNextStepView');
+      if (qView) qView.classList.remove('hidden');
+      if (sView) sView.classList.add('hidden');
+
+      // Populate Checkpoints
+      renderDiagnosticCheckpoints(task);
 
       const modal = document.getElementById('modalTaskHelp');
       if (modal) {
@@ -3070,6 +3284,172 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
         modal.classList.add('flex');
       }
       playAudioChime('pulse');
+
+      // Spoken cue for cognitive alignment
+      speakText(`${task.diagnosticQuestion || "What are you doing right now, Eleanor?"} Pick where you are right now, and I will guide your exact next step.`);
+    }
+
+    function renderDiagnosticCheckpoints(task) {
+      const container = document.getElementById('diagnosticCheckpointContainer');
+      if (!container) return;
+
+      if (task.diagnosticCheckpoints && task.diagnosticCheckpoints.length > 0) {
+        currentDiagCheckpointsList = task.diagnosticCheckpoints;
+      } else {
+        // Fallback: derive dynamic checkpoints from runnerSteps
+        const steps = (task.runnerSteps && task.runnerSteps.length) ? task.runnerSteps : [
+          `Review instructions for ${task.title}`,
+          `Perform the task at a calm and steady pace`,
+          `Confirm all actions are finished`
+        ];
+        currentDiagCheckpointsList = [
+          {
+            icon: "❓",
+            currentDoing: `I just started or forgot where to begin`,
+            nextStepSummary: steps[0],
+            nextStep: steps[0],
+            spokenCue: `Start with step 1: ${steps[0]}`,
+            stepIndex: 0,
+            tip: `Take a deep breath and begin calmly.`
+          },
+          ...steps.slice(0, -1).map((s, idx) => ({
+            icon: idx === 0 ? "⚡" : (idx === 1 ? "🔄" : "📌"),
+            currentDoing: `I just finished: ${s}`,
+            nextStepSummary: steps[idx + 1],
+            nextStep: steps[idx + 1],
+            spokenCue: `Great progress! Next step: ${steps[idx + 1]}`,
+            stepIndex: idx + 1,
+            tip: `Keep going at your own pace.`
+          }))
+        ];
+      }
+
+      container.innerHTML = currentDiagCheckpointsList.map((cp, idx) => `
+        <button onclick="selectDiagnosticCheckpoint(${idx})" class="w-full text-left p-3.5 sm:p-4 rounded-2xl border-2 border-slate-200 hover:border-amber-500 bg-white hover:bg-amber-50/70 shadow-xs hover:shadow-md transition flex items-center justify-between group active:scale-[0.99]">
+          <div class="flex items-center space-x-3 sm:space-x-3.5">
+            <span class="text-2xl p-2 rounded-xl bg-amber-100 group-hover:bg-amber-200 transition shrink-0">${cp.icon || '📍'}</span>
+            <div>
+              <p class="text-xs sm:text-sm font-black text-slate-900 group-hover:text-amber-950">${cp.currentDoing}</p>
+              <p class="text-[11px] sm:text-xs text-slate-500 group-hover:text-amber-800 flex items-center gap-1.5 mt-0.5">
+                <i class="fa-solid fa-arrow-right text-[10px] text-amber-600"></i> Next: <span class="font-bold text-amber-900">${cp.nextStepSummary || cp.nextStep}</span>
+              </p>
+            </div>
+          </div>
+          <div class="shrink-0 text-slate-400 group-hover:text-amber-600 transition pl-2">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    function selectDiagnosticCheckpoint(idx) {
+      const task = state.tasks.find(t => t.id === currentDiagTaskId) || state.tasks.find(t => t.id === state.activeRunnerTaskId);
+      if (!task) return;
+
+      const cp = currentDiagCheckpointsList[idx];
+      if (!cp) return;
+
+      currentDiagStepIndex = (cp.stepIndex !== undefined) ? cp.stepIndex : 0;
+
+      // Switch to Step View
+      const qView = document.getElementById('diagQuestionView');
+      const sView = document.getElementById('diagNextStepView');
+      if (qView) qView.classList.add('hidden');
+      if (sView) sView.classList.remove('hidden');
+
+      renderDiagnosticActiveStep(task, currentDiagStepIndex, cp);
+      playAudioChime('pulse');
+    }
+
+    function renderDiagnosticActiveStep(task, stepIdx, customCp) {
+      const totalSteps = (task.runnerSteps && task.runnerSteps.length) ? task.runnerSteps.length : 4;
+      const currentNum = Math.min(stepIdx + 1, totalSteps);
+
+      const badgeEl = document.getElementById('diagStepBadge');
+      if (badgeEl) badgeEl.innerText = `Your Exact Next Step (Step ${currentNum} of ${totalSteps})`;
+
+      const statusEl = document.getElementById('diagCurrentStatusTxt');
+      if (statusEl) {
+        statusEl.innerText = (currentNum === totalSteps) ? "Final Step" : "In Progress";
+      }
+
+      const instrEl = document.getElementById('diagInstructionTxt');
+      const tipEl = document.getElementById('diagSpokenTipTxt');
+
+      let instructionText = "";
+      let tipText = "";
+      let spokenCue = "";
+
+      if (customCp && customCp.stepIndex === stepIdx) {
+        instructionText = customCp.nextStep;
+        tipText = customCp.tip || "Take your time. You are doing great.";
+        spokenCue = customCp.spokenCue || customCp.nextStep;
+      } else if (task.runnerSteps && task.runnerSteps[stepIdx]) {
+        instructionText = task.runnerSteps[stepIdx];
+        tipText = "Focus on just this one action. Breathe gently.";
+        spokenCue = `Step ${currentNum}: ${instructionText}`;
+      } else {
+        instructionText = `Complete your ${task.title} action calmly.`;
+        tipText = "Take your time Eleanor.";
+        spokenCue = instructionText;
+      }
+
+      if (instrEl) instrEl.innerText = instructionText;
+      if (tipEl) tipEl.innerText = tipText;
+
+      const btn = document.getElementById('btnAdvanceDiagStep');
+      if (btn) {
+        if (stepIdx >= totalSteps - 1) {
+          btn.innerHTML = `<span>Finish Task & Auto-Tick (+25 XP)</span> <i class="fa-solid fa-circle-check"></i>`;
+          btn.className = "flex-1 sm:flex-none px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2";
+        } else {
+          btn.innerHTML = `<span>I did this step! Next Step</span> <i class="fa-solid fa-arrow-right"></i>`;
+          btn.className = "flex-1 sm:flex-none px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 text-white font-black text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2";
+        }
+      }
+
+      if (spokenCue) {
+        speakText(spokenCue);
+      }
+    }
+
+    function advanceDiagnosticStep() {
+      const task = state.tasks.find(t => t.id === currentDiagTaskId) || state.tasks.find(t => t.id === state.activeRunnerTaskId);
+      if (!task) return;
+
+      const totalSteps = (task.runnerSteps && task.runnerSteps.length) ? task.runnerSteps.length : 4;
+
+      if (currentDiagStepIndex < totalSteps - 1) {
+        currentDiagStepIndex++;
+        playAudioChime('pulse');
+        renderDiagnosticActiveStep(task, currentDiagStepIndex, null);
+      } else {
+        // Completed final step!
+        closeTaskHelpModal();
+        finishTaskRunnerWithId(task.id);
+        if (typeof window !== 'undefined' && window.confetti) {
+          window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+        speakText(`Wonderful job Eleanor! You followed every step and completed ${task.title}. Twenty-five XP awarded, and it is marked done on your to-do list!`);
+      }
+    }
+
+    function speakCurrentDiagnosticStep() {
+      const instrEl = document.getElementById('diagInstructionTxt');
+      const tipEl = document.getElementById('diagSpokenTipTxt');
+      const text = (instrEl ? instrEl.innerText : "") + ". " + (tipEl ? tipEl.innerText : "");
+      if (text.trim()) {
+        speakText(text);
+      }
+    }
+
+    function backToDiagnosticQuestions() {
+      const qView = document.getElementById('diagQuestionView');
+      const sView = document.getElementById('diagNextStepView');
+      if (qView) qView.classList.remove('hidden');
+      if (sView) sView.classList.add('hidden');
+      playAudioChime('pulse');
+      speakText("Pick where you are right now, and I will guide your next step.");
     }
 
     function closeTaskHelpModal() {
@@ -3081,9 +3461,9 @@ Levodopa/Carbidopa Protocol: 100mg 3x Daily (08:30 AM, 01:00 PM, 06:30 PM)
     }
 
     function speakHelpPrompt() {
-      const task = state.tasks.find(t => t.id === state.activeRunnerTaskId);
-      const title = task ? task.title : "your scheduled activity";
-      speakText(`Are you stuck, Eleanor? You have been working on ${title}. You can choose: I feel frozen, I need 5 more minutes, Ask Julian for help, Break into simpler steps, or I finished it!`);
+      const task = state.tasks.find(t => t.id === (currentDiagTaskId || state.activeRunnerTaskId));
+      const prompt = task && task.diagnosticQuestion ? task.diagnosticQuestion : "What are you doing right now, Eleanor?";
+      speakText(`${prompt} Tell us what you have done or what you see, and we will give you your exact next step.`);
     }
 
     function handleHelpAction(action) {
